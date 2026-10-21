@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Meu Perfil e Desafios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; /* Verde de destaque */
+            --text-dark: #333;
+            --text-light: #fff;
+            --footer-yellow: #FFC107;
+            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --max-width: 1200px;
+
+            /* Cores específicas do Perfil e Ranking */
+            --dark-background: #1e1e1e;
+            --dark-card: #2c2c2c; 
+            --title-yellow: #FFD700; 
+            --level-purple: #9370DB; 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 800px; 
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 1. Cabeçalho */
+        .header {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+            color: var(--enem-yellow); 
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .enem-highlight {
+            color: var(--enem-yellow); 
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
+        }
+        
+        .header-actions i {
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        /* --- 2. Sidebar (Menu Lateral) e Overlay --- */
+
+        .sidebar {
+            height: 100%;
+            width: 250px; 
+            position: fixed;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            background-color: var(--primary-blue);
+            overflow-x: hidden;
+            transition: transform 0.3s ease;
+            transform: translateX(-250px);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            padding-top: 20px;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        #menu-perfil { 
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-menu li:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-menu li a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            flex-grow: 1; 
+        }
+
+        .sidebar-menu li .icon {
+            font-size: 18px;
+            margin-right: 15px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 3. Card de Perfil */
+        .profile-card {
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border: 1px solid var(--primary-blue);
+            position: relative;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: #E0EFFF; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            border: 2px solid var(--primary-blue);
+        }
+
+        #profile-avatar i {
+            font-size: 40px;
+            color: var(--primary-blue);
+        }
+
+        .profile-details {
+            font-size: 16px;
+        }
+
+        #user-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .detail-item {
+            margin-bottom: 5px;
+        }
+
+        #user-title {
+            background-color: var(--title-yellow);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-left: 5px;
+        }
+        
+        #user-level {
+            font-weight: bold;
+            color: var(--level-purple);
+        }
+
+        #edit-profile-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* 4. Seção de Estatísticas (Ranking, Desafios, Conquistas) */
+        .stats-section {
+            background-color: var(--dark-background);
+            border-radius: 12px;
+            padding: 20px 0 20px 0;
+            color: var(--text-light);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid var(--dark-card);
+            padding: 0 20px 10px 20px;
+            margin-bottom: 15px;
+        }
+
+        .tab-item {
+            font-size: 18px;
+            font-weight: bold;
+            padding-bottom: 10px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .tab-item.active {
+            opacity: 1;
+            border-bottom: 3px solid var(--enem-yellow);
+            color: var(--enem-yellow);
+        }
+
+        /* Filtros de Ranking */
+        .ranking-filters {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 20px 15px 20px;
+            font-size: 14px;
+        }
+
+        .filter-group {
+            border: 1px solid var(--dark-card);
+            border-radius: 20px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .filter-group span {
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #ccc;
+        }
+
+        .filter-group span.active {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+        }
+
+        /* Conteúdo Geral (Ranking) */
+        .tab-content {
+            padding: 0 20px;
+        }
+        
+        /* Lista de Ranking */
+        #content-ranking {
+            padding: 0 20px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--dark-card);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        #content-ranking .ranking-item:first-child {
+            background-color: #383838; 
+            border: 1px solid var(--enem-yellow);
+        }
+
+        .rank-number {
+            font-size: 16px;
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .rank-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+        
+        .rank-info {
+            flex-grow: 1;
+        }
+
+        .rank-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .rank-details {
+            color: #aaa;
+        }
+
+        .rank-points {
+            text-align: right;
+        }
+
+        .rank-points strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .rank-badge {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--enem-yellow);
+        }
+        
+        .sequence-data {
+            color: var(--secondary-green);
+        }
+        .fa-arrow-up {
+            margin-left: 5px;
+        }
+
+        /* --- Estilos para Desafios --- */
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 20px;
+        }
+
+        .challenge-card {
+            background-color: var(--dark-card);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-light);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .challenge-full {
+            grid-column: span 2;
+            padding: 20px;
+        }
+
+        .challenge-header, .challenge-main-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .challenge-main-info {
+            margin-bottom: 10px;
+        }
+
+        .challenge-card h3 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .challenge-description {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .challenge-badge {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .challenge-badge-medium { background-color: #E67E22; color: var(--text-light); }
+        .challenge-badge-easy { background-color: var(--secondary-green); color: var(--text-dark); }
+        .challenge-badge-difficult { background-color: #AA0000; color: var(--text-light); }
+
+        .challenge-progress {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .challenge-progress label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 3px;
+        }
+
+        .progress-bar-container {
+            background-color: #444;
+            border-radius: 5px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            width: calc(100% - 40px);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-blue);
+            transition: width 0.5s;
+        }
+
+        .progress-bar.challenge-done {
+            background-color: var(--secondary-green);
+        }
+
+        .progress-percentage {
+            float: right;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .challenge-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .challenge-stat i {
+            margin-right: 5px;
+            color: #888;
+        }
+
+        .challenge-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-points {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--enem-yellow);
+        }
+
+        .btn-participar, .btn-concluido {
+            padding: 6px 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-participar {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+        }
+
+        .btn-concluido {
+            background-color: var(--secondary-green);
+            color: var(--text-dark);
+        }
+
+        /* Ajustes para o card grande (História) */
+        .challenge-full .challenge-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+
+        .challenge-full .challenge-action-side {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .challenge-full .challenge-action-side .challenge-points {
+            margin-right: auto;
+        }
+
+        /* --- Estilos para Conquistas (Achievements) --- */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        .achievement-card {
+            background-color: var(--dark-card);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            border-left: 5px solid #444; /* Borda padrão */
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        /* Estilo para Conquistas Desbloqueadas */
+        .achievement-card.achievement-unlocked {
+            border-left: 5px solid var(--enem-yellow);
+            opacity: 1;
+        }
+
+        /* Estilo para Conquistas Bloqueadas */
+        .achievement-card.locked {
+            filter: grayscale(80%);
+            opacity: 0.4;
+        }
+
+        .achievement-icon-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #383838;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .achievement-icon {
+            font-size: 22px;
+            color: #fff;
+        }
+        
+        /* Ajuste a cor do ícone para conquistas bloqueadas */
+        .achievement-card.locked .achievement-icon {
+            color: #666 !important;
+        }
+
+        .achievement-info {
+            flex-grow: 1;
+        }
+
+        .achievement-info h3 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .achievement-info p {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .achievement-details {
+            text-align: right;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .ach-title-reward {
+            font-weight: bold;
+            display: block;
+            color: var(--enem-yellow);
+        }
+
+        .ach-points-reward {
+            color: var(--secondary-green);
+        }
+
+        /* Estilo para o botão Ver Mais */
+        .view-more-action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            padding: 0 20px;
+        }
+
+        .btn-ver-mais {
+            background-color: var(--dark-card);
+            color: var(--text-light);
+            border: 1px solid #444;
+            padding: 8px 30px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-ver-mais:hover {
+            background-color: #383838;
+        }
+        
+        .view-more-action i {
+            color: #444;
+            font-size: 16px;
+        }
+
+
+        /* 5. Rodapé */
+        .footer {
+            background-color: var(--footer-yellow);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-dark); /* Cor padrão do texto do footer (que não é o logo) */
+            margin-top: 40px;
+        }
+
+        /* MUDANÇA AQUI: "Prep" agora é branco */
+        .logo-footer {
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-light); /* Cor alterada para BRANCO */
+        }
+
+        /* MUDANÇA AQUI: "Enem" agora é azul */
+        .enem-highlight-footer {
+            color: var(--primary-blue); /* Cor alterada para AZUL principal */
+        }
+
+        .help-section p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        #link-central-ajuda {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Responsividade (Ajustes para mobile) */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .profile-card {
+                padding: 20px;
+            }
+            .ranking-item {
+                flex-wrap: wrap;
+            }
+            .rank-details {
+                font-size: 12px;
+                flex-basis: 100%;
+                margin-left: 55px; /* Alinha com o nome */
+                margin-top: 5px;
+            }
+            .rank-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 12px;
+            }
+            .rank-points {
+                margin-left: auto;
+                text-align: right;
+            }
+            /* Desafios em mobile */
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+            .challenge-full {
+                grid-column: span 1;
+            }
+            .challenge-full .challenge-bottom-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .challenge-full .challenge-action-side {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .challenge-full .challenge-action-side .challenge-points {
+                margin-right: 0;
+            }
+            .progress-bar-container {
+                width: 100%;
+            }
+             /* Conquistas em mobile */
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Media Query para desktop/tablet */
+        @media (min-width: 768px) {
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a>
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil"> <i class="fas fa-user icon"></i>
+                <a href="perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+        <div class="header-actions">
+            <i class="fas fa-bell" id="notification-icon"></i>
+            <i class="fas fa-history" id="history-icon"></i>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="profile-card" id="user-profile-card">
+            <div class="profile-header">
+                <div id="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-details">
+                    <h2 id="user-name">Matheus Rosas Chagas</h2>
+                    <div class="detail-item">
+                        Título: 
+                        <span id="user-title">Estudante Dedicado</span>
+                    </div>
+                    <div class="detail-item">
+                        Nível <span id="user-level">8</span>
+                    </div>
+                    <div class="detail-item">
+                        Horas estudadas: <span id="user-hours">10</span>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-pen-to-square" id="edit-profile-icon"></i>
+        </section>
+
+        <section class="stats-section" id="stats-area">
+            
+            <div class="stats-tabs">
+                <span class="tab-item" id="tab-ranking">Ranking</span>
+                <span class="tab-item active" id="tab-desafios">Desafios</span>
+                <span class="tab-item" id="tab-conquistas">Conquistas</span>
+            </div>
+
+            <div class="ranking-filters" id="ranking-filters" style="display: none;">
+                <div class="filter-group">
+                    <span class="active" id="filter-hoje">Hoje</span>
+                    <span id="filter-semana">Semana</span>
+                    <span id="filter-mes">Mês</span>
+                    <span id="filter-geral">Geral</span>
+                </div>
+            </div>
+
+            <div class="stats-content-area">
+
+                <div id="content-ranking" class="tab-content" style="display: none;">
+                    
+                    <div class="ranking-item" id="rank-1">
+                        <i class="fas fa-crown rank-badge"></i>
+                        <div class="rank-avatar" style="background-color: #AA0000; margin-left: 20px;">LB</div>
+                        <div class="rank-info">
+                            <div class="rank-name">Luiz Barbosa <span style="color: #FFD700; font-weight: normal;">Mestre dos Estudos</span></div>
+                            <div class="rank-details">
+                                <span id="hours-rank-1">160h estudadas</span> | 
+                                <span id="questions-rank-1">1240 questões</span> | 
+                                <span id="accuracy-rank-1">89% acerto</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <strong id="points-rank-1">4.250</strong>
+                            <span class="sequence-data">
+                                <span id="sequence-rank-1">28</span> pontos sequência
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-item" id="rank-2">
+                        <div class="rank-number">#2</div>
+                        <div class="rank-avatar" style="background-color: #4CAF50;">OB</div>
+                        <div class="rank-info">
+                            <div class="rank-name">Oscar Batista<span style="color: #9370DB; font-weight: normal;">Focado no ENEM</span></div>
+                            <div class="rank-details">
+                                <span id="hours-rank-2">142h estudadas</span> | 
+                                <span id="questions-rank-2">1105 questões</span> | 
+                                <span id="accuracy-rank-2">87% acerto</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <strong id="points-rank-2">3.890</strong>
+                            <span class="sequence-data" style="color: #E67E22;">
+                                <span id="sequence-rank-2">22</span> pontos sequência
+                                <i class="fas fa-arrow-up"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-item" id="rank-3">
+                        <div class="rank-number">#3</div>
+                        <div class="rank-avatar" style="background-color: #E67E22;">MA</div>
+                        <div class="rank-info">
+                            <div class="rank-name">Marcos Amias <span style="color: #00CC99; font-weight: normal;">Disciplinado</span></div>
+                            <div class="rank-details">
+                                <span id="hours-rank-3">138h estudadas</span> | 
+                                <span id="questions-rank-3">980 questões</span> | 
+                                <span id="accuracy-rank-3">91% acerto</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <strong id="points-rank-3">3.650</strong>
+                            <span class="sequence-data">
+                                <span id="sequence-rank-3">19</span> pontos sequência
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-item" id="rank-4">
+                        <div class="rank-number">#4</div>
+                        <div class="rank-avatar" style="background-color: var(--primary-blue);">CM</div>
+                        <div class="rank-info">
+                            <div class="rank-name">Carlos Mendes <span style="color: #9370DB; font-weight: normal;">Persistente</span></div>
+                            <div class="rank-details">
+                                <span id="hours-rank-4">125h estudadas</span> | 
+                                <span id="questions-rank-4">950 questões</span> | 
+                                <span id="accuracy-rank-4">85% acerto</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <strong id="points-rank-4">3.420</strong>
+                            <span class="sequence-data">
+                                <span id="sequence-rank-4">25</span> pontos sequência
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ranking-item" id="rank-5">
+                        <div class="rank-number" id="rank-number-5">#5</div>
+                        <div class="rank-avatar" style="background-color: #00CC99;">LO</div>
+                        <div class="rank-info">
+                            <div class="rank-name">Lucia Oliveira <span style="color: #FFD700; font-weight: normal;">Determinada</span></div>
+                            <div class="rank-details">
+                                <span id="hours-rank-5">118h estudadas</span> | 
+                                <span id="questions-rank-5">890 questões</span> | 
+                                <span id="accuracy-rank-5">80% acerto</span>
+                            </div>
+                        </div>
+                        <div class="rank-points">
+                            <strong id="points-rank-5">3.200</strong>
+                            <span class="sequence-data">
+                                <span id="sequence-rank-5">17</span> pontos sequência
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-desafios" class="tab-content">
+                    <div class="challenges-grid">
+                        
+                        <div class="challenge-card challenge-small" id="challenge-matematica">
+                            <div class="challenge-header">
+                                <h3 id="challenge-title-mat">Maratona de Matemática</h3>
+                                <span class="challenge-badge challenge-badge-medium">MÉDIO</span>
+                            </div>
+                            <p class="challenge-description">Resolva 50 questões de matemática em uma semana</p>
+                            <div class="challenge-progress">
+                                <label>Progresso</label>
+                                <div class="progress-bar-container"><div class="progress-bar" style="width: 68%;" id="progress-mat"></div></div>
+                                <span class="progress-percentage">68%</span>
+                            </div>
+                            <div class="challenge-footer">
+                                <span class="challenge-stat"><i class="fas fa-user-friends"></i> <span id="participants-mat">234</span> participantes</span>
+                                <span class="challenge-stat"><i class="fas fa-calendar-alt"></i> até <span id="deadline-mat">14/02/2024</span></span>
+                            </div>
+                            <div class="challenge-action">
+                                <span class="challenge-points" id="points-mat">500 pontos</span>
+                                <button class="btn-participar">Participar</button>
+                            </div>
+                        </div>
+
+                        <div class="challenge-card challenge-small" id="challenge-sequencia">
+                            <div class="challenge-header">
+                                <h3 id="challenge-title-seq">Sequência de Estudos</h3>
+                                <span class="challenge-badge challenge-badge-easy">FÁCIL</span>
+                            </div>
+                            <p class="challenge-description">Estude por 7 dias consecutivos sem faltar</p>
+                            <div class="challenge-progress">
+                                <label>Progresso</label>
+                                <div class="progress-bar-container"><div class="progress-bar challenge-done" style="width: 100%;" id="progress-seq"></div></div>
+                                <span class="progress-percentage">100%</span>
+                            </div>
+                            <div class="challenge-footer">
+                                <span class="challenge-stat"><i class="fas fa-user-friends"></i> <span id="participants-seq">156</span> participantes</span>
+                                <span class="challenge-stat"><i class="fas fa-calendar-alt"></i> até <span id="deadline-seq">11/02/2024</span></span>
+                            </div>
+                            <div class="challenge-action">
+                                <span class="challenge-points" id="points-seq">300 pontos</span>
+                                <button class="btn-concluido">Concluído</button>
+                            </div>
+                        </div>
+                        
+                        <div class="challenge-card challenge-full" id="challenge-historia">
+                            <div class="challenge-main-info">
+                                <h3 id="challenge-title-hist">Expert em História</h3>
+                                <span class="challenge-badge challenge-badge-difficult">DIFÍCIL</span>
+                            </div>
+                            <p class="challenge-description">Acerte 90% das questões de História do Brasil</p>
+                            
+                            <div class="challenge-bottom-row">
+                                <div class="challenge-progress challenge-progress-side">
+                                    <label>Progresso</label>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 25%;" id="progress-hist"></div></div>
+                                    <span class="progress-percentage">25%</span>
+                                </div>
+                                <div class="challenge-footer challenge-footer-side">
+                                    <span class="challenge-stat"><i class="fas fa-user-friends"></i> <span id="participants-hist">89</span> participantes</span>
+                                    <span class="challenge-stat"><i class="fas fa-calendar-alt"></i> até <span id="deadline-hist">19/02/2024</span></span>
+                                </div>
+                            </div>
+
+                            <div class="challenge-action challenge-action-side">
+                                <span class="challenge-points" id="points-hist">750 pontos</span>
+                                <button class="btn-participar">Participar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-conquistas" class="tab-content" style="display: none;">
+                    <div class="achievements-grid">
+                        
+                        <div class="achievement-card achievement-unlocked" id="ach-login">
+                            <div class="achievement-icon-wrapper">
+                                <i class="fas fa-star achievement-icon" style="color: var(--enem-yellow);"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3 id="ach-title-login">Fidelidade Diária</h3>
+                                <p id="ach-desc-login">Faça Login por 7 dias consecutivos.</p>
+                            </div>
+                            <div class="achievement-details">
+                                <span class="ach-title-reward">Título: Aluno Estrela</span>
+                                <span class="ach-points-reward">+700 pontos</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-card" id="ach-redacao">
+                            <div class="achievement-icon-wrapper">
+                                <i class="fas fa-pen-fancy achievement-icon" style="color: #ccc;"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3 id="ach-title-red">Primeiro Rascunho</h3>
+                                <p id="ach-desc-red">Envie sua primeira redação para correção.</p>
+                            </div>
+                            <div class="achievement-details">
+                                <span class="ach-title-reward">Título: Redator Júnior</span>
+                                <span class="ach-points-reward">+500 pontos</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-card locked" id="ach-conhecimento">
+                            <div class="achievement-icon-wrapper">
+                                <i class="fas fa-brain achievement-icon"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3 id="ach-title-conh">Mente Brilhante</h3>
+                                <p id="ach-desc-conh">Acerte 200 questões de Módulo em 3 dias.</p>
+                            </div>
+                            <div class="achievement-details">
+                                <span class="ach-title-reward">Título: Expert</span>
+                                <span class="ach-points-reward">+1000 pontos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="view-more-action">
+                        <i class="fas fa-arrow-down"></i>
+                        <button class="btn-ver-mais">Ver mais</button>
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Controle do Menu Lateral (Sidebar) ---
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+
+            const openSidebar = () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            };
+
+            const closeSidebar = () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            };
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+            // Fechar ao clicar em um item de menu
+            const menuItems = document.querySelectorAll('.sidebar-menu li');
+            menuItems.forEach(item => {
+                item.addEventListener('click', closeSidebar);
+            });
+            
+            // --- Funcionalidade de Abas (Ranking, Desafios, Conquistas) ---
+            const tabs = document.querySelectorAll('.tab-item');
+            const contentRanking = document.getElementById('content-ranking');
+            const contentDesafios = document.getElementById('content-desafios');
+            const contentConquistas = document.getElementById('content-conquistas');
+            const rankingFilters = document.getElementById('ranking-filters');
+
+            // Função para alternar a aba ativa
+            const switchTab = (tabId) => {
+                // Remove a classe 'active' de todas as abas
+                tabs.forEach(tab => tab.classList.remove('active'));
+
+                // Oculta todos os conteúdos e filtros
+                contentRanking.style.display = 'none';
+                contentDesafios.style.display = 'none';
+                contentConquistas.style.display = 'none';
+                rankingFilters.style.display = 'none';
+
+                // Ativa a aba clicada
+                document.getElementById(tabId).classList.add('active');
+
+                // Exibe o conteúdo correspondente
+                if (tabId === 'tab-ranking') {
+                    contentRanking.style.display = 'block';
+                    rankingFilters.style.display = 'flex';
+                } else if (tabId === 'tab-desafios') {
+                    contentDesafios.style.display = 'block';
+                } else if (tabId === 'tab-conquistas') {
+                    contentConquistas.style.display = 'block';
+                }
+            };
+
+            // Adiciona o listener de clique para cada aba
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    switchTab(e.target.id);
+                });
+            });
+            
+            // Define a aba inicial (Desafios, conforme o HTML original)
+            switchTab('tab-desafios'); 
+            
+            // --- Funcionalidade dos Filtros do Ranking (Apenas visual, sem lógica de dados) ---
+            const rankFilters = document.querySelectorAll('.filter-group span');
+            rankFilters.forEach(filter => {
+                filter.addEventListener('click', (e) => {
+                    rankFilters.forEach(f => f.classList.remove('active'));
+                    e.target.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

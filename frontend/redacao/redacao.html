@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Redações da Comunidade</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- VARIÁVEIS DE ESTILO (Padrão Prep Enem) --- */
+        :root {
+            --primary-blue: #4169E1; 
+            --secondary-green: #00CC99; 
+            --enem-yellow: #FFC107;
+            --text-dark: #333;
+            --text-light: #fff;
+            --light-bg: #f8f8f8;
+            --max-width: 1200px;
+            --card-border: #ddd;
+            --icon-color: #666;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        
+        /* Estilos de layout e navegação (Mantidos do modelo) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+        
+        /* --- ESTILOS ESPECÍFICOS DA PÁGINA DE REDAÇÕES --- */
+        
+        .page-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            max-width: 300px;
+        }
+
+        .search-area {
+            display: flex;
+            align-items: center;
+            background-color: var(--text-light);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--icon-color);
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .filter-btn i {
+            margin-right: 8px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 1em;
+        }
+
+        .search-area i.fa-search {
+            color: var(--icon-color);
+            padding: 0 10px;
+        }
+
+        .redactions-section h3 {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .redactions-container {
+            display: flex;
+            flex-wrap: nowrap; /* Garante que os cards fiquem em uma linha e forcem o scroll */
+            gap: 20px;
+            overflow-x: auto; /* Habilita o scroll horizontal */
+            padding-bottom: 15px; /* Espaço para a barra de rolagem */
+            -webkit-overflow-scrolling: touch; /* Melhora o scroll em dispositivos móveis */
+        }
+        
+        /* Estilo do indicador de seta (Simulação) */
+        .scroll-indicator {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            color: var(--icon-color);
+            font-size: 1.2em;
+        }
+        
+        .redaction-card {
+            min-width: 250px; /* Largura mínima do card */
+            max-width: 250px;
+            background-color: var(--text-light);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .redaction-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image-placeholder {
+            background-color: #f0f0f0;
+            height: 120px;
+            padding: 15px;
+            font-size: 0.8em;
+            color: #555;
+            overflow: hidden;
+            border-bottom: 1px solid var(--card-border);
+            /* Simulação do fundo da imagem de redação (texto borrado) */
+            line-height: 1.2;
+            text-align: justify;
+        }
+        
+        .card-theme {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            margin-bottom: 5px;
+        }
+
+        .card-details {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-details h4 {
+            font-size: 1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .card-meta {
+            font-size: 0.8em;
+            color: var(--icon-color);
+            margin-bottom: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        
+        .card-note {
+            font-weight: bold;
+            color: var(--primary-blue);
+            font-size: 0.9em;
+        }
+
+        .card-actions-icons {
+            display: flex;
+            gap: 10px;
+            font-size: 1em;
+        }
+        
+        .card-actions-icons i {
+            color: var(--icon-color);
+        }
+        
+        .arrow-button {
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .arrow-button:hover {
+            background-color: var(--dark-blue);
+        }
+
+        /* Estilo para a seção Nota Máxima (simula o layout) */
+        .redactions-section.nota-maxima .card-actions {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 10px;
+        }
+        
+        .redactions-section.nota-maxima .card-details {
+            padding-bottom: 0;
+        }
+
+
+        /* Footer (Mantido) */
+        .footer { 
+            background-color: var(--enem-yellow); 
+            padding: 20px; 
+            text-align: center; 
+            color: var(--text-dark); 
+            margin-top: 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="#">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div class="page-title">
+            Veja, avalie e comente em redações feitas pela comunidade
+        </div>
+        
+        <div class="search-area">
+            <button class="filter-btn" id="filter-toggle">
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+            <input type="text" class="search-input" placeholder="pesquisar tema">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="redactions-section">
+            <h3>Recentes</h3>
+            
+            <div class="redactions-container">
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #007bff;">Economia</span>
+                        <p>O desafio de garantir a educação financeira como ferramenta de emancipação social no Brasil.</p>
+                        <p style="opacity: 0.5;">...o acesso ao conhecimento é fundamental para que o indivíduo possa tomar decisões informadas e conscientes...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Educação Financeira no Brasil</h4>
+                        <div class="card-meta">
+                            Por... Eduardo Silas
+                        </div>
+                        <div class="card-actions">
+                            <i class="fas fa-comment"></i>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #28a745;">Social</span>
+                        <p>O etarismo recorrente na sociedade brasileira e os desafios para a valorização do idoso.</p>
+                        <p style="opacity: 0.5;">...a invisibilidade social e o preconceito contra a pessoa idosa são reflexos de uma sociedade...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>O cenário de etarismo recorrente na sociedade brasileira</h4>
+                        <div class="card-meta">
+                            Por... Maria Flor
+                        </div>
+                        <div class="card-actions">
+                            <i class="fas fa-comment"></i>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #ffc107; color: var(--text-dark);">Tecnologia</span>
+                        <p>A regulamentação do acesso à informação na internet: dilemas e perspectivas.</p>
+                        <p style="opacity: 0.5;">...o Marco Civil da Internet é um passo importante, mas a disseminação de fake news exige...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>A regulamentação do acesso à informação na internet</h4>
+                        <div class="card-meta">
+                            Por... Joana Silva Silva
+                        </div>
+                        <div class="card-actions">
+                            <i class="fas fa-comment"></i>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #dc3545;">Saúde</span>
+                        <p>O desafio do combate à automedicação no Brasil: causas e consequências sociais e individuais.</p>
+                        <p style="opacity: 0.5;">...a cultura do medicamento fácil e a falta de acesso a consultas médicas...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Combate à Automedicação</h4>
+                        <div class="card-meta">
+                            Por... Carlos Souza
+                        </div>
+                        <div class="card-actions">
+                            <i class="fas fa-comment"></i>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-right"></i>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <div class="redactions-section nota-maxima">
+            <h3>Redações Nota Máxima</h3>
+            
+            <div class="redactions-container">
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #ffc107; color: var(--text-dark);">Tecnologia</span>
+                        <p>Os impactos da inteligência artificial na educação e no mercado de trabalho brasileiro.</p>
+                        <p style="opacity: 0.5;">...a inclusão digital deve ser prioridade para que a sociedade não amplie...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Tecnologia na Sociedade</h4>
+                        <div class="card-meta">
+                            Por... Jurandir Silva
+                        </div>
+                        <div class="card-actions">
+                            <span class="card-note">Nota: 880</span>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #007bff;">Educação</span>
+                        <p>Os desafios da educação universitária no Brasil: evasão, financiamento e qualidade.</p>
+                        <p style="opacity: 0.5;">...a necessidade de políticas públicas que combatam a evasão...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Os desafios da educação universitária no Brasil</h4>
+                        <div class="card-meta">
+                            Por... Silva Jurandir
+                        </div>
+                        <div class="card-actions">
+                            <span class="card-note">Nota: 820</span>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #28a745;">Preconceito</span>
+                        <p>Caminhos para combater a cultura do assédio no Brasil e promover ambientes seguros e igualitários.</p>
+                        <p style="opacity: 0.5;">...a educação e a conscientização são ferramentas primordiais para a desnaturalização...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Caminhos para combater a cultura do assédio no Brasil</h4>
+                        <div class="card-meta">
+                            Por... Marcelo Monteiro
+                        </div>
+                        <div class="card-actions">
+                            <span class="card-note">Nota: 920</span>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="redaction-card">
+                    <div class="card-image-placeholder" style="color: #666;">
+                        <span class="card-theme" style="background-color: #dc3545;">Meio Ambiente</span>
+                        <p>A gestão de resíduos sólidos urbanos e seus impactos na saúde pública brasileira.</p>
+                        <p style="opacity: 0.5;">...o descarte inadequado de lixo e a necessidade de investimentos em infraestrutura...</p>
+                    </div>
+                    <div class="card-details">
+                        <h4>Resíduos Sólidos e Saúde Pública</h4>
+                        <div class="card-meta">
+                            Por... Ana Beatriz
+                        </div>
+                        <div class="card-actions">
+                            <span class="card-note">Nota: 960</span>
+                            <i class="fas fa-arrow-right arrow-button"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-right"></i>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- FUNÇÃO DE CONTROLE DA BARRA LATERAL (Mantida) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            
+            // Simulação de destaque do item "Redações" no menu
+            const menuRedacoes = document.getElementById('menu-redacoes');
+            if (menuRedacoes) {
+                menuRedacoes.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+            }
+        });
+    </script>
+</body>
+</html>

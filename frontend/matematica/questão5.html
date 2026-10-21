@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Matemática: Matrizes e Determinantes (Texto Simples)</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais (Mantidos) --- */
+        :root {
+            --primary-blue: #4169E1;
+            --secondary-green: #00CC99;
+            --enem-yellow: #FFC107;
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E0EFFF;
+            --correct-green: #4CAF50;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Estilos de layout e navegação (Mantidos) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Título Atualizado) */
+        .module-header-exercise { 
+            background-color: var(--enem-yellow); 
+            color: var(--text-dark); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--text-dark); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-blue);
+            background-color: #f5f9ff;
+        }
+        .content-section h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: #FF5722;
+        }
+
+        /* Estilo dos botões de leitura */
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+        }
+        
+        /* Estilos do Quiz e Feedback (Mantidos) */
+        #question-form { 
+            display: none;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: var(--question-bg);
+        }
+
+        .question-card p.question-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .option-label {
+            display: block;
+            background-color: #fff;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background-color: #e6ffed !important;
+            font-weight: bold;
+        }
+
+        .incorrect-selection {
+            border: 2px solid var(--incorrect-red) !important;
+            background-color: #ffe6e6 !important;
+            text-decoration: line-through;
+        }
+
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer (Mantido) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Media Query (Mantido) */
+        @media (min-width: 768px) {
+            .study-progress-bar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Matemática - 05: Matrizes e Determinantes</span>
+        <a href="../menu/menu.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>🔢 Conteúdo Aprofundado: Matrizes e Determinantes (Foco ENEM)</h2>
+            <p>As **Matrizes** são estruturas essenciais para organizar dados em linhas e colunas. No ENEM, são cobradas principalmente em problemas de organização de informações, tabelas e sistemas lineares.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o **Quiz de 10 Questões** será desbloqueado.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Conceitos Fundamentais e Tipos de Matrizes</h3>
+                <p>Uma matriz é representada por A (m x n), onde m é o número de linhas e n é o número de colunas. Cada elemento é denotado por a(i,j), onde i é a linha e j é a coluna.</p>
+                
+                <h4>Tipos de Matrizes</h4>
+                <ul>
+                    <li>**Matriz Quadrada:** O número de linhas é igual ao número de colunas (m=n). Essencial para o cálculo de Determinantes.</li>
+                    <li>**Matriz Linha:** Possui apenas uma linha (m=1). Ex: [ 1 / 2 / 3 ].</li>
+                    <li>**Matriz Coluna:** Possui apenas uma coluna (n=1). Ex: [ 4 / 5 ] (vertical).</li>
+                    <li>**Matriz Identidade (I):** É uma matriz quadrada onde os elementos da diagonal principal são 1 e todos os outros são 0.</li>
+                    <li>**Matriz Transposta (At):** As linhas de A viram colunas em At.</li>
+                </ul>
+
+                <p class="key-term">EXEMPLO DE LEITURA:</p>
+                <p>Em uma matriz A (2 x 3), o elemento a(2,1) está na **segunda linha** e **primeira coluna**.</p>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Operações Fundamentais e Determinantes</h3>
+                <p>O ENEM cobra a correta execução das operações de Matrizes e o cálculo de seus Determinantes, especialmente os de ordem 2 e 3.</p>
+                
+                <h4>Soma e Subtração</h4>
+                <p>Só podem ser realizadas se as matrizes tiverem a **mesma ordem** (m x n). A operação é feita elemento a elemento.</p>
+                
+                <h4>Multiplicação de Matrizes (A * B)</h4>
+                <p>A multiplicação só é possível se o número de **colunas de A** for igual ao número de **linhas de B** (A(m x p) * B(p x n) resulta em C(m x n)).
+                <br>O cálculo é feito multiplicando a **linha da primeira** pela **coluna da segunda** e somando os produtos. É a operação mais complexa.</p>
+                
+                <h4>Determinante (Det(A))</h4>
+                <p>É um número associado apenas a **matrizes quadradas**. Útil para resolver Sistemas Lineares.</p>
+                
+                <p class="key-term">CÁLCULO - Determinante de Ordem 2 (2 x 2):</p>
+                <p>Multiplica-se a **diagonal principal** e subtrai-se pelo produto da **diagonal secundária**.</p>
+                <p>Se A = [ [a, b] / [c, d] ], então Det(A) = (a * d) - (b * c)</p>
+                
+                <p>CÁLCULO - Determinante de Ordem 3 (3 x 3):</p>
+                <p>Use a **Regra de Sarrus**: repita as duas primeiras colunas ao lado da matriz, some os produtos das 3 diagonais principais e subtraia pelos produtos das 3 diagonais secundárias.</p>
+
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-pencil-alt"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+        <form id="question-form" style="display: none;">
+            <button type="button" id="btn-submit-quiz" class="btn-next" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--secondary-green); color: var(--text-dark); margin-top: 30px; width: 100%;">
+                <i class="fas fa-check-circle"></i> FINALIZAR QUIZ E VER RESULTADOS
+            </button>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO E DADOS ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+
+        // Array de 10 Questões de Matrizes e Determinantes (Notação Atualizada)
+        const questions = [
+            {
+                id: 1,
+                text: "Uma matriz do tipo A(3 x 4) possui quantas linhas e colunas, respectivamente?",
+                options: ["3 linhas e 3 colunas", "4 linhas e 3 colunas", "3 linhas e 4 colunas", "4 linhas e 4 colunas"],
+                answer: "3 linhas e 4 colunas"
+            },
+            {
+                id: 2,
+                text: "Em uma matriz A, o elemento a(1,3) está localizado na:",
+                options: ["3ª linha e 1ª coluna", "1ª linha e 3ª coluna", "1ª linha e 1ª coluna", "3ª linha e 3ª coluna"],
+                answer: "1ª linha e 3ª coluna"
+            },
+            {
+                id: 3,
+                text: "Se A = [ [2, 1] / [0, 3] ], qual é o valor do seu Determinante?",
+                options: ["3", "6", "5", "4"],
+                answer: "6" // det = (2*3) - (1*0) = 6
+            },
+            {
+                id: 4,
+                text: "Qual das operações a seguir exige que as matrizes tenham a mesma ordem (m x n)?",
+                options: ["Multiplicação", "Cálculo de Determinante", "Adição (Soma)", "Matriz Transposta"],
+                answer: "Adição (Soma)"
+            },
+            {
+                id: 5,
+                text: "Se uma matriz tem 5 linhas e 5 colunas, ela é classificada como uma:",
+                options: ["Matriz Coluna", "Matriz Linha", "Matriz Nula", "Matriz Quadrada"],
+                answer: "Matriz Quadrada"
+            },
+            {
+                id: 6,
+                text: "O que acontece com as linhas e colunas de uma matriz ao calcular sua Transposta (At)?",
+                options: ["As linhas são somadas", "As linhas viram colunas e vice-versa", "Apenas a diagonal principal muda", "Todos os elementos são multiplicados por -1"],
+                answer: "As linhas viram colunas e vice-versa"
+            },
+            {
+                id: 7,
+                text: "Dadas A = [ 1 / 2 ] e B = [ 3 / 4 ], qual é o resultado de A + B? (Note: Matrizes Coluna)",
+                options: ["[ 3 / 8 ]", "[ 4 / 6 ]", "[ [1, 3] / [2, 4] ]", "A operação é impossível"],
+                answer: "[ 4 / 6 ]" // 1+3=4, 2+4=6
+            },
+            {
+                id: 8,
+                text: "A Regra de Sarrus é utilizada para calcular o Determinante de matrizes de qual ordem?",
+                options: ["2 x 2", "3 x 3", "4 x 4 ou maior", "1 x 1"],
+                answer: "3 x 3"
+            },
+            {
+                id: 9,
+                text: "Para que o produto de matrizes A(m x p) * B(q x n) seja possível, qual condição deve ser satisfeita?",
+                options: ["m = n", "p = q", "m = q", "p = n"],
+                answer: "p = q" // Colunas da 1ª = Linhas da 2ª
+            },
+            {
+                id: 10,
+                text: "Qual é o valor do Determinante de [ [5, 2] / [5, 2] ]?",
+                options: ["14", "10", "0", "-10"],
+                answer: "0" // det = (5*2) - (2*5) = 10 - 10 = 0
+            }
+        ];
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO (Mantida) ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                btnRead1.style.backgroundColor = done1 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                btnRead2.style.backgroundColor = done2 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! O Quiz está pronto.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-pencil-alt"></i> INICIAR QUIZ DE 10 QUESTÕES';
+                btnStartQuiz.style.backgroundColor = 'var(--secondary-green)';
+                btnStartQuiz.style.color = 'var(--text-dark)';
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-pencil-alt"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+        
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O QUIZ (Mantida) ---
+        function startQuiz() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('question-form').style.display = 'block';
+                renderQuiz(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de iniciar o Quiz.');
+            }
+        }
+
+        // --- FUNÇÃO PARA RENDERIZAR O QUIZ (Simplificada) ---
+        function renderQuiz() {
+            const quizForm = document.getElementById('question-form');
+            const submitButton = document.getElementById('btn-submit-quiz');
+            
+            let quizHTML = '';
+
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="question-card" data-question-id="${q.id}">
+                        <p class="question-text">${index + 1}. ${q.text}</p>
+                `;
+                q.options.forEach((option, optionIndex) => {
+                    const radioName = 'q' + q.id;
+                    // Codifica a opção para o 'value' (apenas substitui espaços por _)
+                    const optionValue = option.replace(/ /g, '_').trim(); 
+                    quizHTML += `
+                        <label class="option-label" for="${radioName}-${optionIndex}">
+                            <input type="radio" id="${radioName}-${optionIndex}" name="${radioName}" value="${optionValue}" required>
+                            ${option}
+                        </label>
+                    `;
+                });
+                quizHTML += `</div>`;
+            });
+
+            quizForm.innerHTML = quizHTML; 
+            if (submitButton) {
+                submitButton.style.display = 'block';
+                quizForm.appendChild(submitButton);
+            }
+
+            document.getElementById('btn-submit-quiz').addEventListener('click', submitQuiz);
+        }
+
+
+        // --- FUNÇÃO PARA SUBMETER E MOSTRAR O RESULTADO DO QUIZ (Simplificada) ---
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('question-form');
+            const questionCards = form.querySelectorAll('.question-card');
+            let allAnswered = true;
+
+            // 1. Limpa e Verifica se todas as respostas foram dadas
+            questionCards.forEach(card => {
+                const radioName = 'q' + card.getAttribute('data-question-id');
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Remove feedbacks anteriores e desativa inputs
+                card.querySelectorAll('.option-label').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-selection');
+                    el.querySelector('input').disabled = true;
+                });
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Por favor, responda a todas as 10 questões antes de finalizar o Quiz!');
+                questionCards.forEach(card => card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = false));
+                return;
+            }
+
+            // 2. Calcula a pontuação e aplica o feedback visual
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const questionData = questions.find(q => q.id === questionId);
+                
+                const selectedOption = form.querySelector(`input[name="q${questionId}"]:checked`);
+                
+                // Decodifica a resposta do usuário
+                const userAnswerValue = selectedOption.value;
+                
+                // Decodifica a resposta correta para comparação
+                const correctAnswerEncoded = questionData.answer.replace(/ /g, '_').trim();
+
+                // Compara as strings codificadas/limpas
+                const isCorrect = (userAnswerValue === correctAnswerEncoded);
+                
+                const selectedLabel = selectedOption.closest('.option-label');
+
+                if (isCorrect) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                } else {
+                    selectedLabel.classList.add('incorrect-selection');
+                }
+
+                // MOSTRA A RESPOSTA CORRETA (destaca em verde a label correspondente)
+                card.querySelectorAll('.option-label').forEach(label => {
+                    const input = label.querySelector('input');
+                    const value = input.value.replace(/ /g, '_').trim();
+
+                    if (value === correctAnswerEncoded) {
+                        if (!selectedLabel.classList.contains('incorrect-selection') || selectedLabel !== label) {
+                           label.classList.add('correct-answer');
+                        }
+                    }
+                });
+            });
+
+            // 3. Esconde o botão de finalizar e exibe os resultados
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+            renderQuizResults(score);
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO DE RESULTADOS (Mantida) ---
+        function renderQuizResults(score) {
+            const totalQuestions = questions.length;
+            
+            const quizForm = document.getElementById('question-form');
+            const quizHTMLFeedback = quizForm.innerHTML;
+            quizForm.style.display = 'none'; 
+
+            const resultHTML = `
+                <div class="results-container">
+                    <h2>🎉 Resultado do Quiz de Matrizes e Determinantes!</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px;">
+                        <p style="margin-bottom: 10px;">Sua pontuação final:</p>
+                        <p style="font-size: 2em; font-weight: bold; color: ${score >= 7 ? 'var(--secondary-green)' : 'var(--incorrect-red)'};">
+                            ${score} de ${totalQuestions} Questões
+                        </p>
+                        <p style="font-weight: bold; margin-top: 10px;">
+                            ${score >= 7 ? 'Ótimo! Você domina a organização e os cálculos básicos de Matrizes.' : 'Revise as condições para as operações, principalmente a Multiplicação, e o cálculo de Determinantes.'}
+                        </p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Revisão do Quiz (Acerto e Erro):</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.9em; color: var(--text-dark);">
+                        <span style="color: var(--correct-green); font-weight: bold;">Verde:</span> Resposta Correta.
+                        <br>
+                        <span style="color: var(--incorrect-red); font-weight: bold;">Vermelho Riscado:</span> Sua Resposta Incorreta.
+                    </p>
+
+                    <div id="quiz-feedback-area">${quizHTMLFeedback}</div> 
+                    
+                    <a href="../matematica/matematica.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar ao Menu de Atividades
+                    </a>
+                </div>
+            `;
+            
+            document.querySelector('.container').innerHTML = resultHTML; 
+        }
+
+
+        // --- INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS (Mantidos) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Quiz
+            document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

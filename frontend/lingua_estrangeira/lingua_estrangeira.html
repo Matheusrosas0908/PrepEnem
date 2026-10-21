@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Módulo de Língua Estrangeira</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        :root {
+            --primary-blue: #4169E1;
+            --secondary-green: #00CC99;
+            --enem-yellow: #FBCB0A;
+            --text-dark: #333;
+            --text-light: #fff;
+            --locked-gray: #ccc;
+            --lingua-orange: #FF6B35;
+        }
+        /* Page-specific overrides */
+        .module-header-area {
+            background-color: #f8f8f8;
+            padding: 15px 20px;
+        }
+        .module-header-area a {
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .module-header-area a i {
+            margin-right: 8px;
+            color: var(--primary-blue);
+        }
+        #module-title { font-size: 20px; font-weight: bold; }
+        #module-subtitle { font-size: 14px; color: #666; margin-top: 5px; }
+        .title-line { display: flex; align-items: baseline; }
+
+        #btn-next-module {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+            margin-top: 15px;
+            background-color: var(--lingua-orange);
+            color: var(--text-light);
+            width: auto;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #btn-next-module:hover { background-color: #e55a2b; }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .main-content { grid-column: 1 / -1; }
+        .side-content { display: none; }
+
+        .video-player-box {
+            background-color: #333;
+            width: 100%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .video-player-box i { font-size: 50px; color: #999; }
+        #lesson-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .info-detail { font-size: 14px; color: #666; margin-right: 10px; }
+        #lesson-title { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+        .lesson-actions { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex-grow: 1;
+            text-align: center;
+        }
+        #btn-restart { background-color: var(--primary-blue); color: var(--text-light); }
+        #btn-restart:hover { background-color: var(--primary-blue-dark); }
+        #btn-complete { background-color: var(--secondary-green); color: var(--text-dark); }
+        #btn-complete:hover { background-color: #00b386; }
+        #btn-complete:disabled { background-color: var(--locked-gray); cursor: not-allowed; }
+
+        .module-content-list h2 { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--text-light);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        .lesson-item.locked { opacity: 0.6; cursor: not-allowed; }
+        .lesson-item.current { border: 2px solid var(--lingua-orange); }
+
+        @media (min-width: 768px) {
+            .content-layout { grid-template-columns: 2fr 1fr; }
+            .main-content { grid-column: 1 / 2; padding-left: 40px; }
+            .side-content { grid-column: 2 / 3; display: block; padding-right: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a>
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span>
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+        <div>
+            <i class="fas fa-bell" style="color: var(--text-light); margin-right: 15px;"></i>
+            <i class="fas fa-history" style="color: var(--text-light);"></i>
+        </div>
+    </header>
+
+    <div class="module-header-area">
+        <a href="javascript:void(0)" id="btn-back-module"><i class="fas fa-arrow-left"></i> Voltar</a>
+        <div class="title-line">
+            <h2 id="module-title">Língua Estrangeira (Inglês e Espanhol)</h2>
+            <p id="module-subtitle">Aula <span id="current-lesson-number">1</span>: <span id="current-lesson-name-subtitle">Vocabulary Básico</span></p>
+        </div>
+        <button id="btn-next-module" style="display: none;">
+            <i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo
+        </button>
+    </div>
+
+    <main class="container">
+        <div class="content-layout">
+            <section class="main-content">
+                <div class="video-player-box" id="video-player">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div id="lesson-info">
+                    <h3 id="lesson-title">Carregando Aula...</h3>
+                    <div class="info-detail">
+                        <span id="lesson-duration">Duração: -</span>
+                    </div>
+                </div>
+                <div class="lesson-actions">
+                    <button class="btn-action" id="btn-restart">Reiniciar</button>
+                    <button class="btn-action" id="btn-complete">Marcar como concluído</button>
+                </div>
+                <div class="module-content-list">
+                    <h2>Conteúdo do Módulo</h2>
+                    <div class="lesson-item" id="lesson-item-1" data-lesson-id="1">
+                        <i class="fas fa-play-circle lesson-icon lesson-status-current" id="status-1"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-1">Vocabulary Básico</span>
+                        </div>
+                        <i class="fas fa-pencil-alt lesson-item-actions"></i>
+                    </div>
+                    <div class="lesson-item locked" id="lesson-item-2" data-lesson-id="2">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-2"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-2">Gramática Inglês</span>
+                        </div>
+                        <i class="fas fa-pencil-alt lesson-item-actions"></i>
+                    </div>
+                    <div class="lesson-item locked" id="lesson-item-3" data-lesson-id="3">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-3"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-3">Leitura em Inglês</span>
+                        </div>
+                        <i class="fas fa-pencil-alt lesson-item-actions"></i>
+                    </div>
+                    <div class="lesson-item locked" id="lesson-item-4" data-lesson-id="4">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-4"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-4">Vocabulary Espanhol</span>
+                        </div>
+                        <i class="fas fa-pencil-alt lesson-item-actions"></i>
+                    </div>
+                    <div class="lesson-item locked" id="lesson-item-5" data-lesson-id="5">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-5"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-5">Gramática Espanhol</span>
+                        </div>
+                        <i class="fas fa-pencil-alt lesson-item-actions"></i>
+                    </div>
+                </div>
+            </section>
+            <aside class="side-content">
+                <h2>Dicas de Saúde</h2>
+                <div class="tip-card-side" id="tip-sono-side">
+                    <h3>Sono</h3>
+                    <p>Durma 7-8 horas por noite para melhor memorização.</p>
+                </div>
+                <div class="tip-card-side" id="tip-organizacao-side">
+                    <h3>Organização</h3>
+                    <p>Crie um cronograma de estudos com pausas regulares.</p>
+                </div>
+                <div id="message-card">
+                    <i class="fas fa-map-pin"></i>
+                    <p>Transforme seus sonhos em realidade!</p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        const MODULE_NAME = 'LinguaEstrangeira';
+        const TOTAL_LESSONS = 5;
+
+        let lessonState = JSON.parse(localStorage.getItem(`lessonProgress_${MODULE_NAME}`)) || {
+            1: 'current', 2: 'locked', 3: 'locked', 4: 'locked', 5: 'locked'
+        };
+
+        let currentLessonId = getCurrentLessonId();
+
+        const lessonData = {
+            1: { title: "Vocabulary Básico", duration: "40 min" },
+            2: { title: "Gramática Inglês", duration: "55 min" },
+            3: { title: "Leitura em Inglês", duration: "50 min" },
+            4: { title: "Vocabulary Espanhol", duration: "35 min" },
+            5: { title: "Gramática Espanhol", duration: "45 min" },
+        };
+
+        const accentColor = '--lingua-orange';
+
+        function getCurrentLessonId() {
+            const saved = localStorage.getItem(`currentLessonId_${MODULE_NAME}`);
+            if (lessonState[TOTAL_LESSONS] === 'completed') return TOTAL_LESSONS;
+            return saved ? parseInt(saved) : 1;
+        }
+
+        function getCompletedCount() {
+            return Object.values(lessonState).filter(s => s === 'completed').length;
+        }
+
+        function checkModuleCompletion() {
+            const completed = getCompletedCount();
+            const btn = document.getElementById('btn-next-module');
+            if (completed === TOTAL_LESSONS) {
+                btn.style.display = 'block';
+                btn.innerHTML = `<i class="fas fa-arrow-right"></i> Módulo Concluído!`;
+                btn.onclick = () => alert('Parabéns! Módulo concluído.');
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function updateCurrentLessonUI(lessonId) {
+            const data = lessonData[lessonId];
+            document.getElementById('lesson-title').innerText = data.title;
+            document.getElementById('lesson-duration').innerText = `Duração: ${data.duration}`;
+            document.getElementById('current-lesson-number').innerText = lessonId;
+            document.getElementById('current-lesson-name-subtitle').innerText = data.title;
+
+            const btnComplete = document.getElementById('btn-complete');
+            if (lessonState[lessonId] === 'completed') {
+                btnComplete.innerText = 'Concluído';
+                btnComplete.disabled = true;
+            } else {
+                btnComplete.innerText = 'Marcar como concluído';
+                btnComplete.disabled = false;
+            }
+
+            currentLessonId = lessonId;
+            localStorage.setItem(`currentLessonId_${MODULE_NAME}`, lessonId);
+
+            document.getElementById('video-player').innerHTML = `
+                <i class="fas fa-video" style="font-size: 50px; color: #999;"></i>
+                <p style="color: #ccc; margin-top: 10px;">Vídeo Aula: ${data.title}</p>
+            `;
+            checkModuleCompletion();
+        }
+
+        function loadLessonStatus() {
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('current', 'locked');
+                item.style.border = 'none';
+            });
+            for (let id = 1; id <= TOTAL_LESSONS; id++) {
+                const item = document.getElementById(`lesson-item-${id}`);
+                const icon = document.getElementById(`status-${id}`);
+                const status = lessonState[id] || 'locked';
+                icon.className = 'lesson-icon';
+                if (status === 'completed') {
+                    item.classList.remove('locked');
+                    icon.classList.add('fas', 'fa-check-circle', 'lesson-status-completed');
+                } else if (status === 'locked') {
+                    item.classList.add('locked');
+                    icon.classList.add('fas', 'fa-lock', 'lesson-status-locked');
+                } else if (status === 'current') {
+                    item.classList.remove('locked');
+                    icon.classList.add('fas', 'fa-play-circle', 'lesson-status-current');
+                    item.classList.add('current');
+                    item.style.border = `2px solid var(${accentColor})`;
+                    currentLessonId = id;
+                }
+            }
+            updateCurrentLessonUI(currentLessonId);
+        }
+
+        function handleLessonClick(lessonId) {
+            const id = parseInt(lessonId);
+            if (lessonState[id] === 'locked') {
+                alert('Você precisa concluir o tópico anterior para desbloquear esta aula!');
+                return;
+            }
+            if (id === currentLessonId) return;
+            if (lessonState[currentLessonId] === 'current') {
+                lessonState[currentLessonId] = 'completed';
+            }
+            if (lessonState[id] !== 'completed') {
+                lessonState[id] = 'current';
+            }
+            localStorage.setItem(`lessonProgress_${MODULE_NAME}`, JSON.stringify(lessonState));
+            currentLessonId = id;
+            loadLessonStatus();
+        }
+
+        function handleCompleteButton() {
+            const nextId = currentLessonId + 1;
+            lessonState[currentLessonId] = 'completed';
+            if (lessonState[nextId]) {
+                lessonState[nextId] = 'current';
+            }
+            localStorage.setItem(`lessonProgress_${MODULE_NAME}`, JSON.stringify(lessonState));
+            if (lessonState[nextId]) {
+                handleLessonClick(nextId);
+            } else {
+                alert('Parabéns! Você completou todas as aulas deste Módulo.');
+                document.getElementById('btn-complete').disabled = true;
+                document.getElementById('btn-complete').innerText = 'Concluído';
+                loadLessonStatus();
+            }
+        }
+
+        function handleExerciseClick(lessonId) {
+            event.stopPropagation();
+            const id = parseInt(lessonId);
+            if (lessonState[id] === 'completed') {
+                alert(`Redirecionando para os Exercícios da Aula ${id}: ${lessonData[id].title}`);
+            } else if (lessonState[id] === 'current') {
+                alert('Você precisa MARCAR ESTA AULA COMO CONCLUÍDA para acessar os exercícios.');
+            } else {
+                alert('Aula Bloqueada! Conclua os tópicos anteriores.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLessonStatus();
+            document.getElementById('btn-complete').addEventListener('click', handleCompleteButton);
+            document.getElementById('btn-restart').addEventListener('click', () => {
+                alert(`Reiniciando aula: ${lessonData[currentLessonId].title}`);
+            });
+        });
+    </script>
+</body>
+</html>

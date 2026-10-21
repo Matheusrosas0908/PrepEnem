@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Biologia: Ecologia e Cadeias Alimentares</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #008080; /* Azul-petróleo (Foco em Biologia/Natureza) */
+            --secondary-green: #4CAF50; /* Verde de destaque (Ecologia) */
+            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E6F9F0; /* Fundo verde-claro suave para a questão */
+            --correct-green: #00CC99;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar e Header (Ajustando cores para o novo primary-blue) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Alterado) */
+        .module-header-exercise { 
+            background-color: var(--secondary-green); 
+            color: var(--text-dark); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--text-dark); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--secondary-green); /* Destaque verde para Ecologia */
+            background-color: #f5fff5; /* Fundo mais claro, ligado à natureza */
+        }
+        .content-section h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        /* (Outros estilos internos mantidos) */
+        
+        /* Estilo dos botões de leitura */
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+        }
+        
+        /* --- ESTILO: QUIZ E FEEDBACK --- */
+        #question-form { 
+            display: none; /* Escondido por padrão */
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: var(--question-bg);
+        }
+
+        .question-card p.question-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .option-label {
+            display: block;
+            background-color: #fff;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        /* Estilos de feedback (visíveis após submissão) */
+        .correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background-color: #e6ffed !important;
+            font-weight: bold;
+        }
+
+        .incorrect-selection {
+            border: 2px solid var(--incorrect-red) !important;
+            background-color: #ffe6e6 !important;
+            text-decoration: line-through; /* Risca a resposta errada marcada */
+        }
+
+        /* Novo estilo para a tela de resultados/resumo do Quiz */
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer (Mantido) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-footer { font-weight: bold; font-size: 22px; color: var(--primary-blue); }
+        .help-section { text-align: right; }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        /* Media Query para layout desktop */
+        @media (min-width: 768px) {
+            .study-progress-bar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Biologia - Módulo 04: Ecologia e Fluxo de Energia</span>
+        <a href="../cienciasdanatureza/natureza.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>🌳 Conteúdo Aprofundado: Ecologia (Foco ENEM)</h2>
+            <p>Nesta seção, você estudará as bases da **Ecologia**, focando na organização dos seres vivos e no essencial **Fluxo de Energia** nas cadeias alimentares. Ecologia é o tema mais cobrado em Biologia no ENEM.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o **Quiz de 10 Questões** será desbloqueado.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Níveis de Organização e Conceitos Fundamentais</h3>
+                <p>A Ecologia estuda as relações entre os seres vivos e o meio. É fundamental conhecer a hierarquia dos níveis de organização biológica.</p>
+                
+                <h4>Principais Níveis</h4>
+                <ul>
+                    <li><span class="key-term">População:</span> Conjunto de indivíduos da mesma espécie.</li>
+                    <li><span class="key-term">Comunidade (Biocenose):</span> Conjunto de populações diferentes que interagem.</li>
+                    <li><span class="key-term">Ecossistema:</span> Conjunto formado pela comunidade e pelos fatores abióticos (meio físico).</li>
+                    <li><span class="key-term">Biosfera:</span> Conjunto de todos os ecossistemas do planeta.</li>
+                </ul>
+                
+                <p class="key-term">Conceitos Chave:</p>
+                <p>O **Habitat** é o local onde a espécie vive, enquanto o **Nicho Ecológico** é o papel funcional que ela desempenha no ecossistema (sua "profissão").</p>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Cadeias Alimentares, Níveis Tróficos e Fluxo de Energia</h3>
+                <p>As cadeias alimentares demonstram o caminho da energia e da matéria em um ecossistema. O ENEM sempre cobra a compreensão de seus componentes.</p>
+                
+                <h4>Níveis Tróficos</h4>
+                <ul>
+                    <li><span class="key-term">Produtores:</span> Autótrofos (plantas, algas). Capturam energia solar e a convertem em matéria orgânica. (1º Nível Trófico)</li>
+                    <li><span class="key-term">Consumidores Primários:</span> Herbívoros. Se alimentam dos produtores. (2º Nível Trófico)</li>
+                    <li><span class="key-term">Consumidores Secundários:</span> Carnívoros que se alimentam de herbívoros. (3º Nível Trófico)</li>
+                    <li><span class="key-term">Decompositores:</span> Fungos e bactérias. Reciclam a matéria orgânica em inorgânica (nutrientes). Não fazem parte dos níveis tróficos de transferência de energia.</li>
+                </ul>
+
+                <p class="key-term">Fluxo de Energia:</p>
+                <p>O fluxo de energia é **unidirecional** (entra no ecossistema pelo Sol) e **decaente** (cerca de 90% da energia é perdida em cada nível trófico, principalmente como calor, sobrando apenas 10% para o nível seguinte). Isso explica por que as cadeias são curtas.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nível Trófico</th>
+                            <th>Exemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1º Produtor</strong></td>
+                            <td>Capim</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2º Cons. Primário</strong></td>
+                            <td>Vaca</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3º Cons. Secundário</strong></td>
+                            <td>Homem (carnívoro)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-leaf"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+
+        <form id="question-form" style="display: none;">
+            <button type="button" id="btn-submit-quiz" class="btn-next" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--secondary-green); color: var(--text-dark); margin-top: 30px; width: 100%;">
+                <i class="fas fa-check-circle"></i> FINALIZAR QUIZ E VER RESULTADOS
+            </button>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO E DADOS ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+
+        // Array de 10 Questões de Ecologia (NOVAS QUESTÕES)
+        const questions = [
+            {
+                id: 1,
+                text: "O que é o **Nicho Ecológico** de uma espécie?",
+                options: ["O local físico onde ela vive (habitat).", "O papel funcional que ela desempenha no ecossistema.", "O conjunto de indivíduos da mesma espécie.", "A soma das populações de uma região."],
+                answer: "O papel funcional que ela desempenha no ecossistema."
+            },
+            {
+                id: 2,
+                text: "Em uma cadeia alimentar (Capim -> Coelho -> Cobra -> Gavião), qual organismo ocupa o **3º Nível Trófico**?",
+                options: ["Capim", "Coelho", "Cobra", "Gavião"],
+                answer: "Cobra" // Capim (P), Coelho (C1), Cobra (C2/3º NT)
+            },
+            {
+                id: 3,
+                text: "Qual nível de organização ecológica é formado apenas por fatores **abióticos** e **bióticos** em interação?",
+                options: ["População", "Comunidade", "Ecossistema", "Biosfera"],
+                answer: "Ecossistema"
+            },
+            {
+                id: 4,
+                text: "Qual é a principal forma de perda de energia entre os níveis tróficos?",
+                options: ["Por excreção de resíduos.", "Como calor metabólico.", "Pela atividade dos decompositores.", "Pela ingestão de água."],
+                answer: "Como calor metabólico."
+            },
+            {
+                id: 5,
+                text: "Se uma população de coelhos tem o número de indivíduos aumentado, isso representa um estudo a nível de:",
+                options: ["Comunidade", "Ecossistema", "Biosfera", "População"],
+                answer: "População"
+            },
+            {
+                id: 6,
+                text: "O que são organismos **produtores** em uma cadeia alimentar?",
+                options: ["Consumidores de primeira ordem.", "Organismos heterótrofos.", "Organismos que realizam fotossíntese ou quimiossíntese.", "Fungos e bactérias."],
+                answer: "Organismos que realizam fotossíntese ou quimiossíntese."
+            },
+            {
+                id: 7,
+                text: "O que a **Biomagnificação** (ou Bioacumulação) representa nas cadeias alimentares?",
+                options: ["O aumento da biomassa em níveis tróficos superiores.", "O acúmulo de energia nos produtores.", "O aumento da concentração de poluentes não-biodegradáveis ao longo da cadeia.", "A perda de energia de 90% em cada nível."],
+                answer: "O aumento da concentração de poluentes não-biodegradáveis ao longo da cadeia."
+            },
+            {
+                id: 8,
+                text: "Por que o fluxo de energia em um ecossistema é classificado como **unidirecional**?",
+                options: ["Porque a energia é ciclada pelos decompositores.", "Porque a energia entra no sistema e é gradualmente dissipada como calor.", "Porque os produtores não podem se alimentar dos consumidores.", "Porque a luz solar não atinge o fundo do oceano."],
+                answer: "Porque a energia entra no sistema e é gradualmente dissipada como calor."
+            },
+            {
+                id: 9,
+                text: "Os fungos e bactérias, que são essenciais para a reciclagem de nutrientes, são classificados como:",
+                options: ["Consumidores primários", "Produtores", "Decompositores", "Herbívoro"],
+                answer: "Decompositores"
+            },
+            {
+                id: 10,
+                text: "No contexto da Ecologia, o termo **Comunidade** refere-se a:",
+                options: ["Uma única espécie em uma área.", "Um conjunto de fatores abióticos.", "Populações de espécies diferentes interagindo.", "Uma população e seu meio físico."],
+                answer: "Populações de espécies diferentes interagindo."
+            }
+        ];
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            // Lógica de desativação e estilo dos botões de leitura
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                // Ajuste de cores para o novo tema
+                btnRead1.style.backgroundColor = done1 ? 'var(--correct-green)' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                // Ajuste de cores para o novo tema
+                btnRead2.style.backgroundColor = done2 ? 'var(--correct-green)' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            // Atualiza a barra de progresso e o botão principal (Iniciar Quiz)
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! O Quiz está pronto.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-leaf"></i> INICIAR QUIZ DE 10 QUESTÕES';
+                btnStartQuiz.style.backgroundColor = 'var(--secondary-green)';
+                btnStartQuiz.style.color = 'var(--text-dark)';
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-leaf"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+        
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O QUIZ ---
+        function startQuiz() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('question-form').style.display = 'block';
+                renderQuiz(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de iniciar o Quiz.');
+            }
+        }
+
+        // --- FUNÇÃO PARA RENDERIZAR O QUIZ ---
+        function renderQuiz() {
+            const quizForm = document.getElementById('question-form');
+            // Remove o botão de submissão temporariamente para reconstruir o quiz
+            const submitButton = document.getElementById('btn-submit-quiz');
+            
+            let quizHTML = '';
+
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="question-card" data-question-id="${q.id}">
+                        <p class="question-text">${index + 1}. ${q.text}</p>
+                `;
+                q.options.forEach((option, optionIndex) => {
+                    const radioName = 'q' + q.id;
+                    // Codifica a opção para o 'value' sem espaços ou caracteres problemáticos
+                    const optionValue = option.replace(/ /g, '_').replace(/[^\w-]/g, '');
+                    quizHTML += `
+                        <label class="option-label" for="${radioName}-${optionIndex}">
+                            <input type="radio" id="${radioName}-${optionIndex}" name="${radioName}" value="${optionValue}" required>
+                            ${option}
+                        </label>
+                    `;
+                });
+                quizHTML += `</div>`;
+            });
+
+            // Insere as questões e recoloca o botão de submissão
+            quizForm.innerHTML = quizHTML; 
+            if (submitButton) {
+                submitButton.style.display = 'block';
+                quizForm.appendChild(submitButton);
+            }
+
+            // Adiciona o evento de submissão
+            document.getElementById('btn-submit-quiz').addEventListener('click', submitQuiz);
+        }
+
+
+        // --- FUNÇÃO PARA SUBMETER E MOSTRAR O RESULTADO DO QUIZ ---
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('question-form');
+            const questionCards = form.querySelectorAll('.question-card');
+            let allAnswered = true;
+
+            // 1. Limpa e Verifica se todas as respostas foram dadas
+            questionCards.forEach(card => {
+                const radioName = 'q' + card.getAttribute('data-question-id');
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Remove feedbacks anteriores e desativa inputs
+                card.querySelectorAll('.option-label').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-selection');
+                    el.querySelector('input').disabled = true;
+                });
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Por favor, responda a todas as 10 questões antes de finalizar o Quiz!');
+                questionCards.forEach(card => card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = false));
+                return;
+            }
+
+            // 2. Calcula a pontuação e aplica o feedback visual
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const questionData = questions.find(q => q.id === questionId);
+                const radioName = 'q' + questionId;
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Decodifica a resposta do usuário
+                const userAnswerValue = selectedOption.value;
+                const userAnswer = userAnswerValue.replace(/_/g, ' ').replace(/[^\w\s-]/g, ''); // Ajuste para remover caracteres problemáticos
+
+                // Pega a resposta correta e normaliza (remove espaços e caracteres para comparação com o value)
+                const correctAnswerValue = questionData.answer.replace(/ /g, '_').replace(/[^\w-]/g, '');
+                
+                // Normaliza a resposta real do usuário para comparação
+                const isCorrect = (userAnswerValue === correctAnswerValue);
+                
+                // Aplica feedback ao card/opção selecionada
+                const selectedLabel = selectedOption.closest('.option-label');
+
+                if (isCorrect) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                } else {
+                    // Marca a resposta errada do aluno
+                    selectedLabel.classList.add('incorrect-selection');
+                }
+
+                // MOSTRA A RESPOSTA CORRETA (destaca em verde a label correspondente)
+                card.querySelectorAll('.option-label').forEach(label => {
+                    const input = label.querySelector('input');
+                    const value = input.value;
+
+                    // Verifica se a label corresponde à resposta correta
+                    if (value === correctAnswerValue) {
+                        // Aplica o destaque verde, mas somente se não for a opção marcada erroneamente
+                        if (!selectedLabel.classList.contains('incorrect-selection') || selectedLabel !== label) {
+                           label.classList.add('correct-answer');
+                        }
+                    }
+                });
+            });
+
+            // 3. Esconde o botão de finalizar e exibe os resultados
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+            renderQuizResults(score);
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO DE RESULTADOS ---
+        function renderQuizResults(score) {
+            const totalQuestions = questions.length;
+            
+            // Pega o HTML do quiz corrigido
+            const quizForm = document.getElementById('question-form');
+            const quizHTMLFeedback = quizForm.innerHTML;
+            quizForm.style.display = 'none'; 
+
+            const resultHTML = `
+                <div class="results-container">
+                    <h2>🎉 Resultado do Quiz de Ecologia!</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px;">
+                        <p style="margin-bottom: 10px;">Sua pontuação final:</p>
+                        <p style="font-size: 2em; font-weight: bold; color: ${score >= 7 ? 'var(--secondary-green)' : 'var(--incorrect-red)'};">
+                            ${score} de ${totalQuestions} Questões
+                        </p>
+                        <p style="font-weight: bold; margin-top: 10px;">
+                            ${score >= 7 ? 'Parabéns! Você entende as bases do Fluxo de Energia.' : 'Revise os conceitos de Níveis Tróficos e Fluxo de Energia.'}
+                        </p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Revisão do Quiz (Acerto e Erro):</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.9em; color: var(--text-dark);">
+                        <span style="color: var(--correct-green); font-weight: bold;">Verde:</span> Resposta Correta.
+                        <br>
+                        <span style="color: var(--incorrect-red); font-weight: bold;">Vermelho Riscado:</span> Sua Resposta Incorreta.
+                    </p>
+
+                    <div id="quiz-feedback-area">${quizHTMLFeedback}</div> 
+                    
+                    <a href="../cienciasdanatureza/natureza.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar ao Menu de Atividades de Natureza
+                    </a>
+                </div>
+            `;
+            
+            document.querySelector('.container').innerHTML = resultHTML; 
+        }
+
+
+        // --- INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral (Mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Quiz (agora chama startQuiz)
+            document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

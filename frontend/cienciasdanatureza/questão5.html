@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Qualidade de Vida, Saúde e Meio Ambiente</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais (Ajustados para Saúde/Bem-Estar) --- */
+        :root {
+            --primary-blue: #008080; /* Azul-petróleo (Calma, Saúde) */
+            --secondary-green: #4CAF50; /* Verde de destaque (Vitalidade, Natureza) */
+            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E6F9F0; /* Fundo verde-claro suave para a questão */
+            --correct-green: #00CC99;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Estilos de layout e navegação (Cores ajustadas para o novo primary-blue) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Título Atualizado) */
+        .module-header-exercise { 
+            background-color: var(--secondary-green); /* Destaque em verde */
+            color: var(--text-dark); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--text-dark); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--secondary-green); /* Destaque em verde */
+            background-color: #f5fff5;
+        }
+        .content-section h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: #FF5722; /* Laranja para Destaque de Termos Importantes */
+        }
+
+        /* Estilo dos botões de leitura */
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+        }
+        
+        /* Estilos do Quiz e Feedback (Cores ajustadas) */
+        #question-form { 
+            display: none;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: var(--question-bg);
+        }
+
+        .question-card p.question-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .option-label {
+            display: block;
+            background-color: #fff;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background-color: #e6ffed !important;
+            font-weight: bold;
+        }
+
+        .incorrect-selection {
+            border: 2px solid var(--incorrect-red) !important;
+            background-color: #ffe6e6 !important;
+            text-decoration: line-through;
+        }
+
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer (Mantido) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Media Query (Mantido) */
+        @media (min-width: 768px) {
+            .study-progress-bar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Ciências da Natureza e Humanas: Qualidade de Vida e Sustentabilidade</span>
+        <a href="../menu/menu.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>💚 Conteúdo Aprofundado: Qualidade de Vida (Foco ENEM)</h2>
+            <p>O conceito de **Qualidade de Vida** abrange aspectos físicos, mentais, sociais e ambientais. No ENEM, este tema é cobrado na Biologia, Educação Física e Geografia, focando em Saúde Pública, Saneamento e Sustentabilidade.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o **Quiz de 10 Questões** será desbloqueado.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Saúde Coletiva e Estilo de Vida</h3>
+                <p>A **Saúde** é definida pela OMS como um estado de completo bem-estar físico, mental e social, e não apenas a ausência de doença. No contexto do ENEM, a prevenção é crucial.</p>
+                
+                <h4>Pilares da Saúde e Bem-Estar</h4>
+                <ul>
+                    <li>**Atividade Física:** Essencial para a prevenção de doenças crônicas não transmissíveis (DCNTs), como diabetes e hipertensão.</li>
+                    <li>**Alimentação Balanceada:** Redução do consumo de alimentos ultraprocessados e aumento de frutas, vegetais e fibras.</li>
+                    <li>**Saúde Mental:** O manejo do estresse, sono adequado e lazer são fatores determinantes.</li>
+                </ul>
+
+                <p class="key-term">IMPORTANTE:</p>
+                <p>O **Sedentarismo** e a **Obesidade** são temas recorrentes, sendo a inatividade física um dos maiores fatores de risco evitáveis para doenças cardiovasculares.</p>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Saneamento Básico e Sustentabilidade</h3>
+                <p>A qualidade de vida de uma população está diretamente ligada ao acesso a serviços básicos de infraestrutura e à qualidade do ambiente.</p>
+                
+                <h4>Componentes do Saneamento Básico (Lei 14.026/2020)</h4>
+                <ul>
+                    <li>**Abastecimento de água potável.**</li>
+                    <li>**Esgotamento sanitário** (coleta e tratamento de esgoto).</li>
+                    <li>**Limpeza urbana e manejo de resíduos sólidos.**</li>
+                    <li>**Drenagem e manejo das águas pluviais.**</li>
+                </ul>
+
+                <p class="key-term">Relação com a Saúde:</p>
+                <p>A falta de **Saneamento Básico** está diretamente ligada à alta incidência de **doenças de veiculação hídrica** (como cólera, febre tifoide, verminoses), impactando negativamente os indicadores sociais e a qualidade de vida. Além disso, a **Gestão de Resíduos Sólidos** é vital para evitar a contaminação do solo e da água.</p>
+
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-heartbeat"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+        <form id="question-form" style="display: none;">
+            <button type="button" id="btn-submit-quiz" class="btn-next" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--secondary-green); color: var(--text-dark); margin-top: 30px; width: 100%;">
+                <i class="fas fa-check-circle"></i> FINALIZAR QUIZ E VER RESULTADOS
+            </button>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO E DADOS ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+
+        // Array de 10 Questões de Qualidade de Vida (NOVAS QUESTÕES)
+        const questions = [
+            {
+                id: 1,
+                text: "Segundo a Organização Mundial da Saúde (OMS), o que é **Saúde**?",
+                options: ["A ausência de doenças e enfermidades.", "O bem-estar físico e mental apenas.", "Um estado de completo bem-estar físico, mental e social.", "A capacidade de realizar exercícios físicos de alta intensidade."],
+                answer: "Um estado de completo bem-estar físico, mental e social."
+            },
+            {
+                id: 2,
+                text: "Qual dos seguintes não é um pilar do **Saneamento Básico** no Brasil?",
+                options: ["Abastecimento de água potável", "Esgotamento sanitário", "Transporte público de qualidade", "Manejo de resíduos sólidos"],
+                answer: "Transporte público de qualidade"
+            },
+            {
+                id: 3,
+                text: "Qual é a principal consequência da falta de esgotamento sanitário adequado em áreas urbanas?",
+                options: ["Aumento da poluição atmosférica.", "Diminuição do custo da água.", "Aumento de doenças de veiculação hídrica.", "Melhora na drenagem de águas pluviais."],
+                answer: "Aumento de doenças de veiculação hídrica."
+            },
+            {
+                id: 4,
+                text: "O **Sedentarismo** é considerado um fator de risco primário para:",
+                options: ["Doenças infecciosas como a dengue.", "Câncer de pele.", "Doenças Crônicas Não Transmissíveis (DCNTs), como hipertensão.", "Acidentes de trabalho."],
+                answer: "Doenças Crônicas Não Transmissíveis (DCNTs), como hipertensão."
+            },
+            {
+                id: 5,
+                text: "O conceito de **Sustentabilidade** envolve a satisfação das necessidades atuais sem comprometer a capacidade das futuras gerações de satisfazerem as suas. Esse conceito está ligado a qual esfera?",
+                options: ["Apenas a esfera econômica.", "Apenas a esfera ambiental.", "Esferas ambiental, social e econômica.", "Apenas a esfera política."],
+                answer: "Esferas ambiental, social e econômica."
+            },
+            {
+                id: 6,
+                text: "Qual é o termo utilizado para o conjunto de intervenções que visam o controle de fatores ambientais que podem afetar a saúde humana?",
+                options: ["Vigilância Sanitária", "Saneamento Ambiental", "Educação Sanitária", "Vigilância Epidemiológica"],
+                answer: "Saneamento Ambiental"
+            },
+            {
+                id: 7,
+                text: "Uma dieta rica em **alimentos ultraprocessados** é criticada por qual motivo principal?",
+                options: ["Alto custo de produção.", "Baixo teor de sódio e açúcares.", "Alto teor de aditivos, gorduras e calorias vazias.", "Excesso de fibras e vitaminas."],
+                answer: "Alto teor de aditivos, gorduras e calorias vazias."
+            },
+            {
+                id: 8,
+                text: "A prática regular de exercícios físicos, além dos benefícios cardiovasculares, contribui diretamente para a saúde mental, atuando na:",
+                options: ["Redução da inteligência motora.", "Diminuição dos níveis de estresse e ansiedade.", "Aumento da pressão arterial.", "Exclusiva prevenção de lesões ósseas."],
+                answer: "Diminuição dos níveis de estresse e ansiedade."
+            },
+            {
+                id: 9,
+                text: "Qual a importância do tratamento da água e do esgoto para a qualidade de vida nas grandes cidades?",
+                options: ["Melhorar a estética dos rios.", "Reduzir a necessidade de drenagem pluvial.", "Prevenir a disseminação de epidemias e proteger o meio ambiente.", "Diminuir o volume de resíduos sólidos."],
+                answer: "Prevenir a disseminação de epidemias e proteger o meio ambiente."
+            },
+            {
+                id: 10,
+                text: "O que significa o termo 'doença crônica não transmissível' (DCNT) e qual a sua relação com a qualidade de vida?",
+                options: ["Doenças causadas por vírus e bactérias; baixa relação.", "Doenças de longa duração, como diabetes e hipertensão; alta relação com o estilo de vida.", "Doenças transmitidas pela água; nenhuma relação.", "Doenças geneticamente hereditárias; pouca relação com o estilo de vida."],
+                answer: "Doenças de longa duração, como diabetes e hipertensão; alta relação com o estilo de vida."
+            }
+        ];
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO (Mantida) ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                btnRead1.style.backgroundColor = done1 ? 'var(--correct-green)' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                btnRead2.style.backgroundColor = done2 ? 'var(--correct-green)' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! O Quiz está pronto.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-heartbeat"></i> INICIAR QUIZ DE 10 QUESTÕES';
+                btnStartQuiz.style.backgroundColor = 'var(--secondary-green)';
+                btnStartQuiz.style.color = 'var(--text-dark)';
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-heartbeat"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+        
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O QUIZ (Mantida) ---
+        function startQuiz() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('question-form').style.display = 'block';
+                renderQuiz(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de iniciar o Quiz.');
+            }
+        }
+
+        // --- FUNÇÃO PARA RENDERIZAR O QUIZ (Mantida com ajustes de codificação) ---
+        function renderQuiz() {
+            const quizForm = document.getElementById('question-form');
+            const submitButton = document.getElementById('btn-submit-quiz');
+            
+            let quizHTML = '';
+
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="question-card" data-question-id="${q.id}">
+                        <p class="question-text">${index + 1}. ${q.text}</p>
+                `;
+                q.options.forEach((option, optionIndex) => {
+                    const radioName = 'q' + q.id;
+                    // Codifica a opção para o 'value' (apenas substitui espaços por _)
+                    const optionValue = option.replace(/ /g, '_').replace(/[^\w-]/g, '').trim(); 
+                    quizHTML += `
+                        <label class="option-label" for="${radioName}-${optionIndex}">
+                            <input type="radio" id="${radioName}-${optionIndex}" name="${radioName}" value="${optionValue}" required>
+                            ${option}
+                        </label>
+                    `;
+                });
+                quizHTML += `</div>`;
+            });
+
+            quizForm.innerHTML = quizHTML; 
+            if (submitButton) {
+                submitButton.style.display = 'block';
+                quizForm.appendChild(submitButton);
+            }
+
+            document.getElementById('btn-submit-quiz').addEventListener('click', submitQuiz);
+        }
+
+
+        // --- FUNÇÃO PARA SUBMETER E MOSTRAR O RESULTADO DO QUIZ (Mantida com ajustes de codificação) ---
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('question-form');
+            const questionCards = form.querySelectorAll('.question-card');
+            let allAnswered = true;
+
+            // 1. Limpa e Verifica se todas as respostas foram dadas
+            questionCards.forEach(card => {
+                const radioName = 'q' + card.getAttribute('data-question-id');
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Remove feedbacks anteriores e desativa inputs
+                card.querySelectorAll('.option-label').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-selection');
+                    el.querySelector('input').disabled = true;
+                });
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Por favor, responda a todas as 10 questões antes de finalizar o Quiz!');
+                questionCards.forEach(card => card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = false));
+                return;
+            }
+
+            // 2. Calcula a pontuação e aplica o feedback visual
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const questionData = questions.find(q => q.id === questionId);
+                
+                const selectedOption = form.querySelector(`input[name="q${questionId}"]:checked`);
+                
+                // Decodifica a resposta do usuário
+                const userAnswerValue = selectedOption.value;
+                
+                // Decodifica a resposta correta para comparação
+                const correctAnswerEncoded = questionData.answer.replace(/ /g, '_').replace(/[^\w-]/g, '').trim();
+
+                // Compara as strings codificadas/limpas
+                const isCorrect = (userAnswerValue === correctAnswerEncoded);
+                
+                const selectedLabel = selectedOption.closest('.option-label');
+
+                if (isCorrect) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                } else {
+                    selectedLabel.classList.add('incorrect-selection');
+                }
+
+                // MOSTRA A RESPOSTA CORRETA (destaca em verde a label correspondente)
+                card.querySelectorAll('.option-label').forEach(label => {
+                    const input = label.querySelector('input');
+                    const value = input.value.replace(/ /g, '_').replace(/[^\w-]/g, '').trim();
+
+                    if (value === correctAnswerEncoded) {
+                        if (!selectedLabel.classList.contains('incorrect-selection') || selectedLabel !== label) {
+                           label.classList.add('correct-answer');
+                        }
+                    }
+                });
+            });
+
+            // 3. Esconde o botão de finalizar e exibe os resultados
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+            renderQuizResults(score);
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO DE RESULTADOS (Conteúdo e link alterados) ---
+        function renderQuizResults(score) {
+            const totalQuestions = questions.length;
+            
+            const quizForm = document.getElementById('question-form');
+            const quizHTMLFeedback = quizForm.innerHTML;
+            quizForm.style.display = 'none'; 
+
+            const resultHTML = `
+                <div class="results-container">
+                    <h2>🎉 Resultado do Quiz de Qualidade de Vida!</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px;">
+                        <p style="margin-bottom: 10px;">Sua pontuação final:</p>
+                        <p style="font-size: 2em; font-weight: bold; color: ${score >= 7 ? 'var(--secondary-green)' : 'var(--incorrect-red)'};">
+                            ${score} de ${totalQuestions} Questões
+                        </p>
+                        <p style="font-weight: bold; margin-top: 10px;">
+                            ${score >= 7 ? 'Excelente! Você demonstra uma boa visão sobre Saúde Pública e Estilo de Vida.' : 'Revise os pilares do Saneamento Básico e a definição da OMS para Saúde.'}
+                        </p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Revisão do Quiz (Acerto e Erro):</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.9em; color: var(--text-dark);">
+                        <span style="color: var(--correct-green); font-weight: bold;">Verde:</span> Resposta Correta.
+                        <br>
+                        <span style="color: var(--incorrect-red); font-weight: bold;">Vermelho Riscado:</span> Sua Resposta Incorreta.
+                    </p>
+
+                    <div id="quiz-feedback-area">${quizHTMLFeedback}</div> 
+                    
+                    <a href="../cienciasdanatureza/natureza.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar ao Menu de Áreas do Conhecimento
+                    </a>
+                </div>
+            `;
+            
+            document.querySelector('.container').innerHTML = resultHTML; 
+        }
+
+
+        // --- INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS (Mantidos) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Quiz
+            document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Biologia: Hereditariedade e Genética</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; /* Verde de destaque (Geral) */
+            --nature-green: #28a745; /* Verde Natureza (Foco Biologia) */
+            --enem-yellow: #FFC107; 
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E6FFF5; /* Fundo suave para a questão em Natureza */
+            --correct-green: #4CAF50;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar e Header (Mantidos) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Ajuste para Natureza) */
+        .module-header-exercise { 
+            background-color: var(--nature-green); /* Verde Natureza */
+            color: var(--text-light); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--nature-green); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--nature-green); /* Destaque Natureza */
+            background-color: #f5fff5; /* Fundo suave verde-claro */
+        }
+        .content-section h3 {
+            color: var(--nature-green);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: #8B008B; /* Roxo para termos-chave de Biologia */
+        }
+
+        /* Estilo dos botões de leitura */
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+        }
+        
+        /* --- ESTILOS DO QUIZ --- */
+        #question-form { 
+            display: none; 
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: var(--question-bg);
+        }
+
+        .question-card p.question-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: var(--nature-green);
+        }
+
+        .option-label {
+            display: block;
+            background-color: #fff;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        /* Estilos de feedback */
+        .correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background-color: #e6ffed !important;
+            font-weight: bold;
+        }
+
+        .incorrect-selection {
+            border: 2px solid var(--incorrect-red) !important;
+            background-color: #ffe6e6 !important;
+            text-decoration: line-through; 
+        }
+
+        /* Estilo dos resultados */
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer (Mantido) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-footer { font-weight: bold; font-size: 22px; color: var(--primary-blue); }
+        .help-section { text-align: right; }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        @media (min-width: 768px) {
+            .study-progress-bar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Biologia - Módulo 2: Hereditariedade (Genética)</span>
+        <a href="../cienciasdanatureza/natureza.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>🧬 Conteúdo Aprofundado: Hereditariedade (Foco ENEM)</h2>
+            <p>Nesta seção, você estudará a base da Genética, focando na **Primeira Lei de Mendel** e nos conceitos essenciais de alelos. A Genética é um dos temas mais recorrentes no ENEM.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o **Quiz de 10 Questões** será desbloqueado.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Conceitos Fundamentais da Genética</h3>
+                <p>Para resolver qualquer problema de Genética, você precisa dominar o vocabulário:</p>
+                
+                <ul>
+                    <li><span class="key-term">Gene:</span> Segmento de DNA que contém a informação para uma característica.</li>
+                    <li><span class="key-term">Alelos:</span> Formas alternativas de um mesmo gene. Ocupam o mesmo locus nos cromossomos homólogos.</li>
+                    <li><span class="key-term">Genótipo:</span> A constituição genética de um indivíduo (ex: AA, Aa, aa).</li>
+                    <li><span class="key-term">Fenótipo:</span> A manifestação da característica observável, determinada pelo genótipo e, às vezes, pelo ambiente (ex: cor dos olhos).</li>
+                    <li><span class="key-term">Homozigoto (Puro):</span> Possui alelos iguais para a característica (AA ou aa).</li>
+                    <li><span class="key-term">Heterozigoto (Híbrido):</span> Possui alelos diferentes para a característica (Aa).</li>
+                </ul>
+                
+                <h4>Dominância e Recessividade</h4>
+                <p>O alelo **Dominante** (A) se expressa no fenótipo tanto em homozigose (AA) quanto em heterozigose (Aa). O alelo **Recessivo** (a) só se expressa em homozigose (aa).</p>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Primeira Lei de Mendel (Monoibridismo)</h3>
+                <p>Conhecida como a **Lei da Segregação dos Fatores**, ela afirma que cada característica é determinada por um par de fatores (genes) que se separam na formação dos gametas. Assim, cada gameta carrega apenas um fator.</p>
+                
+                <h4>O Cruzamento Clássico (Exemplo de Aa x Aa)</h4>
+                <p>Ao cruzar dois indivíduos heterozigotos (Aa), as proporções genotípicas e fenotípicas são:</p>
+                
+                <ul>
+                    <li><strong>Proporção Genotípica:</strong> 1 **AA** : 2 **Aa** : 1 **aa** ($1/4, 2/4, 1/4$)</li>
+                    <li><strong>Proporção Fenotípica:</strong> 3 indivíduos com o fenótipo dominante : 1 indivíduo com o fenótipo recessivo ($3/4, 1/4$)</li>
+                </ul>
+
+                <p class="key-term">Cálculo e Probabilidade:</p>
+                <p>Problemas de genética são, essencialmente, problemas de probabilidade. Para descobrir a probabilidade de dois eventos independentes ocorrerem juntos (ex: nascer menino *e* ter olhos azuis), você **multiplica** as probabilidades individuais.</p>
+
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-microscope"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+
+        <form id="question-form" style="display: none;">
+            <button type="button" id="btn-submit-quiz" class="btn-next" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--nature-green); color: var(--text-light); margin-top: 30px; width: 100%;">
+                <i class="fas fa-check-circle"></i> FINALIZAR QUIZ E VER RESULTADOS
+            </button>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO E DADOS ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+
+        // Array de 10 Questões de Hereditariedade
+        const questions = [
+            {
+                id: 1,
+                text: "Em Genética, a manifestação observável de um gene, determinada também pelo ambiente, é chamada de:",
+                options: ["Genótipo", "Alelo", "Fenótipo", "Cromossomo"],
+                answer: "Fenótipo"
+            },
+            {
+                id: 2,
+                text: "Um indivíduo com o genótipo 'Aa' é classificado como:",
+                options: ["Homozigoto Dominante", "Homozigoto Recessivo", "Heterozigoto", "Puro"],
+                answer: "Heterozigoto"
+            },
+            {
+                id: 3,
+                text: "A Primeira Lei de Mendel (Lei da Segregação dos Fatores) afirma que:",
+                options: ["Os alelos sempre se unem nos gametas.", "Cada gameta carrega apenas um alelo para cada característica.", "Alelos de genes diferentes se segregam independentemente.", "O genótipo é sempre igual ao fenótipo."],
+                answer: "Cada gameta carrega apenas um alelo para cada característica."
+            },
+            {
+                id: 4,
+                text: "Se um alelo é recessivo (a), ele só se manifesta no fenótipo quando o genótipo for:",
+                options: ["AA", "Aa", "aa", "Qualquer um dos anteriores"],
+                answer: "aa"
+            },
+            {
+                id: 5,
+                text: "No cruzamento de dois heterozigotos (Aa x Aa), qual é a proporção de chance de nascer um indivíduo homozigoto recessivo (aa)?",
+                options: ["50% (1/2)", "75% (3/4)", "25% (1/4)", "100% (4/4)"],
+                answer: "25% (1/4)"
+            },
+            {
+                id: 6,
+                text: "O conceito de 'Locus Gênico' se refere:",
+                options: ["Ao gene dominante.", "À separação dos alelos na meiose.", "À posição exata de um gene no cromossomo.", "Ao conjunto de características de um indivíduo."],
+                answer: "À posição exata de um gene no cromossomo."
+            },
+            {
+                id: 7,
+                text: "Em um cruzamento entre 'AA' e 'aa', todos os descendentes (100%) terão o genótipo:",
+                options: ["AA", "Aa", "aa", "Metade AA e metade aa"],
+                answer: "Aa"
+            },
+            {
+                id: 8,
+                text: "Para que a probabilidade de nascer um filho de olhos azuis (recessivo) E do sexo feminino ocorra, as probabilidades devem ser:",
+                options: ["Somadas", "Subtraídas", "Multiplicadas", "Divididas"],
+                answer: "Multiplicadas"
+            },
+            {
+                id: 9,
+                text: "Qual é o termo utilizado para um indivíduo com alelos iguais (AA ou aa)?",
+                options: ["Híbrido", "Mestiço", "Heterozigoto", "Homozigoto"],
+                answer: "Homozigoto"
+            },
+            {
+                id: 10,
+                text: "O que Mendel chamou de 'Fatores' em sua Primeira Lei, hoje é conhecido como:",
+                options: ["Cromossomos", "Gametas", "Genes", "RNA"],
+                answer: "Genes"
+            }
+        ];
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            // Lógica de desativação e estilo dos botões de leitura
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                btnRead1.style.backgroundColor = done1 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                btnRead2.style.backgroundColor = done2 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            // Atualiza a barra de progresso e o botão principal (Iniciar Quiz)
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! O Quiz está pronto.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-vial"></i> INICIAR QUIZ DE 10 QUESTÕES';
+                btnStartQuiz.style.backgroundColor = 'var(--nature-green)'; // Cor Natureza
+                btnStartQuiz.style.color = 'var(--text-light)';
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-microscope"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+        
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O QUIZ ---
+        function startQuiz() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('question-form').style.display = 'block';
+                renderQuiz(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de iniciar o Quiz.');
+            }
+        }
+
+        // --- FUNÇÃO PARA RENDERIZAR O QUIZ ---
+        function renderQuiz() {
+            const quizForm = document.getElementById('question-form');
+            const submitButton = document.getElementById('btn-submit-quiz');
+            
+            let quizHTML = '';
+
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="question-card" data-question-id="${q.id}">
+                        <p class="question-text">${index + 1}. ${q.text}</p>
+                `;
+                q.options.forEach((option, optionIndex) => {
+                    const radioName = 'q' + q.id;
+                    // Codifica a opção para o 'value'
+                    const optionValue = option.replace(/ /g, '_').replace(/[^\w-]/g, '');
+                    quizHTML += `
+                        <label class="option-label" for="${radioName}-${optionIndex}">
+                            <input type="radio" id="${radioName}-${optionIndex}" name="${radioName}" value="${optionValue}" required>
+                            ${option}
+                        </label>
+                    `;
+                });
+                quizHTML += `</div>`;
+            });
+
+            // Insere as questões e recoloca o botão de submissão
+            quizForm.innerHTML = quizHTML; 
+            if (submitButton) {
+                submitButton.style.display = 'block';
+                quizForm.appendChild(submitButton);
+            }
+
+            // Adiciona o evento de submissão
+            document.getElementById('btn-submit-quiz').addEventListener('click', submitQuiz);
+        }
+
+
+        // --- FUNÇÃO PARA SUBMETER E MOSTRAR O RESULTADO DO QUIZ ---
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('question-form');
+            const questionCards = form.querySelectorAll('.question-card');
+            let allAnswered = true;
+
+            // 1. Limpa e Verifica se todas as respostas foram dadas
+            questionCards.forEach(card => {
+                const radioName = 'q' + card.getAttribute('data-question-id');
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Remove feedbacks anteriores e desativa inputs
+                card.querySelectorAll('.option-label').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-selection');
+                    el.querySelector('input').disabled = true;
+                });
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Por favor, responda a todas as 10 questões antes de finalizar o Quiz!');
+                questionCards.forEach(card => card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = false));
+                return;
+            }
+
+            // 2. Calcula a pontuação e aplica o feedback visual
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const questionData = questions.find(q => q.id === questionId);
+                const radioName = 'q' + questionId;
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                // Decodifica a resposta do usuário
+                const userAnswerValue = selectedOption.value;
+                const userAnswer = userAnswerValue.replace(/_/g, ' ').replace(/[^\w\s-]/g, ''); // Limpeza simples para comparação
+
+                const isCorrect = (userAnswer === questionData.answer.replace(/[^\w\s-]/g, ''));
+                
+                // Aplica feedback ao card/opção selecionada
+                const selectedLabel = selectedOption.closest('.option-label');
+
+                if (isCorrect) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                } else {
+                    // Marca a resposta errada do aluno
+                    selectedLabel.classList.add('incorrect-selection');
+                }
+
+                // MOSTRA A RESPOSTA CORRETA (destaca em verde a label correspondente)
+                card.querySelectorAll('.option-label').forEach(label => {
+                    const input = label.querySelector('input');
+                    const value = input.value.replace(/_/g, ' ').replace(/[^\w\s-]/g, '');
+
+                    // Verifica se a label corresponde à resposta correta
+                    if (value === questionData.answer.replace(/[^\w\s-]/g, '')) {
+                        // Aplica o destaque verde, mas somente se não for a opção marcada erroneamente
+                        if (!selectedLabel.classList.contains('incorrect-selection') || selectedLabel !== label) {
+                           label.classList.add('correct-answer');
+                        }
+                    }
+                });
+            });
+
+            // 3. Esconde o botão de finalizar e exibe os resultados
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+            renderQuizResults(score);
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO DE RESULTADOS ---
+        function renderQuizResults(score) {
+            const totalQuestions = questions.length;
+            
+            // Pega o HTML do quiz corrigido
+            const quizForm = document.getElementById('question-form');
+            const quizHTMLFeedback = quizForm.innerHTML;
+            quizForm.style.display = 'none'; 
+
+            const resultHTML = `
+                <div class="results-container">
+                    <h2>🎉 Resultado do Quiz de Hereditariedade!</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px; border-left: 5px solid var(--nature-green);">
+                        <p style="margin-bottom: 10px;">Sua pontuação final:</p>
+                        <p style="font-size: 2em; font-weight: bold; color: ${score >= 7 ? 'var(--nature-green)' : 'var(--incorrect-red)'};">
+                            ${score} de ${totalQuestions} Questões
+                        </p>
+                        <p style="font-weight: bold; margin-top: 10px;">
+                            ${score >= 7 ? 'Ótimo! Você dominou a Primeira Lei de Mendel.' : 'É fundamental revisar os conceitos de Genótipo e Fenótipo.'}
+                        </p>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Revisão do Quiz (Acerto e Erro):</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.9em; color: var(--text-dark);">
+                        <span style="color: var(--correct-green); font-weight: bold;">Verde:</span> Resposta Correta.
+                        <br>
+                        <span style="color: var(--incorrect-red); font-weight: bold;">Vermelho Riscado:</span> Sua Resposta Incorreta.
+                    </p>
+
+                    <div id="quiz-feedback-area">${quizHTMLFeedback}</div> 
+                    
+                    <a href="../cienciasdanatureza/natureza.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar ao Menu de Atividades
+                    </a>
+                </div>
+            `;
+            
+            document.querySelector('.container').innerHTML = resultHTML; 
+        }
+
+
+        // --- INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral (Mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Quiz (agora chama startQuiz)
+            document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

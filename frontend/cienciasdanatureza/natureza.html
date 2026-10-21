@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Módulo de Biologia: Moléculas, Células e Tecidos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais (Mantidos) --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; /* Verde de destaque */
+            --tip-yellow: #FFFBE0; /* Fundo do card de dica amarelo/claro */
+            --text-dark: #333;
+            --text-light: #fff;
+            --footer-yellow: #FFC107;
+            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --max-width: 1200px;
+            --locked-gray: #ccc; /* Cor para aulas bloqueadas */
+            /* NOVA COR DE DESTAQUE PARA BIOLOGIA/NATUREZA */
+            --nature-green: #28a745;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1; 
+        }
+        
+        /* 1. Cabeçalho (Mantido) */
+        .header {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* 2. Sidebar (Menu Lateral) - Mantido */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        
+        /* --- 3. Título do Módulo e Botão de Avanço --- */
+        .module-header-area {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .module-header-area a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .module-header-area a i {
+            margin-right: 8px;
+            color: var(--primary-blue);
+        }
+        
+        #module-title {
+            font-size: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        #module-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        .title-line {
+            display: flex;
+            align-items: baseline;
+        }
+        
+        /* Estilo do Botão de Avançar Módulo */
+        #btn-next-module {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+            margin-top: 15px; 
+            background-color: var(--nature-green); /* Destaque verde para Natureza */
+            color: var(--text-light);
+            width: auto; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #btn-next-module:hover {
+            background-color: #218838;
+        }
+        
+        /* --- 4. Layout Principal do Conteúdo (Mantido) --- */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 0 20px; 
+        }
+
+        .main-content { grid-column: 1 / -1; }
+        .side-content { display: none; }
+
+        /* --- 5. Player de Vídeo e Ações --- */
+        .video-player-box {
+            background-color: #333;
+            width: 100%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .video-player-box i { font-size: 50px; color: #999; }
+
+        #lesson-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .info-detail { font-size: 14px; color: #666; margin-right: 10px; }
+        #lesson-title { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+
+        .lesson-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex-grow: 1; 
+            text-align: center;
+        }
+
+        #btn-restart {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+        }
+        
+        #btn-complete {
+            background-color: var(--nature-green); /* Cor de destaque para Concluído */
+            color: var(--text-light);
+        }
+        #btn-complete:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* --- 6. Lista de Conteúdo do Módulo --- */
+        .module-content-list h2 { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--text-light);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: pointer; 
+        }
+        
+        /* ESTILO PARA AULAS BLOQUEADAS */
+        .lesson-item.locked { opacity: 0.6; cursor: not-allowed; }
+        .lesson-item.current { border: 2px solid var(--nature-green); } /* Borda Natureza */
+
+        .lesson-icon { font-size: 20px; margin-right: 15px; width: 25px; text-align: center; }
+        .lesson-status-completed { color: var(--secondary-green); }
+        .lesson-status-current { color: var(--nature-green); } /* Ícone Natureza */
+        .lesson-status-locked { color: var(--locked-gray); }
+
+        .lesson-details { flex-grow: 1; }
+        .lesson-details span { display: block; font-weight: bold; }
+
+        .lesson-item-actions { color: var(--primary-blue); font-size: 18px; cursor: pointer; margin-left: 15px; padding: 5px; transition: color 0.2s; }
+        .lesson-item-actions:hover { color: var(--secondary-green); }
+        
+        /* [Seções de Dicas e Rodapé] (Mantidos) */
+
+        .side-content { padding: 0 20px; }
+        .side-content h2 { font-size: 16px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; }
+        .side-content h2 i { color: #f44336; margin-right: 5px; } /* Coração vermelho */
+
+        .tip-card-side { padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+        #tip-sono-side { background-color: #E0FFFF; } 
+        #tip-organizacao-side { background-color: var(--tip-yellow); }
+
+        .tip-card-side h3 { font-size: 14px; font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; }
+        .tip-card-side h3 i { font-size: 18px; margin-right: 8px; }
+        .tip-card-side p { font-size: 12px; line-height: 1.4; }
+        
+        #tip-sono-side h3 i { color: var(--secondary-green); }
+        #tip-sono-side h3 { color: #008080; }
+        
+        #tip-organizacao-side h3 i { color: var(--enem-yellow); }
+        #tip-organizacao-side h3 { color: #8B8000; }
+
+        #message-card {
+            background-color: var(--primary-blue);
+            color: var(--text-light);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #message-card i { font-size: 24px; margin-bottom: 10px; }
+
+        .footer {
+            background-color: var(--footer-yellow);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-dark);
+            margin-top: auto;
+        }
+
+        .logo-footer { font-weight: bold; font-size: 22px; margin-bottom: 10px; color: var(--primary-blue); }
+        .enem-highlight-footer { color: var(--text-dark); }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+
+        /* --- Media Queries (Mantidos) --- */
+        @media (min-width: 768px) {
+            .container { padding: 20px 40px; }
+            .module-header-area { padding: 15px 40px; }
+            .content-layout { grid-template-columns: 2fr 1fr; padding: 0; }
+            .main-content { grid-column: 1 / 2; padding-left: 40px; }
+            .side-content { grid-column: 2 / 3; display: block; padding-right: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a>
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+        <div>
+            <i class="fas fa-bell" style="color: var(--text-light); margin-right: 15px;"></i>
+            <i class="fas fa-history" style="color: var(--text-light);"></i>
+        </div>
+    </header>
+
+    <div class="module-header-area">
+        <a href="javascript:void(0)" id="btn-back-module" onclick="goBackToLastTab()"><i class="fas fa-arrow-left"></i>
+            <span class="back-text">Voltar</span>
+        </a>
+        <div class="title-line">
+            <h2 id="module-title">Ciência da Natureza e suas Tecnologias</h2>
+            <p id="module-subtitle"><span id="completed-lessons-count">0</span> de <span id="total-lessons-count">5</span> Tópicos</p>
+        </div>
+        
+        <button id="btn-next-module" class="btn-action" style="display: none;">
+            <i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (2/5)
+        </button>
+    </div>
+
+    <main class="container">
+        
+        <div class="content-layout">
+
+            <section class="main-content">
+                
+                <div class="video-player-box" id="video-player">
+                    <i class="fas fa-camera"></i>
+                </div>
+
+                <div id="lesson-info">
+                    <h3 id="lesson-title">Carregando Aula...</h3>
+                    <div class="info-detail">
+                        <span id="lesson-duration">Duração: -</span>
+                    </div>
+                </div>
+
+                <div class="lesson-actions">
+                    <button class="btn-action" id="btn-restart">Revisar</button>
+                    <button class="btn-action" id="btn-complete">Marcar como concluído</button>
+                </div>
+
+                <div class="module-content-list">
+                    <h2>Conteúdo do Módulo</h2>
+                    
+                    <div class="lesson-item" id="lesson-item-1" data-lesson-id="1" onclick="handleLessonClick(1)">
+                        <i class="fas fa-play-circle lesson-icon lesson-status-current" id="status-1"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-1">Moléculas, células e tecidos</span>
+                        </div>
+                        <a href="questão1.html">
+                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(1)"></i>
+                        </a>
+                    </div>
+
+                    <div class="lesson-item locked" id="lesson-item-2" data-lesson-id="2" onclick="handleLessonClick(2)">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-2"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-2">Hereditariedade</span>
+                        </div>
+                        <a href="questão2.html">
+                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(2)"></i>
+                        </a>                    
+                    </div>
+
+                    <div class="lesson-item locked" id="lesson-item-3" data-lesson-id="3" onclick="handleLessonClick(3)">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-3"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-3">Radioatividade</span>
+                        </div>
+                        <a href="questão3.html">
+                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(3)"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="lesson-item locked" id="lesson-item-4" data-lesson-id="4" onclick="handleLessonClick(4)">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-4"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-4">Ecologia</span>
+                        </div>
+                        <a href="questão4.html">
+                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(4)"></i>
+                        </a>
+                    </div>
+
+                    <div class="lesson-item locked" id="lesson-item-5" data-lesson-id="5" onclick="handleLessonClick(5)">
+                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-5"></i>
+                        <div class="lesson-details">
+                            <span id="lesson-name-5">Qualidade de vida</span>
+                        </div>
+                        <a href="questão5.html">
+                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(5)"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <aside class="side-content">
+                <h2><i class="fas fa-heart"></i> Dicas de Saúde</h2>
+                
+                <div class="tip-card-side" id="tip-sono-side">
+                    <h3><i class="fas fa-moon"></i> Sono</h3>
+                    <p>Durma 7-8 horas por noite para melhor memorização.</p>
+                </div>
+                
+                <div class="tip-card-side" id="tip-organizacao-side">
+                    <h3><i class="fas fa-calendar-check"></i> Organização</h3>
+                    <p>Crie um cronograma de estudos com pausas regulares.</p>
+                </div>
+                
+                <div id="message-card">
+                    <i class="fas fa-map-pin"></i>
+                    <p id="message-text">Transforme seus sonhos em realidade!</p>
+                </div>
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO E DADOS (ATUALIZADAS PARA BIOLOGIA) ---
+        const MODULE_NAME = 'CienciaNatureza'; // Nome chave para o localStorage
+        const CURRENT_MODULE_NUMBER = 1; 
+        const TOTAL_MODULES = 5; // Simulado
+        const TOTAL_LESSONS = 5; 
+        
+        let lessonState = JSON.parse(localStorage.getItem(`lessonProgress_${MODULE_NAME}`)) || {
+            // Aulas iniciais baseadas no exemplo da imagem
+            1: 'current', 
+            2: 'locked',
+            3: 'locked',
+            4: 'locked',
+            5: 'locked',
+        };
+        
+        let currentLessonId = getCurrentLessonId();
+
+        // Novos dados para o módulo de Ciência da Natureza
+        const lessonData = {
+            1: { title: "Moléculas, células e tecidos", duration: "50 min" },
+            2: { title: "Hereditariedade", duration: "45 min" }, 
+            3: { title: "Radioatividade", duration: "30 min" },
+            4: { title: "Ecologia", duration: "60 min" },
+            5: { title: "Qualidade de vida", duration: "40 min" },
+        };
+        
+        // --- FUNÇÕES DE PERSISTÊNCIA E STATUS ---
+
+        function saveLessonState() {
+            localStorage.setItem(`lessonProgress_${MODULE_NAME}`, JSON.stringify(lessonState));
+        }
+        
+        function getCurrentLessonId() {
+            const savedId = localStorage.getItem(`currentLessonId_${MODULE_NAME}`);
+            if (lessonState[TOTAL_LESSONS] === 'completed') return TOTAL_LESSONS;
+            return savedId ? parseInt(savedId) : 1; 
+        }
+
+        function getCompletedLessonsCount() {
+            return Object.values(lessonState).filter(status => status === 'completed').length;
+        }
+
+        // --- FUNÇÃO CHAVE 1: Gerencia a Progressão entre Módulos ---
+        function checkModuleCompletion() {
+            const completedCount = getCompletedLessonsCount();
+            const btnNextModule = document.getElementById('btn-next-module');
+
+            if (completedCount === TOTAL_LESSONS) {
+                
+                localStorage.setItem(`module_${MODULE_NAME}_${CURRENT_MODULE_NUMBER}_completed`, 'true');
+                
+                if (CURRENT_MODULE_NUMBER < TOTAL_MODULES) {
+                    btnNextModule.style.display = 'block';
+                    btnNextModule.innerHTML = `<i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (${CURRENT_MODULE_NUMBER + 1}/${TOTAL_MODULES})`;
+                    btnNextModule.onclick = () => {
+                        alert(`Parabéns! Módulo ${CURRENT_MODULE_NUMBER} concluído. Navegando para o próximo Módulo de Natureza.`);
+                        // Em um sistema real: window.location.href = 'modulo2_natureza.html';
+                    };
+                } else {
+                    btnNextModule.style.display = 'block';
+                    btnNextModule.innerHTML = `<i class="fas fa-medal"></i> Curso Concluído!`;
+                    btnNextModule.disabled = true;
+                    btnNextModule.style.backgroundColor = '#90EE90';
+                    btnNextModule.style.color = '#333';
+                }
+            } else {
+                btnNextModule.style.display = 'none';
+                localStorage.removeItem(`module_${MODULE_NAME}_${CURRENT_MODULE_NUMBER}_completed`); 
+            }
+        }
+        
+        // --- FUNÇÃO CHAVE 2: Atualização Visual e Lógica de Aulas ---
+
+        function updateCurrentLessonUI(lessonId) {
+            const data = lessonData[lessonId];
+            document.getElementById('lesson-title').innerText = data.title;
+            document.getElementById('lesson-duration').innerText = `Duração: ${data.duration}`;
+            
+            document.getElementById('completed-lessons-count').innerText = getCompletedLessonsCount();
+            document.getElementById('total-lessons-count').innerText = TOTAL_LESSONS;
+
+            const btnComplete = document.getElementById('btn-complete');
+            if (lessonState[lessonId] === 'completed') {
+                document.getElementById('btn-restart').innerText = 'Revisar';
+                btnComplete.innerText = 'Concluído';
+                btnComplete.disabled = true;
+            } else {
+                document.getElementById('btn-restart').innerText = 'Revisar';
+                btnComplete.innerText = 'Marcar como concluído';
+                btnComplete.disabled = false;
+            }
+            
+            currentLessonId = lessonId;
+            localStorage.setItem(`currentLessonId_${MODULE_NAME}`, lessonId);
+            
+            // Texto e ícone do Player de Vídeo
+            document.getElementById('video-player').innerHTML = `
+                <i class="fas fa-video" style="font-size: 50px; color: #999;"></i>
+                <p style="color: #ccc; margin-top: 10px;">Vídeo Aula: ${data.title}</p>
+            `;
+            
+            checkModuleCompletion();
+        }
+
+        function loadLessonStatus() {
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('current', 'locked', 'completed');
+                item.style.border = 'none';
+            });
+
+            for (let id = 1; id <= TOTAL_LESSONS; id++) {
+                const item = document.getElementById(`lesson-item-${id}`);
+                const statusIcon = document.getElementById(`status-${id}`);
+                const status = lessonState[id] || 'locked';
+
+                statusIcon.className = 'lesson-icon'; 
+
+                if (status === 'completed') {
+                    item.classList.add('completed');
+                    item.classList.remove('locked');
+                    statusIcon.classList.add('fas', 'fa-check-circle', 'lesson-status-completed');
+                } else if (status === 'locked') {
+                    item.classList.add('locked');
+                    statusIcon.classList.add('fas', 'fa-lock', 'lesson-status-locked');
+                } else if (status === 'current') {
+                    item.classList.remove('locked');
+                    statusIcon.classList.add('fas', 'fa-play-circle', 'lesson-status-current');
+                    item.classList.add('current');
+                    item.style.border = '2px solid var(--nature-green)'; // Cor Natureza
+                    
+                    if (currentLessonId !== id) {
+                         currentLessonId = id;
+                    }
+                }
+            }
+            
+            updateCurrentLessonUI(currentLessonId);
+        }
+        
+        // --- FUNÇÕES DE INTERAÇÃO DO USUÁRIO ---
+
+        function handleLessonClick(lessonId) {
+            const id = parseInt(lessonId);
+            
+            if (lessonState[id] === 'locked') {
+                alert('Você precisa concluir o tópico anterior para desbloquear esta aula!');
+                return; 
+            }
+            
+            if (id === currentLessonId) {
+                return;
+            }
+            
+            // Se a aula anterior era a "current" e o usuário pulou, marca ela como concluída.
+            if (lessonState[currentLessonId] === 'current') {
+                lessonState[currentLessonId] = 'completed'; 
+            }
+            
+            // Define a nova aula como "current" (a não ser que já esteja completed)
+            if (lessonState[id] !== 'completed') {
+                lessonState[id] = 'current';
+            }
+            
+            saveLessonState();
+            currentLessonId = id;
+            loadLessonStatus();
+        }
+        
+        // --- FUNÇÃO CHAVE 3: Marcar Concluído e Avançar Aula ---
+        function handleCompleteButton() {
+            const nextLessonId = currentLessonId + 1;
+            
+            lessonState[currentLessonId] = 'completed';
+            
+            if (nextLessonId <= TOTAL_LESSONS) {
+                // Desbloqueia e avança para a próxima aula
+                lessonState[nextLessonId] = 'current';
+                saveLessonState();
+                handleLessonClick(nextLessonId);
+            } else {
+                // Última aula concluída
+                saveLessonState();
+                document.getElementById('btn-complete').disabled = true;
+                document.getElementById('btn-complete').innerText = 'Concluído';
+                
+                loadLessonStatus();
+                alert('Parabéns! Você completou todas as aulas deste Módulo.');
+            }
+        }
+        
+        function handleExerciseClick(lessonId) {
+            event.stopPropagation();
+            const id = parseInt(lessonId);
+            
+            if (lessonState[id] === 'completed') {
+                alert(`Redirecionando para o QUIZ/QUESTÕES da Aula ${id}: ${lessonData[id].title}`);
+                 // Simulação de navegação para quiz
+            } else {
+                alert('Você só pode fazer o quiz após concluir a videoaula!');
+            }
+        }
+
+        function goBackToLastTab() {
+             window.location.href = '../menu/menu.html';
+        }
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLessonStatus();
+            
+            const btnComplete = document.getElementById('btn-complete');
+            if (btnComplete) {
+                btnComplete.addEventListener('click', handleCompleteButton);
+            }
+            
+            const btnRestart = document.getElementById('btn-restart');
+            if (btnRestart) {
+                btnRestart.addEventListener('click', () => {
+                    alert(`Simulando reinício da aula: ${lessonData[currentLessonId].title}`);
+                });
+            }
+            
+            // Inicialização do menu lateral (mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+        });
+    </script>
+</body>
+</html>

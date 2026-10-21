@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Biologia: Moléculas, Células e Tecidos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; /* Verde de destaque (Geral) */
+            --nature-green: #28a745; /* Verde Natureza (Foco Biologia) */
+            --enem-yellow: #FFC107; 
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E0EFFF; 
+            --correct-green: #4CAF50;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar e Header (Mantidos) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Ajuste para Natureza) */
+        .module-header-exercise { 
+            background-color: var(--nature-green); /* Verde Natureza */
+            color: var(--text-light); /* Texto claro */
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--nature-green); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- NOVO ESTILO: CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--nature-green); /* Destaque Natureza */
+            background-color: #f5fff5; /* Fundo suave verde-claro */
+        }
+        .content-section h3 {
+            color: var(--nature-green);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section ul {
+            list-style-type: square;
+            margin-left: 20px;
+            padding-left: 10px;
+        }
+        .content-section li {
+            margin-bottom: 8px;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: #8B008B; /* Roxo para termos-chave de Biologia */
+        }
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .content-section th {
+            background-color: #e0fff0; /* Fundo mais claro */
+            color: var(--nature-green);
+        }
+        
+        /* Botões de Progresso no Estudo */
+        .study-progress-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .study-progress-bar span {
+            font-weight: bold;
+            color: var(--nature-green);
+        }
+        .progress-status {
+            color: var(--incorrect-red);
+            font-size: 1.1em;
+        }
+        .progress-status.done {
+            color: var(--correct-green);
+        }
+
+        /* Estilo dos botões de leitura */
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+            background-color: var(--primary-blue); /* Mantido azul para contraste */
+            color: var(--text-light);
+        }
+        
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-footer { font-weight: bold; font-size: 22px; color: var(--primary-blue); }
+        .help-section { text-align: right; }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        /* Novo estilo para a tela de resultados/resumo */
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+        }
+        .results-container h2 { color: var(--nature-green); margin-bottom: 20px; text-align: center; }
+        .summary { text-align: center; font-size: 1.1em; margin-bottom: 30px; padding: 15px; border-bottom: 2px solid #eee; }
+        .result-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 6px; }
+        .result-item strong { color: var(--nature-green); }
+        
+        /* Media Query para layout desktop */
+        @media (min-width: 768px) {
+            .study-progress-bar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Biologia - Módulo 1: Moléculas, Células e Tecidos</span>
+        <a href="../cienciasdanatureza/natureza.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>🔬 Conteúdo Aprofundado: Moléculas, Células e Tecidos (Foco ENEM)</h2>
+            <p>Este módulo aborda a organização básica da vida. O ENEM costuma exigir a compreensão das **funções das organelas e dos tecidos** em um contexto aplicado (como doenças ou problemas ambientais).</p>
+            <p>Para liberar o acesso ao resumo de feedback, você deve ler e marcar os dois tópicos abaixo como lidos.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. A Célula: Estrutura, Organelas e Função</h3>
+                <p>A célula é a unidade funcional básica da vida. Você precisa dominar as diferenças entre células Procariontes e Eucariontes, e, especialmente, as funções das principais organelas da célula eucarionte.</p>
+                
+                <h4>Principais Organelas e Funções (ENEM):</h4>
+                <ul>
+                    <li><span class="key-term">Mitocôndrias:</span> Responsáveis pela **respiração celular** e produção de ATP.</li>
+                    <li><span class="key-term">Ribossomos:</span> Síntese de **proteínas**.</li>
+                    <li><span class="key-term">Retículo Endoplasmático Liso:</span> Síntese de **lipídios** e desintoxicação.</li>
+                    <li><span class="key-term">Lisossomos:</span> Responsáveis pela **digestão intracelular**.</li>
+                    <li><span class="key-term">Cloroplastos (Vegetal):</span> Onde ocorre a **fotossíntese**.</li>
+                </ul>
+                
+                <p>O foco do ENEM está nas funções aplicadas: o que aconteceria se uma célula perdesse a função dos lisossomos? (Resposta: acúmulo de resíduos).</p>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Histologia Animal: Classificação e Localização dos Tecidos</h3>
+                <p>Dominar os quatro tipos básicos de tecidos e suas funções é crucial para entender a fisiologia dos sistemas vivos. O ENEM adora correlacionar doenças com o tecido afetado.</p>
+                
+                <h4>Tabela de Tecidos Animais (Resumo):</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tecido</th>
+                            <th>Função Principal</th>
+                            <th>Exemplo de Localização</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Epitelial</strong></td>
+                            <td>Revestimento e Secreção (Glândulas)</td>
+                            <td>Pele e Mucosas, Revestimento de Órgãos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Conjuntivo</strong></td>
+                            <td>Sustentação, Preenchimento e Transporte</td>
+                            <td>Sangue, Ossos, Cartilagens e Adiposo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Muscular</strong></td>
+                            <td>Movimento (Contração)</td>
+                            <td>Músculos Esqueléticos, Coração e Vasos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nervoso</strong></td>
+                            <td>Condução e Recepção de Impulsos</td>
+                            <td>Encéfalo, Medula e Nervos</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="key-term">DICA ENEM:</p>
+                <p>O **Tecido Conjuntivo** é o mais diversificado! Lembre-se que o sangue (transporte) e o tecido adiposo (reserva de energia) são tipos de tecido conjuntivo. A correta identificação desses subgrupos é recorrente nas questões.</p>
+
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-chart-line"></i> FINALIZAR LEITURA PARA DESBLOQUEAR
+            </button>
+        </div>
+
+        <form id="question-form" style="display: none;">
+            </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            // ATUALIZAÇÃO DOS BOTÕES DE LEITURA
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                btnRead1.style.backgroundColor = done1 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                btnRead2.style.backgroundColor = done2 ? '#90EE90' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            // Atualiza a barra de progresso e o botão principal (Finalizar Leitura)
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! Pronto para o Resumo Final.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-chart-line"></i> Ver Resumo Final';
+                btnStartQuiz.style.backgroundColor = 'var(--nature-green)'; // Cor Natureza
+                btnStartQuiz.style.color = 'var(--text-light)'; 
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-chart-line"></i> FINALIZAR LEITURA PARA DESBLOQUEAR';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O RESUMO FINAL ---
+        function goToSummary() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                document.getElementById('content-view').style.display = 'none';
+                renderSummaryResults(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de ver o resumo final.');
+            }
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO FINAL ---
+        function renderSummaryResults() {
+            const summaryHTML = `
+                <div class="results-container" style="margin-top: 50px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <h2>✅ Resumo Final: Moléculas, Células e Tecidos</h2>
+                    <div class="summary" style="background-color: #E0FFF0; border-radius: 6px; padding: 20px; border-left: 5px solid var(--nature-green);">
+                        <p>Parabéns! Você revisou a base da Biologia do ENEM.</p>
+                        <p style="font-weight: bold; margin-top: 10px;">Lembre-se: O ENEM foca na **função aplicada** das organelas (ex: mitocôndria e respiração) e na **localização** dos tecidos (ex: cartilagem e sustentação).</p>
+                    </div>
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Tópicos Revisados e Pontos de Atenção:</h3>
+                    
+                    <div class="result-item correct" style="border-left: 5px solid var(--nature-green); background-color: #f0f9ff;">
+                        <p><strong>A Célula:</strong> Não confunda Retículo Endoplasmático Liso (Lipídios/Desintoxicação) com Ribossomos (Proteínas). O **Complexo de Golgi** (secreção) é a próxima etapa crucial de estudo.</p>
+                    </div>
+
+                    <div class="result-item correct" style="border-left: 5px solid var(--nature-green); background-color: #f0f9ff;">
+                        <p><strong>Histologia:</strong> O **Tecido Conjuntivo** é o mais diverso (inclui sangue e osso). Sempre relacione o tecido com sua função básica (ex: Epitelial = Revestimento/Barreira).</p>
+                    </div>
+                    
+                    <a href="../cienciasdanatureza/natureza.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--secondary-green); color: var(--text-dark); font-weight: bold; border-radius: 6px;">
+                        Voltar às Atividades
+                    </a>
+                </div>
+            `;
+            document.querySelector('.container').innerHTML = summaryHTML;
+        }
+
+
+        // --- 6. INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral (Mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Resumo
+            document.getElementById('btn-start-quiz').addEventListener('click', goToSummary);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

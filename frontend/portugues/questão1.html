@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Figuras de Construção</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; /* Verde de destaque */
+            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #E0EFFF; /* Fundo azul claro para a questão */
+            --correct-green: #4CAF50; /* Verde de acerto */
+            --incorrect-red: #F44336; /* Vermelho de erro */
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar e Header (Mantidos) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+        .module-header-exercise { background-color: var(--enem-yellow); color: var(--text-dark); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 14px; }
+        .module-header-exercise a { text-decoration: none; color: var(--text-dark); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- NOVO ESTILO: CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-blue);
+            background-color: #f5f9ff;
+        }
+        .content-section h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section ul {
+            list-style-type: square;
+            margin-left: 20px;
+        }
+        .content-section li {
+            margin-bottom: 5px;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: #e91e63; /* Rosa para termos-chave */
+        }
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .content-section th {
+            background-color: #e0efff;
+            color: var(--primary-blue);
+        }
+        
+        /* Botões de Progresso no Estudo */
+        .study-progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .study-progress-bar span {
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        .progress-status {
+            color: var(--incorrect-red);
+        }
+        .progress-status.done {
+            color: var(--secondary-green);
+        }
+
+        /* Estilos do Quiz (Mantidos) */
+        .question-layout { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 30px; }
+        .question-area { background-color: var(--question-bg); padding: 25px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; }
+        .question-area h2 { font-size: 36px; color: var(--primary-blue); }
+        .question-text { font-size: 18px; line-height: 1.5; font-weight: 500; }
+        .options-area { display: flex; flex-direction: column; gap: 10px; }
+        .option-item { display: flex; align-items: flex-start; background-color: var(--text-light); padding: 15px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s, border 0.2s; border: 1px solid #ddd; }
+        .option-item:hover:not(.answered) { background-color: #f0f0f0; }
+        .option-letter { font-weight: bold; font-size: 16px; margin-right: 15px; min-width: 15px; text-align: center; color: var(--primary-blue); padding-top: 2px; }
+        .option-text { flex-grow: 1; line-height: 1.4; }
+        .option-item.correct { border: 2px solid var(--correct-green); background-color: #E8F5E9; }
+        .option-item.incorrect { border: 2px solid var(--incorrect-red); background-color: #FFEBEE; }
+        .option-item.selected { background-color: #DDEEFF; border: 2px solid var(--primary-blue); }
+        
+        /* Navegação */
+        .navigation-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+        .pagination-buttons span { display: inline-block; padding: 8px 15px; margin: 0 5px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .pagination-buttons span.active { background-color: var(--primary-blue); color: var(--text-light); border-color: var(--primary-blue); }
+        .btn-next { background-color: var(--enem-yellow); color: var(--text-dark); padding: 12px 30px; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: opacity 0.2s; }
+        .btn-next:disabled { background-color: #ccc; opacity: 0.7; cursor: not-allowed; }
+        .btn-next.finish { background-color: var(--secondary-green); color: var(--text-dark); }
+
+        /* Footer e Resultados (Mantidos) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-footer { font-weight: bold; font-size: 22px; color: var(--primary-blue); }
+        .help-section { text-align: right; }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+        .results-container { padding: 40px; background-color: var(--text-light); border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 50px; }
+        .results-container h2 { color: var(--primary-blue); margin-bottom: 20px; text-align: center; }
+        .summary { text-align: center; font-size: 1.2em; margin-bottom: 30px; padding: 15px; border-bottom: 2px solid #eee; }
+        .result-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 6px; }
+        .result-item.correct { border-left: 5px solid var(--correct-green); background-color: #f0f9f0; }
+        .result-item.incorrect { border-left: 5px solid var(--incorrect-red); background-color: #fef0f0; }
+        .result-item strong { color: var(--primary-blue); }
+
+        /* Media Query para layout desktop */
+        @media (min-width: 768px) {
+            .question-layout { grid-template-columns: 1fr 1.5fr; }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Linguagens, Código e suas Tecnologias - Figuras de Construção</span>
+        <a href="../menu/menu.html">Sair</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>📚 Conteúdo de Estudo Aprofundado: Figuras de Construção</h2>
+            <p>Para avançar para o quiz, revise os dois tópicos a seguir. O quiz só será liberado após a marcação de ambos como lidos.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Omissão, Inversão e Concordância Ideológica (Hipérbato, Elipse, Zeugma, Silepse)</h3>
+                <p>Estas figuras alteram ou omitem termos, exigindo **raciocínio dedutivo** para reconstrução sintática:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Figura</th>
+                            <th>Ação Principal</th>
+                            <th>Exemplo-Chave (ENEM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Hipérbato</strong></td>
+                            <td>Inversão da ordem sintática direta (SVO).</td>
+                            <td>*"Deixou o tempo passar, sem ele notar."*</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Elipse</strong></td>
+                            <td>Omissão de termo **não mencionado** anteriormente.</td>
+                            <td>*"Na mesa, o livro."* (Omitiu "estava").</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Zeugma</strong></td>
+                            <td>Omissão de termo **já mencionado** (evita repetição).</td>
+                            <td>*"Eu bebi água; ele, suco."* (Omitiu "bebeu").</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Silepse</strong></td>
+                            <td>Concordância com a <strong>ideia</strong>, não com a forma gramatical.</td>
+                            <td>*"A gente somos felizes."* (Silepse de pessoa).</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-next finish" id="btn-read-1" style="margin-top: 15px; background-color: var(--primary-blue); color: var(--text-light); float: right;">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Adição, Repetição e Quebra Estrutural (Polissíndeto, Assíndeto, Anáfora, Anacoluto, Pleonasmo)</h3>
+                <p>Focam na forma como os termos são ligados ou repetidos, alterando o ritmo e a ênfase do texto:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Figura</th>
+                            <th>Ação Principal</th>
+                            <th>Exemplo-Chave (ENEM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Polissíndeto</strong></td>
+                            <td>Repetição de conectivos (geralmente "e"). Cria lentidão/acúmulo.</td>
+                            <td>*"Cantamos e dançamos e choramos."*</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Assíndeto</strong></td>
+                            <td>Supressão dos conectivos. Cria rapidez/dinamismo.</td>
+                            <td>*"Vim, vi, tomei posse."*</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anáfora</strong></td>
+                            <td>Repetição da mesma palavra no **início** de frases/versos.</td>
+                            <td>*"**Lutar** é preciso. **Lutar** com garra."*</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anacoluto</strong></td>
+                            <td>Quebra na estrutura sintática da frase.</td>
+                            <td>*"Eu, não sei se vou."*</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Pleonasmo</strong></td>
+                            <td>Redundância intencional ou estilística.</td>
+                            <td>*"Subir para cima."*</td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <button type="button" class="btn-next finish" id="btn-read-2" style="margin-top: 15px; background-color: var(--primary-blue); color: var(--text-light); float: right;">Marcar Tópico 2 como Lido</button>
+                 <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled>Iniciar Quiz de 10 Questões</button>
+        </div>
+
+        <form id="question-form" style="display: none;">
+            <div class="question-layout">
+
+                <section class="question-area">
+                    <h2 id="question-number">01</h2>
+                    <p class="question-text" id="question-text">
+                        A questão será carregada dinamicamente pelo JavaScript.
+                    </p>
+                </section>
+
+                <section class="options-area" id="options-area">
+                    </section>
+            </div>
+
+            <div class="navigation-footer">
+                <div class="pagination-buttons" id="pagination-buttons">
+                    </div>
+                <button type="button" class="btn-next" id="btn-next" disabled>Próxima</button>
+            </div>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep Enem
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. DADOS DAS 10 QUESTÕES (Mantidos) ---
+        const questions = [
+            {
+                text: "Qual figura de construção consiste na inversão da ordem direta dos termos da oração (Sujeito + Verbo + Complementos)?",
+                options: ["Elipse", "Zeugma", "Silepse", "Hipérbato", "Anáfora"],
+                answer: "Hipérbato"
+            },
+            {
+                text: "Identifique a figura de construção presente em: 'Eu trouxe o vinho; ele, a cerveja.'",
+                options: ["Elipse", "Zeugma", "Assíndeto", "Hipérbole", "Catacrese"],
+                answer: "Zeugma"
+            },
+            {
+                text: "O uso repetido e intencional da conjunção 'e' em: 'E a lua brincava, e os sinos tocavam, e as estrelas brilhavam...' é um exemplo de:",
+                options: ["Anáfora", "Polissíndeto", "Assíndeto", "Elipse", "Silepse"],
+                answer: "Polissíndeto"
+            },
+            {
+                text: "Qual figura é caracterizada pela omissão de um termo que pode ser facilmente subentendido pelo contexto, mas que **não foi mencionado antes** na oração? Ex: 'Na sala, dois professores.' (Omissão de 'estavam').",
+                options: ["Silepse", "Zeugma", "Hipérbato", "Elipse", "Metonímia"],
+                answer: "Elipse"
+            },
+            {
+                text: "Na frase 'A gente somos inseparáveis', a concordância feita com a ideia ('nós') e não com a forma gramatical ('a gente', no singular) é um caso de:",
+                options: ["Prosopopeia", "Catacrese", "Silepse", "Hipérbato", "Assíndeto"],
+                answer: "Silepse"
+            },
+            {
+                text: "A ausência total de conjunções para ligar orações ou termos em uma enumeração rápida, como em 'Vim, vi, venci.', é chamada de:",
+                options: ["Polissíndeto", "Anacoluto", "Assíndeto", "Hipérbato", "Ironia"],
+                answer: "Assíndeto"
+            },
+            {
+                text: "Qual figura de linguagem ocorre na repetição da mesma palavra ou grupo de palavras no início de frases ou versos sucessivos?",
+                options: ["Metonímia", "Eufemismo", "Assíndeto", "Anáfora", "Pleonasmo"],
+                answer: "Anáfora"
+            },
+            {
+                text: "Identifique a figura de construção em: 'Os lusíadas, nascemos com o espírito aventureiro.' (Concordância com 'nós' implícito).",
+                options: ["Silepse de pessoa", "Hipérbato", "Zeugma", "Anacoluto", "Elipse"],
+                answer: "Silepse de pessoa"
+            },
+            {
+                text: "A inversão radical dos termos que torna a frase mais complexa, como em 'Do vento, as folhas caíam leves', é classificada como:",
+                options: ["Anacoluto", "Pleonasmo", "Hipérbato", "Polissíndeto", "Elipse"],
+                answer: "Hipérbato"
+            },
+            {
+                text: "Em qual das frases abaixo a figura de construção **Zeugma** está presente?",
+                options: ["Os políticos, não confio neles.", "Tudo passa, tudo se transforma.", "João lavou o carro, e Maria, a casa.", "E chove, e faz vento, e relampeja.", "Nós, a juventude, queremos paz."],
+                answer: "João lavou o carro, e Maria, a casa."
+            }
+        ];
+
+        // --- 2. VARIÁVEIS DE ESTADO E ARMAZENAMENTO ---
+        let currentQuestionIndex = 0;
+        let hasSelectedAnswer = false; 
+        let userAnswers = new Array(questions.length).fill(null); 
+        let quizActive = false;
+        
+        // NOVO: Rastreamento do estudo
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+
+        // --- 3. FUNÇÕES DE RENDERIZAÇÃO ---
+        
+        function renderQuestion() {
+            // ... (Função de renderização do quiz - MANTIDA) ...
+            const q = questions[currentQuestionIndex];
+            const letters = ['a', 'b', 'c', 'd', 'e'];
+            const optionsArea = document.getElementById('options-area');
+            const btnNext = document.getElementById('btn-next');
+            
+            document.getElementById('question-number').textContent = `0${currentQuestionIndex + 1}`.slice(-2);
+            document.getElementById('question-text').textContent = q.text;
+            
+            optionsArea.innerHTML = q.options.map((option, index) => {
+                const isSelected = userAnswers[currentQuestionIndex] && userAnswers[currentQuestionIndex].chosenText === option ? 'selected' : '';
+                
+                return `
+                    <div class="option-item ${isSelected}" data-option-text="${option}">
+                        <span class="option-letter">${letters[index]}</span>
+                        <p class="option-text">${option}</p>
+                    </div>
+                `;
+            }).join('');
+            
+            const currentAnswer = userAnswers[currentQuestionIndex];
+            btnNext.textContent = currentQuestionIndex === questions.length - 1 ? 'Finalizar' : 'Próxima';
+            btnNext.classList.toggle('finish', currentQuestionIndex === questions.length - 1);
+            btnNext.disabled = !currentAnswer;
+            
+            attachOptionListeners();
+            renderPagination();
+        }
+
+        function renderPagination() {
+             // ... (Função de renderização da paginação - MANTIDA) ...
+            const paginationContainer = document.getElementById('pagination-buttons');
+            let paginationHTML = '';
+            
+            for (let i = 0; i < questions.length; i++) {
+                let statusClass = '';
+                if (i === currentQuestionIndex) {
+                    statusClass = 'active';
+                } else if (userAnswers[i]) {
+                    statusClass = userAnswers[i].isCorrect ? 'correct-dot' : 'incorrect-dot';
+                }
+                paginationHTML += `<span class="${statusClass}">${i + 1}</span>`;
+            }
+            paginationHTML += `<span>&raquo;</span>`;
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        function renderResults() {
+            // ... (Função de renderização dos resultados - MANTIDA) ...
+            const correctCount = userAnswers.filter(a => a && a.isCorrect).length;
+            const totalQuestions = questions.length;
+            const incorrectCount = totalQuestions - correctCount;
+
+            document.getElementById('question-form').style.display = 'none';
+            
+            let resultsHTML = `
+                <div class="results-container">
+                    <h2>🚀 Resultados do Desafio!</h2>
+                    <div class="summary">
+                        Você acertou <strong>${correctCount}</strong> de ${totalQuestions} questões (${((correctCount / totalQuestions) * 100).toFixed(1)}%).<br>
+                        Erros: ${incorrectCount}.
+                    </div>
+                    <h3>Detalhes por Questão:</h3>
+            `;
+
+            questions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer.isCorrect;
+                const statusClass = isCorrect ? 'correct' : 'incorrect';
+                const statusText = isCorrect ? '✅ CORRETA' : '❌ INCORRETA';
+                const selected = userAnswer.chosenText;
+                const correct = q.answer;
+
+                resultsHTML += `
+                    <div class="result-item ${statusClass}">
+                        <p><strong>Questão ${index + 1}:</strong> ${q.text.substring(0, 80)}...</p>
+                        <p>Sua Resposta: ${selected}</p>
+                        <p>Resposta Correta: ${correct}</p>
+                        <p><strong>Status: ${statusText}</strong></p>
+                    </div>
+                `;
+            });
+
+            resultsHTML += `<a href="../menu/menu.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px;">Voltar as Atividades</a></div>`;
+            
+            document.querySelector('.container').innerHTML = resultsHTML;
+        }
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO (NOVA) ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            document.getElementById('btn-read-1').textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+            document.getElementById('btn-read-2').textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+            document.getElementById('btn-read-1').disabled = done1;
+            document.getElementById('btn-read-2').disabled = done2;
+            document.getElementById('btn-read-1').style.backgroundColor = done1 ? '#90EE90' : 'var(--primary-blue)';
+            document.getElementById('btn-read-2').style.backgroundColor = done2 ? '#90EE90' : 'var(--primary-blue)';
+            document.getElementById('btn-read-1').style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            document.getElementById('btn-read-2').style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            
+            
+            if (done1 && done2) {
+                document.getElementById('progress-status').textContent = 'Estudo Completo! Pode Iniciar o Quiz.';
+                document.getElementById('progress-status').classList.add('done');
+                document.getElementById('progress-status').classList.remove('incorrect-red');
+                document.getElementById('btn-start-quiz').disabled = false;
+            } else {
+                const remaining = (done1 ? 0 : 1) + (done2 ? 0 : 1);
+                document.getElementById('progress-status').textContent = `Faltam ${remaining} tópico(s)`;
+                document.getElementById('btn-start-quiz').disabled = true;
+            }
+        }
+
+        // --- FUNÇÃO DE TRANSIÇÃO DE TELA (ADAPTADA) ---
+        function startQuiz() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                quizActive = true;
+                document.getElementById('content-view').style.display = 'none';
+                document.getElementById('question-form').style.display = 'grid'; // Usar grid para manter o layout
+                renderQuestion(); 
+            } else {
+                alert('Você precisa completar a leitura de todos os tópicos antes de iniciar o quiz!');
+            }
+        }
+
+        // --- LÓGICA DO QUIZ (Mantida) ---
+        function handleOptionSelection(selectedOptionElement) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+
+            const selectedText = selectedOptionElement.getAttribute('data-option-text');
+            const correctAnswerText = questions[currentQuestionIndex].answer;
+            const isCurrentlyCorrect = selectedText === correctAnswerText;
+
+            userAnswers[currentQuestionIndex] = {
+                qIndex: currentQuestionIndex,
+                chosenText: selectedText,
+                isCorrect: isCurrentlyCorrect
+            };
+
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            selectedOptionElement.classList.add('selected');
+
+            document.getElementById('btn-next').disabled = false;
+            hasSelectedAnswer = true;
+            renderPagination();
+        }
+        
+        function handleNextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('Por favor, selecione uma alternativa antes de avançar.');
+                return;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                hasSelectedAnswer = !!userAnswers[currentQuestionIndex];
+                renderQuestion();
+            } else {
+                renderResults();
+            }
+        }
+
+        function attachOptionListeners() {
+            document.querySelectorAll('.option-item').forEach(option => {
+                option.removeEventListener('click', null);
+                option.addEventListener('click', () => {
+                    if (userAnswers[currentQuestionIndex] === null) {
+                        handleOptionSelection(option);
+                    }
+                });
+            });
+        }
+        
+        // --- 5. INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral (Mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Botões de Estudo
+            document.getElementById('btn-read-1').addEventListener('click', () => {
+                studyProgress.section1 = true;
+                updateStudyProgress();
+            });
+            document.getElementById('btn-read-2').addEventListener('click', () => {
+                studyProgress.section2 = true;
+                updateStudyProgress();
+            });
+            
+            // Botão para Iniciar o Quiz
+            document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
+
+            // Botão Próxima/Finalizar
+            document.getElementById('btn-next').addEventListener('click', handleNextQuestion);
+            
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>

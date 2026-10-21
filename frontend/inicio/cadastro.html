@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepEnem - Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../js/api-client.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_BASE = 'http://localhost:3000/api';
+            const form = document.getElementById('cadastro-form');
+            const btnCadastrar = document.getElementById('btn-cadastrar');
+
+            btnCadastrar.addEventListener('click', async function(event) {
+                event.preventDefault();
+                const nome = document.getElementById('input-nome').value.trim();
+                const telefone = document.getElementById('input-telefone').value.trim();
+                const email = document.getElementById('input-email').value.trim();
+                const senha = document.getElementById('input-senha').value;
+                const termos = document.getElementById('check-termos').checked;
+
+                if (!nome || !telefone || !email || !senha) {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
+                if (!termos) { alert('Você precisa aceitar os Termos de Uso.'); return; }
+
+                try {
+                    const response = await fetch(`${API_BASE}/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nome, email, senha, telefone })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        localStorage.setItem('prepenem_token', data.token);
+                        localStorage.setItem('prepenem_user', JSON.stringify(data.user));
+                        window.location.href = '../menu/menu.html';
+                    } else { alert(data.error || 'Erro ao cadastrar.'); }
+                } catch (error) {
+                    alert('Erro de conexão. Verifique se o servidor está rodando.');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="cadastro-page">
+        <header id="cadastro-header">
+            <a href="index.html" id="logo-cadastro">Prep<span>Enem</span></a>
+        </header>
+
+        <main id="cadastro-main">
+            <div class="cadastro-box">
+                
+                <div class="benefits-side">
+                    <h1 class="welcome-title">Seja bem vindo ao PrepEnem!</h1>
+                    <p class="welcome-subtitle">Preencha seus dados para continuar</p>
+
+                    <ul class="benefit-list">
+                        <li><span class="checkmark">✔</span> Você recebe todos os benefícios completamente GRÁTIS</li>
+                        <li><span class="checkmark">✔</span> 24 Horas</li>
+                        <li><span class="checkmark">✔</span> Liberdade para cancelar o serviço quando desejar.</li>
+                    </ul>
+                </div>
+                
+                <div class="form-side">
+                    <h2 class="form-title">Cadastre-se</h2>
+
+                    <form id="cadastro-form">
+                        
+                        <div class="form-group">
+                            <input type="text" id="input-nome" name="nome" placeholder="Nome" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="input-telefone" name="telefone" placeholder="Telefone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="input-email" name="email" placeholder="E-mail" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="password" id="input-senha" name="senha" placeholder="Criar senha" required>
+                        </div>
+
+                        <div class="terms-group">
+                            <input type="checkbox" id="check-termos" name="termos" required>
+                            <label for="check-termos">
+                                Ao criar uma conta, você concorda com nossos Termos de Uso e Política de Privacidade
+                            </label>
+                        </div>
+
+                        <button type="submit" id="btn-cadastrar">
+                            Criar Conta
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer id="cadastro-footer">
+            </footer>
+    </div>
+
+</body>
+</html>

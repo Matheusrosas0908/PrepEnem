@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="menu.css">
+
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="#">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a>
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="health-tips-section">
+            <h2>Dicas para estudar com Saúde</h2>
+            <div class="tips-container">
+                
+                <div class="tip-card" id="tip-alimentacao">
+                    <i class="fas fa-utensils tip-icon"></i>
+                    <h3>Alimentação</h3>
+                    <p>Foco: refeições balanceadas e evite estudar com fome.</p>
+                    
+                    <ul class="tip-details-list" id="details-alimentacao">
+                        <li><i class="fas fa-check-circle"></i> Faça refeições balanceadas e evite estudar com fome.</li>
+                        <li><i class="fas fa-check-circle"></i> Beba água regularmente, mantendo uma garrafa por perto.</li>
+                        <li><i class="fas fa-check-circle"></i> Evite excesso de cafeína, carboidratos e gorduras.</li>
+                        <li><i class="fas fa-check-circle"></i> Faça pequenos lanches entre as refeições principais.</li>
+                    </ul>
+                </div>
+
+                <div class="tip-card" id="tip-sono">
+                    <i class="fas fa-moon tip-icon"></i>
+                    <h3>Sono</h3>
+                    <p>Foco: dormir 7-8 horas por noite para melhor memorização.</p>
+                    
+                    <ul class="tip-details-list" id="details-sono">
+                        <li><i class="fas fa-check-circle"></i> Durma 7-8 horas por noite para melhor memorização.</li>
+                        <li><i class="fas fa-check-circle"></i> Mantenha horários regulares para dormir e acordar.</li>
+                        <li><i class="fas fa-check-circle"></i> Evitar telas antes de dormir.</li>
+                        <li><i class="fas fa-check-circle"></i> Tire cochilos curtos (até 30 min) se necessário.</li>
+                    </ul>
+                </div>
+
+                <div class="tip-card" id="tip-organizacao">
+                    <i class="fas fa-clipboard-list tip-icon"></i>
+                    <h3>Organização</h3>
+                    <p>Foco: crie um cronograma de estudos para seguir as regras.</p>
+                    
+                    <ul class="tip-details-list" id="details-organizacao">
+                        <li><i class="fas fa-check-circle"></i> Crie um cronograma de estudos para seguir as regras.</li>
+                        <li><i class="fas fa-check-circle"></i> Estude em blocos (ex: 50 min de estudo + 10 min de pausa).</li>
+                        <li><i class="fas fa-check-circle"></i> Faça um planejamento a cada 7 dias para revisar o foco.</li>
+                        <li><i class="fas fa-check-circle"></i> Defina metas diárias realistas e recompense quando alcançadas.</li>
+                    </ul>
+                </div>
+                
+                <span class="tip-arrow-right">></span> 
+            </div>
+        </section>
+
+        <section class="modules-section">
+            <h2>Escolha uma área de estudo</h2>
+            <div class="modules-grid">
+                <div class="module-card module-blue" id="modulo-1">
+                    <div class="module-content">
+                        <i class="fas fa-book-open module-icon"></i>
+                        <div class="module-text">
+                            <h3>Módulo 1 -</h3>
+                            <p>Linguagens, Códigos e suas Tecnologias</p>
+                        </div>
+                    </div>
+                    <button class="access-button" id="acessar-mod-1">
+                         <a href="../portugues/portugues.html"style="color: white; text-decoration: none;">Acessar</a>
+                    </button>
+                    <span class="module-arrow-right">></span>
+                </div>
+
+                <div class="module-card module-green" id="modulo-4">
+                    <div class="module-content">
+                        <i class="fas fa-leaf module-icon"></i>
+                        <div class="module-text">
+                            <h3>Módulo 4 -</h3>
+                            <p>Ciências da Natureza e suas Tecnologias</p>
+                        </div>
+                    </div>
+                    <button class="access-button" id="acessar-mod-4">
+                        <a href="../cienciasdanatureza/natureza.html" style="color: white; text-decoration: none;">Acessar</a>
+                    </button>
+                    <span class="module-arrow-right">></span>
+                </div>
+
+                <div class="module-card module-green" id="modulo-2">
+                    <div class="module-content">
+                        <i class="fas fa-laptop-code module-icon"></i>
+                        <div class="module-text">
+                            <h3>Módulo 2 -</h3>
+                            <p>Matemática e suas Tecnologias</p>
+                        </div>
+                    </div>
+                    <button class="access-button" id="acessar-mod-2">
+                     <a href="../matematica/matematica.html" style="color: white; text-decoration: none;">Acessar</a>
+                    </button>
+                    <span class="module-arrow-right">></span>
+                </div>
+
+                <div class="module-card module-blue" id="modulo-5">
+                    <div class="module-content">
+                        <i class="fas fa-globe-americas module-icon"></i>
+                        <div class="module-text">
+                            <h3>Módulo 5 -</h3>
+                            <p>Ciências Humanas e suas Tecnologias</p>
+                        </div>
+                    </div>
+                    <button class="access-button" id="acessar-mod-5">
+                        <a href="../humanas/humanas.html" style="color: white; text-decoration: none;">Acessar</a>
+                    </button>
+                    <span class="module-arrow-right">></span>
+                </div>
+
+                <div class="module-card module-blue module-wide" id="modulo-3">
+                    <div class="module-content">
+                        <i class="fas fa-language module-icon"></i>
+                        <div class="module-text">
+                            <h3>Módulo 3 -</h3>
+                            <p>Língua Estrangeira (Inglês e Espanhol)</p>
+                        </div>
+                    </div>
+                    <button class="access-button" id="acessar-mod-3">
+                        <a href="../lingua_estrangeira/lingua_estrangeira.html" style="color: white; text-decoration: none;">Acessar</a>
+                    </button>
+                    <span class="module-arrow-right">></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+    <script src="../menu/menu.js"></script>
+</body>
+</html>

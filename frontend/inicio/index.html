@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepEnem</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../js/api-client.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_BASE = 'http://localhost:3000/api';
+            const modal = document.getElementById('login-modal');
+            const btn = document.getElementById('login-link');
+            const span = document.getElementsByClassName('close-btn')[0];
+
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                modal.style.display = 'block';
+            });
+
+            span.addEventListener('click', function() { modal.style.display = 'none'; });
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) { modal.style.display = 'none'; }
+            });
+
+            document.querySelector('.login-button').addEventListener('click', async function(event) {
+                event.preventDefault();
+                const email = modal.querySelector('input[type="text"]').value.trim();
+                const senha = modal.querySelector('input[type="password"]').value;
+                if (!email || !senha) { alert('Por favor, preencha todos os campos.'); return; }
+                try {
+                    const response = await fetch(`${API_BASE}/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, senha })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        localStorage.setItem('prepenem_token', data.token);
+                        localStorage.setItem('prepenem_user', JSON.stringify(data.user));
+                        window.location.href = '../menu/menu.html';
+                    } else { alert(data.error || 'Erro ao fazer login.'); }
+                } catch (error) {
+                    alert('Erro de conexão. Verifique se o servidor está rodando.');
+                }
+            });
+        });
+    </script>
+    </head>
+<body>
+
+    <header id="main-header">
+        <div class="container">
+            <a href="index.html" id="logo" class="logo">Prep<span>Enem</span></a>
+
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#">Menu</a></li>
+                    <li><a href="#">Concursos &#9662;</a></li>
+                    <li><a href="#">Notícias &#9662;</a></li>
+                </ul>
+            </nav>
+
+            <div id="user-actions" class="user-actions">
+                <a href="#" id="login-link" class="login-link">Entrar</a>
+                <a href="cadastro.html" id="signup-button" class="btn btn-primary">Quero estudar!</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container">
+            <div id="hero-text-box" class="hero-text">
+                <p>O PrepEnem é uma plataforma de estudos que procura educar e preparar indivíduos para exames, tais como Enem e Fuvest, de um modo inteligente, organizado e saudável</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="methodology">
+        <div class="container">
+            <div id="methodology-text">
+                <p>Nossa plataforma adota uma metodologia que é baseada em princípios científicos comprovados de aprendizagem eficaz, garantido que nossos usuários aprendam ao mesmo tempo que se mantenham descansados e saudáveis.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2 id="features-title">O PrepEnem oferece como recursos principais:</h2>
+
+            <div id="features-grid" class="features-grid">
+                
+                <div id="feature-structured-content" class="feature-item">
+                    <div class="icon-placeholder">📚</div> 
+                    <h3>Conteúdo Estruturado</h3>
+                    <p>Materiais completos organizados por disciplinas do ENEM, facilitando o foco e evitando perder tempo procurando conteúdo.</p>
+                </div>
+
+                <div id="feature-custom-planning" class="feature-item">
+                    <div class="icon-placeholder">📋</div>
+                    <h3>Planejamento Personalizado</h3>
+                    <p>Monte seu cronograma conforme seu ritmo e metas. O PrepEnem adapta o estudo ao seu tempo disponível.</p>
+                </div>
+
+                <div id="feature-gamification" class="feature-item">
+                    <div class="icon-placeholder">🏆</div>
+                    <h3>Gamificação</h3>
+                    <p>Pontos, badges e rankings transformam o estudo em um jogo, mantendo a motivação e o senso de progresso constante.</p>
+                </div>
+
+                <div id="feature-memo-techniques" class="feature-item">
+                    <div class="icon-placeholder">🧠</div>
+                    <h3>Técnicas de Memorização</h3>
+                    <p>Baseadas em métodos científicos como Active Recall e Spaced Repetition. Ajudam a fixar o conteúdo por mais tempo.</p>
+                </div>
+
+                <div id="feature-continuous-feedback" class="feature-item">
+                    <div class="icon-placeholder">✍️</div>
+                    <h3>Feedback Contínuo</h3>
+                    <p>Mostra sua evolução em tempo real. Permite ajustar o ritmo e celebrar cada conquista ao longo da jornada.</p>
+                </div>
+
+                <div id="feature-quality-of-life" class="feature-item">
+                    <div class="icon-placeholder">❤️</div>
+                    <h3>Qualidade de Vida</h3>
+                    <p>Dicas práticas sobre sono, alimentação e saúde mental. Promove equilíbrio entre desempenho e bem-estar.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="cta-footer">
+        <div class="container">
+            <h2 id="cta-text">
+                O que está esperando? Venha a estudar <a href="cadastro.html" id="cta-signup-link">Conosco!</a>
+            </h2>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            
+            <h2 class="welcome-title">SEJA BEM-VINDO!</h2>
+            
+            <p class="subtitle">Faça login para continuar sua jornada de estudos.</p>
+            
+            <div class="login-form">
+                <p class="instruction-text">Digite suas credenciais para acessar sua conta:</p>
+                
+                <input type="text" id="login-email" placeholder="Email">
+                <input type="password" id="login-senha" placeholder="Senha">
+                
+                <button class="login-button">
+                    ENTRAR E ESTUDAR
+                </button>
+            </div>
+            
+            <p class="links-footer">
+                <a href="#">Esqueceu a senha?</a>
+                <br>
+                Não tem uma conta? <a href="cadastro.html" class="signup-link">Cadastre-se aqui!</a>
+            </p>
+        </div>
+    </div>
+    
+</body>
+</html>

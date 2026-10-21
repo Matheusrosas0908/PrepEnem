@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep Enem - Química: Radioatividade e Reações Nucleares</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        /* --- Variáveis e Estilos Globais --- */
+        :root {
+            --primary-blue: #4169E1; /* Azul principal */
+            --secondary-green: #00CC99; 
+            --enem-yellow: #FFC107; 
+            --nuclear-orange: #FF4500; /* Laranja Nuclear (Destaque para Radioatividade) */
+            --text-dark: #333;
+            --text-light: #fff;
+            --question-bg: #FFF8F0; /* Fundo suave para o conteúdo nuclear */
+            --correct-green: #4CAF50;
+            --incorrect-red: #F44336;
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px; 
+            flex-grow: 1;
+        }
+        
+        /* Sidebar e Header (Mantidos) */
+        .sidebar { height: 100%; width: 250px; position: fixed; z-index: 100; top: 0; left: 0; background-color: var(--primary-blue); overflow-x: hidden; transition: transform 0.3s ease; transform: translateX(-250px); box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); padding-top: 20px; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-header { padding: 15px 20px; font-size: 20px; font-weight: bold; color: var(--text-light); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 10px; }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 15px 20px; display: flex; align-items: center; transition: background-color 0.2s; cursor: pointer; color: var(--text-light); font-size: 16px; }
+        .sidebar-menu li:hover { background-color: rgba(255, 255, 255, 0.15); }
+        .sidebar-menu li a { text-decoration: none; color: var(--text-light); font-weight: 500; flex-grow: 1; }
+        .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .header { background-color: var(--primary-blue); color: var(--text-light); padding: 15px 20px; display: flex; align-items: center; z-index: 50; }
+        .logo { display: flex; align-items: center; }
+        .menu-icon { font-size: 24px; margin-right: 15px; cursor: pointer; color: var(--enem-yellow); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--text-light); }
+        .enem-highlight { color: var(--enem-yellow); }
+
+        /* Cabeçalho do Conteúdo (Ajuste para Natureza/Química) */
+        .module-header-exercise { 
+            background-color: var(--nuclear-orange); /* Laranja Nuclear */
+            color: var(--text-light); 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .module-header-exercise a { text-decoration: none; color: var(--nuclear-orange); background-color: var(--text-light); padding: 5px 15px; border-radius: 4px; transition: background-color 0.2s; }
+        .module-header-exercise a:hover { background-color: #eee; }
+        
+        /* --- CONTEÚDO DE ESTUDO --- */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--nuclear-orange); /* Destaque Radioatividade */
+            background-color: var(--question-bg); 
+        }
+        .content-section h3 {
+            color: var(--nuclear-orange);
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .content-section p {
+            line-height: 1.6;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 10px;
+        }
+        .content-section li {
+            margin-bottom: 8px;
+        }
+        .content-section .key-term {
+            font-weight: bold;
+            color: var(--primary-blue); 
+        }
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center; /* Centralizando para tabelas de partículas */
+            font-size: 14px;
+        }
+        .content-section th {
+            background-color: #ffcccb; /* Cor suave para radioatividade */
+            color: var(--text-dark);
+        }
+        
+        /* Botões de Progresso e Leitura (Ajustados) */
+        .study-progress-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .study-progress-bar span {
+            font-weight: bold;
+            color: var(--nuclear-orange);
+        }
+        .progress-status {
+            color: var(--incorrect-red);
+            font-size: 1.1em;
+        }
+        .progress-status.done {
+            color: var(--secondary-green);
+        }
+
+        .btn-read {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            float: right;
+        }
+        
+        /* Estilos do Footer e Resultados (Ajustados para o tema) */
+        .footer { background-color: var(--enem-yellow); padding: 20px; text-align: center; color: var(--text-dark); margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-footer { font-weight: bold; font-size: 22px; color: var(--primary-blue); }
+        .help-section { text-align: right; }
+        .help-section p { font-size: 14px; margin-bottom: 5px; }
+        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        .results-container { 
+            padding: 40px; 
+            background-color: var(--text-light); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 50px; 
+        }
+        .results-container h2 { color: var(--nuclear-orange); margin-bottom: 20px; text-align: center; }
+        .summary { text-align: center; font-size: 1.1em; margin-bottom: 30px; padding: 15px; border-bottom: 2px solid #ffcccb; }
+        .result-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 6px; }
+        .result-item strong { color: var(--nuclear-orange); }
+    </style>
+</head>
+<body>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Prep <span class="enem-highlight">Enem</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades">
+                <i class="fas fa-list-alt icon"></i>
+                <a href="../menu/menu.html">Atividades</a>
+            </li>
+            <li id="menu-redacoes">
+                <i class="fas fa-file-alt icon"></i>
+                <a href="../redacao/redacao.html">Redações</a> 
+            </li>
+            <li id="menu-planejamento">
+                <i class="fas fa-calendar-alt icon"></i>
+                <a href="#">Planejamento</a>
+            </li>
+            <li id="menu-perfil">
+                <i class="fas fa-user icon"></i>
+                <a href="../perfil/perfil.html">Perfil</a>
+            </li>
+            <li id="menu-configuracoes">
+                <i class="fas fa-cog icon"></i>
+                <a href="#">Configurações</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <h1 class="logo-text">
+                Prep <span class="enem-highlight">Enem</span>
+            </h1>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <span>Química - Módulo 5: Radioatividade e Fissão/Fusão</span> 
+        <a href="../cienciasdanatureza/natureza.html">Voltar ao Módulo</a>
+    </div>
+
+    <main class="container">
+        
+        <div id="content-view" class="content-view">
+            <h2>⚛️ Conteúdo Aprofundado: Radioatividade (Foco ENEM)</h2>
+            <p>A **Radioatividade** é o fenômeno que ocorre quando núcleos atômicos instáveis emitem partículas e ondas para atingir a estabilidade. O ENEM foca nas aplicações práticas e nos tipos de decaimento.</p>
+            <p>Para liberar o acesso ao resumo de feedback, você deve ler e marcar os dois tópicos abaixo como lidos.</p>
+
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+
+            <div class="content-section" id="study-section-1">
+                <h3>1. Partículas de Decaimento e Lei de Soddy</h3>
+                <p>As partículas **alfa (α), beta (β) e as ondas gama (γ)** são as principais formas de emissão. É crucial saber seus poderes de penetração e as mudanças que causam no núcleo.</p>
+                
+                <h4>Tipos de Radiação</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Partícula</th>
+                            <th>Natureza</th>
+                            <th>Massa (A)</th>
+                            <th>Carga (Z)</th>
+                            <th>Poder de Penetração</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Alfa (α)</strong></td>
+                            <td>Núcleo de Hélio (He 4/2)</td>
+                            <td>4</td>
+                            <td>+2</td>
+                            <td>Baixo (retida por papel)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Beta (β)</strong></td>
+                            <td>Elétron (e 0/-1)</td>
+                            <td>0</td>
+                            <td>-1</td>
+                            <td>Médio (retida por madeira ou metal fino)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gama (γ)</strong></td>
+                            <td>Onda Eletromagnética</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Alto (retida por chumbo ou concreto)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Leis de Soddy (Conservação)</h4>
+                <p>Em qualquer reação nuclear, a **soma dos números de massa (A)** e a **soma dos números atômicos (Z)** se conservam.</p>
+                <ul>
+                    <li><span class="key-term">Emissão α:</span> O número de massa (A) diminui em 4 e o atômico (Z) diminui em 2.</li>
+                    <li><span class="key-term">Emissão β:</span> O número de massa (A) se mantém e o atômico (Z) aumenta em 1.</li>
+                </ul>
+
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content-section" id="study-section-2">
+                <h3>2. Fissão, Fusão e Meia-Vida (Tempo de Semidesintegração)</h3>
+                <p>A diferença entre **Fissão** (quebra de núcleos grandes) e **Fusão** (união de núcleos pequenos) e o conceito de **Meia-Vida** são centrais no ENEM.</p>
+                
+                <h4>Meia-Vida (t 1/2)</h4>
+                <p>É o tempo necessário para que **metade (50%)** da quantidade inicial de um isótopo radioativo se desintegre. O ENEM adora problemas de cálculo com o tempo de semidesintegração.</p>
+                
+                <p class="key-term">Exemplo:</p>
+                <p>Se um elemento tem $t_{1/2} = 5$ horas e você tem 100g, após 10 horas (2 meias-vidas) a massa restante será: 100 g -> 5h -> 50 g -> 5h -> 25 g</p>
+
+                <h4>Fissão Nuclear (Usina Nuclear)</h4>
+                <p>Núcleos pesados (ex: Urânio) são bombardeados e se dividem em núcleos menores, liberando uma grande quantidade de energia e nêutrons (que causam a **reação em cadeia**).</p>
+
+                <h4>Fusão Nuclear (Sol e Estrelas)</h4>
+                <p>Núcleos leves (ex: Hidrogênio) se unem para formar núcleos mais pesados, liberando uma energia muito maior que a fissão. É o processo natural que ocorre no Sol e a grande aposta para a **energia limpa do futuro**.</p>
+                
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            
+            <button type="button" class="btn-next" id="btn-start-quiz" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-atom"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O RESUMO
+            </button>
+        </div>
+        <form id="question-form" style="display: none;">
+            </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">
+            Prep <span class="enem-highlight-footer">Enem</span>
+        </div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- VARIÁVEIS DE ESTADO ---
+        const TOTAL_STUDY_SECTIONS = 2;
+        let studyProgress = {
+            section1: false,
+            section2: false
+        };
+        
+        // --- FUNÇÃO DE PROGRESSÃO DO ESTUDO ---
+        function updateStudyProgress() {
+            const done1 = studyProgress.section1;
+            const done2 = studyProgress.section2;
+            
+            // ATUALIZAÇÃO DOS BOTÕES DE LEITURA
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+
+            if (btnRead1) {
+                btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                btnRead1.disabled = done1;
+                btnRead1.style.backgroundColor = done1 ? 'var(--secondary-green)' : 'var(--primary-blue)';
+                btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            if (btnRead2) {
+                btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                btnRead2.disabled = done2;
+                btnRead2.style.backgroundColor = done2 ? 'var(--secondary-green)' : 'var(--primary-blue)';
+                btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+            }
+            
+            // Atualiza a barra de progresso e o botão principal (Finalizar Leitura)
+            const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+            const remaining = TOTAL_STUDY_SECTIONS - completedCount;
+            
+            const progressStatus = document.getElementById('progress-status');
+            const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+            if (remaining === 0) {
+                progressStatus.textContent = 'Estudo Completo! Pronto para o Resumo Final.';
+                progressStatus.classList.add('done');
+                progressStatus.classList.remove('incorrect-red');
+                btnStartQuiz.disabled = false;
+                btnStartQuiz.innerHTML = '<i class="fas fa-certificate"></i> Ver Resumo Final';
+                btnStartQuiz.style.backgroundColor = 'var(--nuclear-orange)'; /* Destaque Nuclear */
+                btnStartQuiz.style.color = 'var(--text-light)';
+            } else {
+                progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                progressStatus.classList.remove('done');
+                progressStatus.classList.add('incorrect-red');
+                btnStartQuiz.disabled = true;
+                btnStartQuiz.innerHTML = '<i class="fas fa-atom"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O RESUMO';
+                btnStartQuiz.style.backgroundColor = 'var(--primary-blue)';
+                btnStartQuiz.style.color = 'var(--text-light)';
+            }
+        }
+
+        // --- FUNÇÃO DE TRANSIÇÃO PARA O RESUMO FINAL ---
+        function goToSummary() {
+            if (studyProgress.section1 && studyProgress.section2) {
+                // Esconde o conteúdo de estudo
+                document.getElementById('content-view').style.display = 'none';
+                renderSummaryResults(); 
+            } else {
+                alert('Opa! Você precisa completar a leitura de todos os tópicos antes de ver o resumo final.');
+            }
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O RESUMO FINAL ---
+        function renderSummaryResults() {
+            const summaryHTML = `
+                <div class="results-container" style="margin-top: 50px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <h2>✅ Resumo Final: Radioatividade Essencial</h2>
+                    <div class="summary" style="background-color: var(--question-bg); border-radius: 6px; padding: 20px; border-left: 5px solid var(--nuclear-orange);">
+                        <p>Parabéns por completar o estudo sobre **Radioatividade**! Este tema une Química, Física e Meio Ambiente. Lembre-se, o ENEM valoriza a **aplicação** dos conceitos.</p>
+                        <p style="font-weight: bold; margin-top: 10px;">A chave é saber as diferenças entre as partículas, dominar as Leis de Soddy para prever o decaimento e aplicar a matemática simples da Meia-Vida.</p>
+                    </div>
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Tópicos Revisados e Pontos de Atenção:</h3>
+                    
+                    <div class="result-item correct" style="border-left: 5px solid var(--nuclear-orange); background-color: #FFF8F0;">
+                        <p><strong>Decaimento α e β:</strong> <br> α: A-4, Z-2. <br> β: A=constante, Z+1. Domine essas variações!</p>
+                    </div>
+
+                    <div class="result-item correct" style="border-left: 5px solid var(--nuclear-orange); background-color: #FFF8F0;">
+                        <p><strong>Fissão vs. Fusão:</strong> Fissão (quebra) é em **usinas**, libera resíduo e cria reação em cadeia. Fusão (união) é no **Sol**, mais potente e limpa.</p>
+                    </div>
+                    
+                    <div class="result-item correct" style="border-left: 5px solid var(--nuclear-orange); background-color: #FFF8F0;">
+                        <p><strong>Meia-Vida:</strong> O tempo necessário para a massa **cair pela metade**. Se o tempo total for de 4 meias-vidas, a massa restante é (1/2)4 = 1/16 do inicial.</p>
+                    </div>
+                    
+                    <a href="../cienciasdanatureza/natureza.html" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar ao Menu de Atividades de Natureza
+                    </a>
+                </div>
+            `;
+            // Substitui o conteúdo da main pelo resumo
+            document.querySelector('.container').innerHTML = summaryHTML;
+        }
+
+
+        // --- INICIALIZAÇÃO E EVENT LISTENERS GLOBAIS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuração do Menu Lateral (Mantido)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('overlay');
+            const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
+            const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
+            if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+
+            // Eventos de Leitura para o Estudo
+            const btnRead1 = document.getElementById('btn-read-1');
+            const btnRead2 = document.getElementById('btn-read-2');
+            
+            if (btnRead1) {
+                btnRead1.addEventListener('click', () => {
+                    studyProgress.section1 = true;
+                    updateStudyProgress();
+                });
+            }
+
+            if (btnRead2) {
+                btnRead2.addEventListener('click', () => {
+                    studyProgress.section2 = true;
+                    updateStudyProgress();
+                });
+            }
+            
+            // Botão para Iniciar o Resumo
+            document.getElementById('btn-start-quiz').addEventListener('click', goToSummary);
+
+            // Inicializa a tela de estudo e o status
+            updateStudyProgress();
+        });
+    </script>
+</body>
+</html>
