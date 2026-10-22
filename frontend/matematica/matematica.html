@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prep Enem - Módulo 1 de Matemática: Sequência Obrigatória</title>
+    <title>Prep Enem - Matemática e suas Tecnologias</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <style>
-        /* --- Variáveis e Estilos Globais --- */
+        /* ===== VARIÁVEIS E ESTILOS GLOBAIS ===== */
         :root {
-            --primary-blue: #4169E1; /* Azul principal */
-            --secondary-green: #00CC99; /* Verde de destaque */
-            --tip-yellow: #FFFBE0; /* Fundo do card de dica amarelo/claro */
+            --primary-blue: #4169E1;
+            --secondary-green: #00CC99;
+            --tip-yellow: #FFFBE0;
             --text-dark: #333;
             --text-light: #fff;
             --footer-yellow: #FFC107;
-            --enem-yellow: #FFC107; /* Amarelo para a palavra ENEM e destaques */
+            --enem-yellow: #FFC107;
             --max-width: 1200px;
-            --locked-gray: #ccc; /* Cor para aulas bloqueadas */
+            --locked-gray: #ccc;
+            --question-bg: #E0EFFF;
+            --correct-green: #4CAF50;
+            --incorrect-red: #F44336;
         }
 
         * {
@@ -40,10 +43,10 @@
             max-width: var(--max-width);
             margin: 0 auto;
             padding: 20px;
-            flex-grow: 1; /* Permite que o container ocupe o espaço vertical */
+            flex-grow: 1;
         }
-        
-        /* 1. Cabeçalho */
+
+        /* ===== 1. CABEÇALHO ===== */
         .header {
             background-color: var(--primary-blue);
             color: var(--text-light);
@@ -62,7 +65,7 @@
             font-size: 24px;
             margin-right: 15px;
             cursor: pointer;
-            color: var(--enem-yellow); 
+            color: var(--enem-yellow);
         }
 
         .logo-text {
@@ -72,13 +75,13 @@
         }
 
         .enem-highlight {
-            color: var(--enem-yellow); 
+            color: var(--enem-yellow);
         }
 
-        /* 2. Sidebar (Menu Lateral) - MANTIDO */
+        /* ===== 2. SIDEBAR ===== */
         .sidebar {
             height: 100%;
-            width: 250px; 
+            width: 250px;
             position: fixed;
             z-index: 100;
             top: 0;
@@ -90,7 +93,9 @@
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
             padding-top: 20px;
         }
+
         .sidebar.open { transform: translateX(0); }
+
         .sidebar-header {
             padding: 15px 20px;
             font-size: 20px;
@@ -99,6 +104,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 10px;
         }
+
         .sidebar-menu { list-style: none; padding: 0; }
         .sidebar-menu li {
             padding: 15px 20px;
@@ -114,9 +120,10 @@
             text-decoration: none;
             color: var(--text-light);
             font-weight: 500;
-            flex-grow: 1; 
+            flex-grow: 1;
         }
         .sidebar-menu li .icon { font-size: 18px; margin-right: 15px; }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -130,232 +137,7 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .overlay.active { opacity: 1; visibility: visible; }
-        
-        /* --- 3. Título do Módulo e Botão de Avanço --- */
-        .module-header-area {
-            background-color: #f8f8f8;
-            color: var(--text-dark);
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .module-header-area a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .module-header-area a i {
-            margin-right: 8px;
-            color: var(--primary-blue);
-        }
-        
-        #module-title {
-            font-size: 20px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        #module-subtitle {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-            margin-left: 10px;
-            display: inline-block;
-        }
-        
-        .title-line {
-            display: flex;
-            align-items: baseline;
-        }
-        
-        /* Estilo do Botão de Avançar Módulo */
-        #btn-next-module {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            text-align: center;
-            margin-top: 15px; 
-            background-color: var(--secondary-green);
-            color: var(--text-dark);
-            width: auto; /* Ajusta largura */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        #btn-next-module:hover {
-            background-color: #00b386;
-        }
-        
-        /* --- 4. Layout Principal do Conteúdo --- */
-        .content-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 0 20px; 
-        }
-
-        .main-content { grid-column: 1 / -1; }
-        .side-content { display: none; }
-
-        /* --- 5. Player de Vídeo e Ações --- */
-        .video-player-box {
-            background-color: #333;
-            width: 100%;
-            /* ALTURA FIXA PARA MANTER O ASPECT RATIO DO VÍDEO NO MOBILE */
-            height: 250px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .video-player-box i { font-size: 50px; color: #999; }
-        
-        /* Garantir que o iframe preencha o box */
-        .video-player-box iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-        }
-
-
-        #lesson-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .info-detail { font-size: 14px; color: #666; margin-right: 10px; }
-        #lesson-title { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
-
-        .lesson-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .btn-action {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            flex-grow: 1; 
-            text-align: center;
-        }
-
-        #btn-restart {
-            background-color: var(--primary-blue);
-            color: var(--text-light);
-        }
-        
-        #btn-complete {
-            background-color: var(--secondary-green);
-            color: var(--text-dark);
-        }
-        #btn-complete:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        
-        /* --- 6. Lista de Conteúdo do Módulo --- */
-        .module-content-list h2 { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
-
-        .lesson-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: var(--text-light);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            cursor: pointer; 
-        }
-        
-        /* ESTILO PARA AULAS BLOQUEADAS */
-        .lesson-item.locked { opacity: 0.6; cursor: not-allowed; }
-        .lesson-item.current { border: 2px solid var(--primary-blue); }
-
-        .lesson-icon { font-size: 20px; margin-right: 15px; width: 25px; text-align: center; }
-        .lesson-status-completed { color: var(--secondary-green); }
-        .lesson-status-current { color: var(--primary-blue); }
-        .lesson-status-locked { color: var(--locked-gray); }
-
-        .lesson-details { flex-grow: 1; }
-        .lesson-details span { display: block; font-weight: bold; }
-
-        .lesson-item-actions { color: var(--primary-blue); font-size: 18px; cursor: pointer; margin-left: 15px; padding: 5px; transition: color 0.2s; }
-        .lesson-item-actions:hover { color: var(--secondary-green); }
-        
-        /* [Seções de Dicas e Rodapé] (Mantidos) */
-
-        .side-content { padding: 0 20px; }
-        .side-content h2 { font-size: 16px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; }
-        .side-content h2 i { color: #f44336; margin-right: 5px; } /* Coração vermelho */
-
-        .tip-card-side { padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
-        #tip-sono-side { background-color: #E0FFFF; } 
-        #tip-organizacao-side { background-color: var(--tip-yellow); }
-
-        .tip-card-side h3 { font-size: 14px; font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; }
-        .tip-card-side h3 i { font-size: 18px; margin-right: 8px; }
-        .tip-card-side p { font-size: 12px; line-height: 1.4; }
-        
-        #tip-sono-side h3 i { color: var(--secondary-green); }
-        #tip-sono-side h3 { color: #008080; }
-        
-        #tip-organizacao-side h3 i { color: var(--enem-yellow); }
-        #tip-organizacao-side h3 { color: #8B8000; }
-
-        #message-card {
-            background-color: var(--primary-blue);
-            color: var(--text-light);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        #message-card i { font-size: 24px; margin-bottom: 10px; }
-
-        .footer {
-            background-color: var(--footer-yellow);
-            padding: 20px;
-            text-align: center;
-            color: var(--text-dark);
-            margin-top: auto; /* Garante que o footer fique no final */
-        }
-
-        .logo-footer { font-weight: bold; font-size: 22px; margin-bottom: 10px; color: var(--primary-blue); }
-        .enem-highlight-footer { color: var(--text-dark); }
-        .help-section p { font-size: 14px; margin-bottom: 5px; }
-        #link-central-ajuda { color: var(--primary-blue); text-decoration: none; font-weight: bold; font-size: 14px; }
-
-        /* --- Media Queries --- */
-        @media (min-width: 768px) {
-            .container { padding: 20px 40px; }
-            .module-header-area { padding: 15px 40px; }
-            .content-layout { grid-template-columns: 2fr 1fr; padding: 0; }
-            .main-content { grid-column: 1 / 2; padding-left: 40px; }
-            .side-content { grid-column: 2 / 3; display: block; padding-right: 40px; }
-        }
     </style>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -363,7 +145,7 @@
             Prep <span class="enem-highlight">Enem</span>
         </div>
         <ul class="sidebar-menu">
-            <li id="menu-atividades">
+            <li id="menu-atividades" onclick="showMainView()">
                 <i class="fas fa-list-alt icon"></i>
                 <a href="../menu/menu.html">Atividades</a>
             </li>
@@ -390,7 +172,7 @@
 
     <header class="header">
         <div class="logo">
-            <span class="menu-icon" id="menu-toggle">&#9776;</span> 
+            <span class="menu-icon" id="menu-toggle">&#9776;</span>
             <h1 class="logo-text">
                 Prep <span class="enem-highlight">Enem</span>
             </h1>
@@ -401,240 +183,884 @@
         </div>
     </header>
 
-    <div class="module-header-area">
-        <a href="javascript:void(0)" id="btn-back-module" onclick="goBackToLastTab()"><i class="fas fa-arrow-left"></i>
-            <span class="back-text">Voltar ao Menu de Módulos</span>
-        </a>
-        <div class="title-line">
-            <h2 id="module-title">Matemática e suas Tecnologias - MÓDULO 1</h2>
-            <p id="module-subtitle"><span id="completed-lessons-count">0</span> de <span id="total-lessons-count">5</span> Tópicos</p>
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <main class="container" id="main-container">
+        <!-- Main View (Module Dashboard) -->
+        <div id="main-view">
+            <div class="module-header-area">
+                <a href="javascript:void(0)" id="btn-back-module" onclick="goBackToLastTab()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="back-text">Voltar ao Menu de Módulos</span>
+                </a>
+                <div class="title-line">
+                    <h2 id="module-title">Matemática e suas Tecnologias - MÓDULO 1</h2>
+                    <p id="module-subtitle">
+                        <span id="completed-lessons-count">0</span> de <span id="total-lessons-count">5</span> Tópicos
+                    </p>
+                </div>
+                <button id="btn-next-module" class="btn-action" style="display: none;">
+                    <i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (2/5)
+                </button>
+            </div>
+
+            <div class="content-layout">
+                <section class="main-content">
+                    <!-- Video Player -->
+                    <div class="video-player-box" id="video-player">
+                        <i class="fas fa-camera"></i>
+                    </div>
+
+                    <div id="lesson-info">
+                        <h3 id="lesson-title">Carregando Aula...</h3>
+                        <div class="info-detail">
+                            <span id="lesson-duration">Duração: -</span>
+                        </div>
+                    </div>
+
+                    <div class="lesson-actions">
+                        <button class="btn-action" id="btn-restart">Revisar</button>
+                        <button class="btn-action" id="btn-complete">Marcar como concluído</button>
+                    </div>
+
+                    <!-- Lesson List -->
+                    <div class="module-content-list">
+                        <h2>Conteúdo Sequencial</h2>
+                        <div class="lesson-item locked" id="lesson-item-1" data-lesson-id="1" onclick="handleLessonClick(1)">
+                            <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-1"></i>
+                            <div class="lesson-details">
+                                <span id="lesson-name-1">Grandezas Proporcionais</span>
+                            </div>
+                            <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 1)" title="Ver conteúdo"></i>
+                        </div>
+                        <div class="lesson-item locked" id="lesson-item-2" data-lesson-id="2" onclick="handleLessonClick(2)">
+                            <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-2"></i>
+                            <div class="lesson-details">
+                                <span id="lesson-name-2">Estatística</span>
+                            </div>
+                            <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 2)" title="Ver conteúdo"></i>
+                        </div>
+                        <div class="lesson-item locked" id="lesson-item-3" data-lesson-id="3" onclick="handleLessonClick(3)">
+                            <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-3"></i>
+                            <div class="lesson-details">
+                                <span id="lesson-name-3">Aritmética</span>
+                            </div>
+                            <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 3)" title="Ver conteúdo"></i>
+                        </div>
+                        <div class="lesson-item locked" id="lesson-item-4" data-lesson-id="4" onclick="handleLessonClick(4)">
+                            <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-4"></i>
+                            <div class="lesson-details">
+                                <span id="lesson-name-4">Funções e Equações</span>
+                            </div>
+                            <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 4)" title="Ver conteúdo"></i>
+                        </div>
+                        <div class="lesson-item locked" id="lesson-item-5" data-lesson-id="5" onclick="handleLessonClick(5)">
+                            <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-5"></i>
+                            <div class="lesson-details">
+                                <span id="lesson-name-5">Matrizes</span>
+                            </div>
+                            <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 5)" title="Ver conteúdo"></i>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
-        
-        <button id="btn-next-module" class="btn-action" style="display: none;">
-            <i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (2/5)
-        </button>
-    </div>
-
-    <main class="container">
-        
-        <div class="content-layout">
-
-            <section class="main-content">
-                
-                <div class="video-player-box" id="video-player">
-                    <i class="fas fa-camera"></i>
-                </div>
-
-                <div id="lesson-info">
-                    <h3 id="lesson-title">Carregando Aula...</h3>
-                    <div class="info-detail">
-                        <span id="lesson-duration">Duração: -</span>
-                    </div>
-                </div>
-
-                <div class="lesson-actions">
-                    <button class="btn-action" id="btn-restart">Revisar</button>
-                    <button class="btn-action" id="btn-complete">Marcar como concluído</button>
-                </div>
-
-                <div class="module-content-list">
-                    <h2>Conteúdo Sequencial</h2>
-                    
-                    <div class="lesson-item locked" id="lesson-item-1" data-lesson-id="1" onclick="handleLessonClick(1)">
-                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-1"></i>
-                        <div class="lesson-details">
-                            <span id="lesson-name-1">Grandezas Proporcionais</span>
-                        </div>
-                        <a href="questão1.html">
-                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 1)"></i>
-                        </a>
-                    </div>
-
-                    <div class="lesson-item locked" id="lesson-item-2" data-lesson-id="2" onclick="handleLessonClick(2)">
-                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-2"></i>
-                        <div class="lesson-details">
-                            <span id="lesson-name-2">Estatística</span>
-                        </div>
-                        <a href="questão2.html">
-                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 2)"></i>
-                        </a>                    
-                    </div>
-
-                    <div class="lesson-item locked" id="lesson-item-3" data-lesson-id="3" onclick="handleLessonClick(3)">
-                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-3"></i>
-                        <div class="lesson-details">
-                            <span id="lesson-name-3">Aritmética</span>
-                        </div>
-                        <a href="questão3.html">
-                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 3)"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="lesson-item locked" id="lesson-item-4" data-lesson-id="4" onclick="handleLessonClick(4)">
-                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-4"></i>
-                        <div class="lesson-details">
-                            <span id="lesson-name-4">Funções e Equações</span>
-                        </div>
-                        <a href="questão4.html">
-                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 4)"></i>
-                        </a>
-                    </div>
-
-                    <div class="lesson-item locked" id="lesson-item-5" data-lesson-id="5" onclick="handleLessonClick(5)">
-                        <i class="fas fa-lock lesson-icon lesson-status-locked" id="status-5"></i>
-                        <div class="lesson-details">
-                            <span id="lesson-name-5">Matrizes</span>
-                        </div>
-                        <a href="questão5.html">
-                        <i class="fas fa-external-link-alt lesson-item-actions" onclick="handleExerciseClick(event, 5)"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </section>
-
-            <aside class="side-content">
-                <h2><i class="fas fa-heart"></i> Dicas de Saúde</h2>
-                
-                <div class="tip-card-side" id="tip-sono-side">
-                    <h3><i class="fas fa-moon"></i> Sono</h3>
-                    <p>Durma 7-8 horas por noite para melhor memorização.</p>
-                </div>
-                
-                <div class="tip-card-side" id="tip-organizacao-side">
-                    <h3><i class="fas fa-calendar-check"></i> Organização</h3>
-                    <p>Crie um cronograma de estudos com pausas regulares.</p>
-                </div>
-                
-                <div id="message-card">
-                    <i class="fas fa-map-pin"></i>
-                    <p id="message-text">Transforme seus sonhos em realidade!</p>
-                </div>
-            </aside>
-
-        </div>
-
     </main>
 
-    <footer class="footer">
-        <div class="logo-footer">
-            Prep <span class="enem-highlight-footer">Enem</span>
+    <!-- ===== SEÇÕES DE TÓPICOS ===== -->
+    <!-- Tópico 1: Grandezas Proporcionais -->
+    <div id="topic-1" class="topic-section" style="display: none;">
+        <div class="module-header-exercise">
+            <span>Matemática - 01: Grandezas Proporcionais</span>
+            <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
         </div>
-        <div class="help-section">
-            <p>Dúvidas? Fale conosco</p>
-            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        <div class="content-view">
+            <h2>📚 Conteúdo Aprofundado: Grandezas Proporcionais (Foco ENEM)</h2>
+            <p>Nesta seção, você estudará a fundo a base da matemática aplicada no ENEM: <strong>Grandezas Proporcionais</strong>. Lembre-se que o ENEM adora problemas contextualizados que exigem a correta identificação do tipo de proporção.</p>
+            <p>Para liberar o acesso ao resumo de feedback, você deve ler e marcar os dois tópicos abaixo como lidos.</p>
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+            <div class="content-section" id="study-section-1">
+                <h3>1. Diretamente Proporcional (DP) vs. Inversamente Proporcional (IP)</h3>
+                <p>Entender a diferença é o primeiro passo para montar a <strong>Regra de Três</strong> corretamente.</p>
+                <h4>Grandezas Diretamente Proporcionais (DP)</h4>
+                <p>Duas grandezas são <strong>Diretamente Proporcionais</strong> quando elas variam no <strong>mesmo sentido</strong>: se uma aumenta, a outra aumenta; se uma diminui, a outra diminui, mantendo a razão entre elas constante.<br>Exemplo Clássico: <strong>Mais horas de trabalho, mais salário recebido.</strong></p>
+                <h4>Grandezas Inversamente Proporcionais (IP)</h4>
+                <p>Duas grandezas são <strong>Inversamente Proporcionais</strong> quando elas variam em <strong>sentidos opostos</strong>: se uma aumenta, a outra diminui, mantendo o produto entre elas constante.<br>Exemplo Clástico: <strong>Mais operários trabalhando, menos tempo para a obra terminar.</strong></p>
+                <button type="button" class="btn-read" id="btn-read-1">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="content-section" id="study-section-2">
+                <h3>2. Aplicação Prática: Regra de Três Simples e Composta</h3>
+                <p>A <strong>Regra de Três</strong> é a ferramenta que usamos para resolver problemas com proporções, utilizando a multiplicação cruzada ou a multiplicação em linha.</p>
+                <h4>Regra de Três Simples (Duas Grandezas)</h4>
+                <p>Usada quando há apenas duas grandezas envolvidas:</p>
+                <ul>
+                    <li><strong>DP:</strong> Multiplicamos em <strong>cruz</strong> (produto cruzado).</li>
+                    <li><strong>IP:</strong> Mantemos uma das grandezas na <strong>ordem inversa</strong> e multiplicamos em <strong>cruz</strong> (ou multiplicamos uma linha pela outra).</li>
+                </ul>
+                <h4>Regra de Três Composta (Três ou Mais Grandezas)</h4>
+                <p>Envolve três ou mais grandezas. O segredo é isolar a grandeza que queremos descobrir e compará-la <strong>individualmente</strong> com todas as outras, uma de cada vez, para definir se a relação é DP ou IP.</p>
+                <p class="key-term">DICA ENEM:</p>
+                <p>Após montar a tabela, isole a coluna da incógnita (a que você quer descobrir). Compare linha a linha com as outras colunas: se a relação é <strong>IP</strong>, inverta a linha daquela grandeza antes de montar a multiplicação final em linha.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Relação</th>
+                            <th>Montagem Matemática</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>DP (Mantém a Ordem)</strong></td>
+                            <td>A₁/A₂ = B₁/B₂ × C₁/C₂</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IP (Inverte a Ordem)</strong></td>
+                            <td>A₁/A₂ = B₂/B₁ × C₁/C₂ (Exemplo: Inverte-se a grandeza B)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-read" id="btn-read-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <button type="button" class="btn-next" id="btn-start-quiz-1" onclick="startQuiz(1)" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-chart-line"></i> FINALIZAR LEITURA PARA DESBLOQUEAR
+            </button>
         </div>
-    </footer>
+    </div>
 
+    <!-- Tópico 2: Estatística -->
+    <div id="topic-2" class="topic-section" style="display: none;">
+        <div class="module-header-exercise">
+            <span>Matemática - 02: Estatística (Média, Mediana e Moda)</span>
+            <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
+        </div>
+        <div class="content-view">
+            <h2>📊 Conteúdo Aprofundado: Estatística (Foco ENEM)</h2>
+            <p>Nesta seção, você estudará as medidas de tendência central mais cobradas no ENEM: <strong>Média, Mediana e Moda</strong>. A Estatística é fundamental para interpretar dados, gráficos e tabelas.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o <strong>Quiz de 10 Questões</strong> será desbloqueado.</p>
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status-2" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+            <div class="content-section" id="study-section-1-2">
+                <h3>1. Média Aritmética e Média Ponderada</h3>
+                <p>A <strong>Média Aritmética (MA)</strong> é a soma de todos os valores de um conjunto dividida pelo número de elementos. É a medida mais comum para centralizar os dados.<br>Fórmula: MA = Σxᵢ / n</p>
+                <h4>Média Ponderada (MP)</h4>
+                <p>Usada quando alguns valores têm mais importância (<strong>peso</strong>) que outros. Multiplica-se cada valor pelo seu peso, soma-se os resultados e divide-se pela soma dos pesos.<br>Fórmula: MP = Σ(xᵢ × pᵢ) / Σpᵢ</p>
+                <p class="key-term">DICA ENEM:</p>
+                <p>A <strong>Média Ponderada</strong> é amplamente utilizada no ENEM para simular a nota final em situações com pesos diferentes (como na nota do SISU).</p>
+                <button type="button" class="btn-read" id="btn-read-1-2">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="content-section" id="study-section-2-2">
+                <h3>2. Mediana e Moda</h3>
+                <p>A <strong>Mediana (Md)</strong> e a <strong>Moda (Mo)</strong> são cruciais para entender a distribuição e representatividade dos dados.</p>
+                <h4>Mediana (Md)</h4>
+                <p>É o valor <strong>central</strong> de um conjunto de dados, mas <strong>apenas depois de ordená-lo</strong> (crescente ou decrescente).</p>
+                <ul>
+                    <li><strong>Conjunto ímpar:</strong> A Mediana é o valor único do meio.</li>
+                    <li><strong>Conjunto par:</strong> A Mediana é a média aritmética dos dois valores centrais.</li>
+                </ul>
+                <h4>Moda (Mo)</h4>
+                <p>É o valor que aparece com <strong>maior frequência</strong> (o que mais se repete) em um conjunto de dados.</p>
+                <p class="key-term">IMPORTANTE:</p>
+                <p>A <strong>Mediana</strong> é frequentemente a melhor medida para representar o centro de dados de renda ou salários, pois não é distorcida por salários extremamente altos (outliers), ao contrário da Média.</p>
+                <table>
+                    <thead>
+                        <tr><th>Medida</th><th>Conceito Principal</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Média</strong></td><td>Representa o total distribuído igualmente.</td></tr>
+                        <tr><td><strong>Mediana</strong></td><td>Valor que divide a lista <strong>ordenada</strong> em duas metades iguais.</td></tr>
+                        <tr><td><strong>Moda</strong></td><td>Ocorre com a maior frequência.</td></tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-read" id="btn-read-2-2">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <button type="button" class="btn-next" id="btn-start-quiz-2" onclick="startQuiz(2)" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-calculator"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+    </div>
+
+    <!-- Tópico 3: Aritmética -->
+    <div id="topic-3" class="topic-section" style="display: none;">
+        <div class="module-header-exercise">
+            <span>Matemática - 03: Aritmética (Números e Operações)</span>
+            <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
+        </div>
+        <div class="content-view">
+            <h2>🔢 Conteúdo Aprofundado: Aritmética (Foco ENEM)</h2>
+            <p>A <strong>Aritmética</strong> é a base para a maioria dos problemas do ENEM, envolvendo o domínio de operações, divisibilidade e frações. O foco não está em cálculos complexos, mas sim na correta <strong>interpretação</strong> do que o problema pede.</p>
+            <p>Para liberar o acesso ao resumo de feedback, você deve ler e marcar os dois tópicos abaixo como lidos.</p>
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status-3" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+            <div class="content-section" id="study-section-1-3">
+                <h3>1. Números Primos, MMC e MDC: Ferramentas de Agrupamento</h3>
+                <p>O ENEM usa o <strong>MMC</strong> e o <strong>MDC</strong> para problemas que envolvem ciclos e divisões em partes iguais.</p>
+                <h4>Máximo Divisor Comum (MDC)</h4>
+                <p>O MDC é usado em problemas que pedem a <strong>divisão em partes iguais</strong> ou a <strong>máxima dimensão/tamanho</strong> possível. Ele é o maior número que divide dois ou mais números simultaneamente.<br>Exemplo Clássico: <strong>Dividir estoques de produtos em lotes iguais com o maior número de itens possível.</strong></p>
+                <p class="key-term">DICA ENEM MDC:</p>
+                <p>Procure por palavras-chave como <strong>"máximo"</strong>, <strong>"maior tamanho"</strong>, <strong>"dividir em partes iguais"</strong> ou <strong>"lotes idênticos"</strong>.</p>
+                <h4>Mínimo Múltiplo Comum (MMC)</h4>
+                <p>O MMC é usado em problemas que envolvem <strong>repetição de ciclos</strong> ou a <strong>próxima vez</strong> em que eventos ocorrerão simultaneamente. É o menor número que é múltiplo de dois ou mais números.<br>Exemplo Clássico: <strong>Dois ônibus que partem da rodoviária a cada 15 e 20 minutos. Quando partirão juntos novamente?</strong></p>
+                <p class="key-term">DICA ENEM MMC:</p>
+                <p>Procure por palavras-chave como <strong>"mínimo"</strong>, <strong>"de quanto em quanto tempo"</strong>, <strong>"coincidir"</strong> ou <strong>"próximo encontro"</strong>.</p>
+                <button type="button" class="btn-read" id="btn-read-1-3">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="content-section" id="study-section-2-3">
+                <h3>2. Razão, Proporção e Porcentagem: O Tripé do ENEM</h3>
+                <p>Estes são, possivelmente, os tópicos mais cobrados, pois permitem a contextualização com economia, consumo e estatísticas.</p>
+                <h4>Razão e Proporção</h4>
+                <p>Uma <strong>Razão</strong> é a comparação entre duas grandezas (A/B). Uma <strong>Proporção</strong> é a igualdade entre duas razões (A/B = C/D). Muitas questões de escala e regra de três se baseiam nesse princípio. Lembre-se que em toda proporção, o <strong>produto dos extremos é igual ao produto dos meios</strong> (A * D = B * C).</p>
+                <h4>Porcentagem</h4>
+                <p>A porcentagem é uma razão com o denominador <strong>100</strong>. A maior dificuldade é na interpretação de <strong>aumentos e descontos sucessivos</strong>.</p>
+                <p class="key-term">Aumentos Sucessivos (Multiplicação de Fatores):</p>
+                <p>Para um aumento de 20% seguido de outro de 10%, o fator de multiplicação é (1 + 0.20) × (1 + 0.10) = 1.20 × 1.10 = 1.32. O aumento total é de <strong>32%</strong> (e não 30%).</p>
+                <p class="key-term">Descontos Sucessivos (Multiplicação de Fatores):</p>
+                <p>Para um desconto de 20% seguido de outro de 10%, o fator de multiplicação é (1 - 0.20) × (1 - 0.10) = 0.80 × 0.90 = 0.72. O valor final é <strong>72%</strong> do original, ou seja, o desconto total é de <strong>28%</strong> (e não 30%).</p>
+                <table>
+                    <thead>
+                        <tr><th>Situação</th><th>Cálculo Simples</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Aumento de 25%</td><td>Valor x 1.25</td></tr>
+                        <tr><td>Desconto de 15%</td><td>Valor x 0.85</td></tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-read" id="btn-read-2-3">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <button type="button" class="btn-next" id="btn-start-quiz-3" onclick="startQuiz(3)" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-chart-line"></i> FINALIZAR LEITURA PARA DESBLOQUEAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Tópico 4: Funções e Equações -->
+    <div id="topic-4" class="topic-section" style="display: none;">
+        <div class="module-header-exercise">
+            <span>Matemática - 04: Funções e Equações</span>
+            <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
+        </div>
+        <div class="content-view">
+            <h2>📈 Conteúdo Aprofundado: Funções e Equações (Foco ENEM)</h2>
+            <p>Funções e equações são a base para modelar situações do cotidiano no ENEM. Você aprenderá a identificar, montar e resolver diferentes tipos de funções.</p>
+            <p>Para liberar o acesso ao quiz, você deve ler e marcar os dois tópicos abaixo como lidos.</p>
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status-4" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+            <div class="content-section" id="study-section-1-4">
+                <h3>1. Conceitos de Funções e Tipos Principais</h3>                <p>Uma <strong>função</strong> é uma relação entre dois conjuntos em que cada elemento do primeiro conjunto está associado a um único elemento do segundo conjunto.</p>
+                <h4>Função Afim</h4>
+                <p>Tem a forma f(x) = ax + b, onde "a" é o coeficiente angular e "b" é o coeficiente linear. Representa uma reta inclinada.</p>
+                <p>Exemplo: Custo de uma viagem = tarifa fixa + custo por km.</p>
+                <h4>Função Quadrática</h4>
+                <p>Tem a forma f(x) = ax² + bx + c. Representa uma parábola. Muito usada em problemas de projéteis e áreas.</p>
+                <button type="button" class="btn-read" id="btn-read-1-4">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="content-section" id="study-section-2-4">
+                <h3>2. Resolução de Equações e Sistemas</h3>
+                <p>Equações são igualdades com uma incógnita. Resolver uma equação significa encontrar o valor da incógnita que satisfaz a igualdade.</p>
+                <h4>Equações do 1º Grau</h4>
+                <p>Ax + B = 0. A solução é x = -B/A.</p>
+                <h4>Sistemas de Equações</h4>
+                <p>Conjunto de equações com as mesmas incógnitas. Pode ser resolvido por substituição ou eliminação.</p>
+                <table>
+                    <thead>
+                        <tr><th>Método</th><th>Aplicação</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Substituição</strong></td><td>Ideal para sistemas onde uma incógnita já está isolada.</td></tr>
+                        <tr><td><strong>Eliminação</strong></td><td>Ideal para sistemas onde os coeficientes são múltiplos.</td></tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-read" id="btn-read-2-4">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <button type="button" class="btn-next" id="btn-start-quiz-4" onclick="startQuiz(4)" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-chart-line"></i> FINALIZAR LEITURA PARA DESBLOQUEAR
+            </button>
+        </div>
+    </div>
+
+    <!-- Tópico 5: Matrizes -->
+    <div id="topic-5" class="topic-section" style="display: none;">
+        <div class="module-header-exercise">
+            <span>Matemática - 05: Matrizes e Determinantes</span>
+            <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
+        </div>
+        <div class="content-view">
+            <h2>🔢 Conteúdo Aprofundado: Matrizes e Determinantes (Foco ENEM)</h2>
+            <p>As <strong>Matrizes</strong> são estruturas essenciais para organizar dados em linhas e colunas. No ENEM, são cobradas principalmente em problemas de organização de informações, tabelas e sistemas lineares.</p>
+            <p>Ao marcar os dois tópicos abaixo como lidos, o <strong>Quiz de 10 Questões</strong> será desbloqueado.</p>
+            <div class="study-progress-bar">
+                <span>Progresso do Estudo:</span>
+                <span id="progress-status-5" class="progress-status">Faltam 2 tópicos</span>
+            </div>
+            <div class="content-section" id="study-section-1-5">
+                <h3>1. Conceitos Fundamentais e Tipos de Matrizes</h3>
+                <p>Uma matriz é representada por A(m x n), onde m é o número de linhas e n é o número de colunas. Cada elemento é denotado por a(i,j), onde i é a linha e j é a coluna.</p>
+                <h4>Tipos de Matrizes</h4>
+                <ul>
+                    <li><strong>Matriz Quadrada:</strong> O número de linhas é igual ao número de colunas (m=n). Essencial para o cálculo de Determinantes.</li>
+                    <li><strong>Matriz Linha:</strong> Possui apenas uma linha (m=1). Ex: [1 2 3].</li>
+                    <li><strong>Matriz Coluna:</strong> Possui apenas uma coluna (n=1). Ex: [4 / 5] (vertical).</li>
+                    <li><strong>Matriz Identidade (I):</strong> É uma matriz quadrada onde os elementos da diagonal principal são 1 e todos os outros são 0.</li>
+                    <li><strong>Matriz Transposta (At):</strong> As linhas de A viram colunas em At.</li>
+                </ul>
+                <p class="key-term">EXEMPLO DE LEITURA:</p>
+                <p>Em uma matriz A(2 x 3), o elemento a(2,1) está na <strong>segunda linha</strong> e <strong>primeira coluna</strong>.</p>
+                <button type="button" class="btn-read" id="btn-read-1-5">Marcar Tópico 1 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="content-section" id="study-section-2-5">
+                <h3>2. Operações Fundamentais e Determinantes</h3>
+                <p>O ENEM cobra a correta execução das operações de Matrizes e o cálculo de seus Determinantes, especialmente os de ordem 2 e 3.</p>
+                <h4>Soma e Subtração</h4>
+                <p>Só podem ser realizadas se as matrizes tiverem a <strong>mesma ordem</strong> (m x n). A operação é feita elemento a elemento.</p>
+                <h4>Multiplicação de Matrizes (A * B)</h4>
+                <p>A multiplicação só é possível se o número de <strong>colunas de A</strong> for igual ao número de <strong>linhas de B</strong> (A(m x p) * B(p x n) resulta em C(m x n)).</p>
+                <h4>Determinante (Det(A))</h4>
+                <p>É um número associado apenas a <strong>matrizes quadradas</strong>. Útil para resolver Sistemas Lineares.</p>
+                <p class="key-term">CÁLCULO - Determinante de Ordem 2 (2 x 2):</p>
+                <p>Multiplica-se a <strong>diagonal principal</strong> e subtrai-se pelo produto da <strong>diagonal secundária</strong>.</p>
+                <p>Se A = [[a, b], [c, d]], então Det(A) = (a * d) - (b * c)</p>
+                <p>CÁLCULO - Determinante de Ordem 3 (3 x 3):</p>
+                <p>Use a <strong>Regra de Sarrus</strong>: repita as duas primeiras colunas ao lado da matriz, some os produtos das 3 diagonais principais e subtraia pelos produtos das 3 diagonais secundárias.</p>
+                <button type="button" class="btn-read" id="btn-read-2-5">Marcar Tópico 2 como Lido</button>
+                <div style="clear: both;"></div>
+            </div>
+            <button type="button" class="btn-next" id="btn-start-quiz-5" onclick="startQuiz(5)" disabled style="padding: 15px 30px; font-size: 1.1em; background-color: var(--primary-blue); color: var(--text-light);">
+                <i class="fas fa-pencil-alt"></i> FINALIZAR LEITURA PARA DESBLOQUEAR O QUIZ
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Modals (Hidden until activated) -->
+    <div id="quiz-container" style="display: none;">
+        <div class="module-header-exercise">
+            <span id="quiz-title">Quiz</span>
+            <a href="javascript:void(0)" onclick="backToTopic()">Voltar ao Tópico</a>
+        </div>
+        <div class="content-view">
+            <h2 id="quiz-heading">Quiz</h2>
+            <form id="question-form">
+                <div id="quiz-content"></div>
+                <button type="button" id="btn-submit-quiz" class="btn-next" style="padding: 15px 30px; font-size: 1.1em; background-color: var(--secondary-green); color: var(--text-dark); margin-top: 30px; width: 100%;">
+                    <i class="fas fa-check-circle"></i> FINALIZAR QUIZ E VER RESULTADOS
+                </button>
+            </form>
+            <div id="quiz-results" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- ===== ESTILOS DO CONTEÚDO ===== -->
+    <style>
+
+        /* Conteúdo de Estudo */
+        .content-view {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .content-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid var(--primary-blue);
+            background-color: #f5f9ff;
+        }
+        .content-section h3 { color: var(--primary-blue); margin-top: 0; font-size: 1.3em; }
+        .content-section p { line-height: 1.6; }
+        .content-section ul { list-style-type: square; margin-left: 20px; padding-left: 10px; }
+        .content-section li { margin-bottom: 8px; }
+        .content-section .key-term { font-weight: bold; color: #FF5722; }
+        .content-section table {
+            width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px;
+        }
+        .content-section th { background-color: #e0efff; color: var(--primary-blue); }
+
+        /* Barra de Progresso do Estudo */
+        .study-progress-bar {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #ccc;
+        }
+        .study-progress-bar span { font-weight: bold; color: var(--primary-blue); }
+        .progress-status { color: var(--incorrect-red); font-size: 1.1em; }
+        .progress-status.done { color: var(--secondary-green); }
+
+        /* Botões de Leitura */
+        .btn-read {
+            padding: 10px 15px; border: none; border-radius: 6px; font-weight: bold;
+            cursor: pointer; transition: background-color 0.2s, opacity 0.2s; float: right;
+        }
+
+        /* Quiz */
+        #question-form { display: none; }
+        .question-card {
+            border: 1px solid #ddd; padding: 20px; margin-bottom: 25px;
+            border-radius: 8px; background-color: var(--question-bg);
+        }
+        .question-card p.question-text {
+            font-weight: bold; font-size: 1.1em; margin-bottom: 15px; color: var(--primary-blue);
+        }
+        .option-label {
+            display: block; background-color: #fff; padding: 12px; margin-bottom: 8px;
+            border-radius: 4px; border: 1px solid #ccc; cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option-label:hover { background-color: #f0f0f0; }
+        .option-label input[type="radio"] { margin-right: 10px; }
+        .correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background-color: #e6ffed !important; font-weight: bold;
+        }
+        .incorrect-selection {
+            border: 2px solid var(--incorrect-red) !important;
+            background-color: #ffe6e6 !important; text-decoration: line-through;
+        }
+        .results-container {
+            padding: 40px; background-color: var(--text-light);
+            border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 50px; max-width: 900px; margin-left: auto; margin-right: auto;
+        }
+        .results-container h2 { color: var(--primary-blue); margin-bottom: 20px; text-align: center; }
+        .summary { text-align: center; font-size: 1.1em; margin-bottom: 30px; padding: 15px; border-bottom: 2px solid #eee; }
+        .result-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 6px; }
+        .result-item strong { color: var(--primary-blue); }
+
+        @media (min-width: 768px) {
+            .study-progress-bar { flex-direction: row; }
+        }
+    </style>
+
+    <!-- ===== SCRIPTS ===== -->
     <script>
-        // --- VARIÁVEIS DE ESTADO E DADOS ---
+        // ===== VARIÁVEIS GLOBAIS =====
         const MODULE_NAME = 'Matemática';
-        const CURRENT_MODULE_NUMBER = 1; // Módulo atual
+        const CURRENT_MODULE_NUMBER = 1;
         const TOTAL_MODULES = 5;
-        const TOTAL_LESSONS = 5; // Aulas dentro deste Módulo
-        
+        const TOTAL_LESSONS = 5;
+
         let lessonState = JSON.parse(localStorage.getItem(`lessonProgress_${MODULE_NAME}`)) || {
-            // Inicia a primeira aula como "current" para começar o módulo
-            1: 'current', 
-            2: 'locked',
-            3: 'locked',
-            4: 'locked',
-            5: 'locked',
+            1: 'current', 2: 'locked', 3: 'locked', 4: 'locked', 5: 'locked'
         };
-        
+
         let currentLessonId = getCurrentLessonId();
+        let currentTopicId = null;
 
-        // 🛑 ATENÇÃO: SUBSTITUA ESSES LINKS PELAS SUAS URLS DE INCORPORAÇÃO REAIS!
         const lessonData = {
-            1: { 
-                title: "Grandezas Proporcionais", 
-                duration: "04:22 min", 
-                videoUrl: "../imagen/Grandezas Porporcionais.mp4" 
-            },
-            2: { 
-                title: "Estatística", 
-                duration: "04:03 min", 
-                videoUrl: "../imagen/estetica.mp4"
-            }, 
-            3: { 
-                title: "Aritmética", 
-                duration: "12 min", 
-                videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_3?rel=0&amp;autoplay=0" 
-            },
-            4: { 
-                title: "Funções e Equações", 
-                duration: "15 min", 
-                videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_4?rel=0&amp;autoplay=0" 
-            },
-            5: { 
-                title: "Matrizes", 
-                duration: "8 min", 
-                videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_5?rel=0&amp;autoplay=0" 
-            },
+            1: { title: "Grandezas Proporcionais", duration: "04:22 min", videoUrl: "../imagens/Grandezas Porporcionais.mp4" },
+            2: { title: "Estatística", duration: "04:03 min", videoUrl: "../imagens/estetica.mp4" },
+            3: { title: "Aritmética", duration: "12 min", videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_3?rel=0&autoplay=0" },
+            4: { title: "Funções e Equações", duration: "15 min", videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_4?rel=0&autoplay=0" },
+            5: { title: "Matrizes", duration: "8 min", videoUrl: "https://www.youtube.com/embed/LINK_DO_SEU_VIDEO_AULA_5?rel=0&autoplay=0" }
         };
-        
-        // --- FUNÇÕES DE PERSISTÊNCIA E STATUS ---
 
+        // ===== QUESTIONS DATA =====
+        const allQuestions = {
+            1: [], // Grandezas Proporcionais - sem quiz, tem resumo
+            2: [ // Estatística
+                { id: 1, text: "Em um conjunto de notas (5, 7, 8, 10), qual é a Média Aritmética?", options: ["6", "7.5", "8", "9"], answer: "7.5" },
+                { id: 2, text: "Qual é a Mediana do conjunto de dados ordenado (1, 3, 5, 8, 9)?", options: ["1", "5", "8", "9"], answer: "5" },
+                { id: 3, text: "Em um conjunto (10, 10, 15, 20, 20, 10), qual é a Moda?", options: ["10", "15", "20", "Bimodal (10 e 20)"], answer: "10" },
+                { id: 4, text: "Para calcular a nota de um aluno, onde a prova 1 tem peso 2 e a prova 2 tem peso 3, qual medida deve ser usada?", options: ["Média Aritmética", "Mediana", "Moda", "Média Ponderada"], answer: "Média Ponderada" },
+                { id: 5, text: "Qual medida de tendência central exige que os dados sejam obrigatoriamente ordenados?", options: ["Média Aritmética", "Mediana", "Moda", "Desvio Padrão"], answer: "Mediana" },
+                { id: 6, text: "A medida que é menos afetada por valores extremos (outliers) e melhor representa a realidade de distribuição de renda é a:", options: ["Média Aritmética", "Mediana", "Moda", "Média Ponderada"], answer: "Mediana" },
+                { id: 7, text: "Um conjunto de dados (3, 5, 7, 9) é classificado, em relação à Moda, como:", options: ["Unimodal", "Bimodal", "Amodal", "Multimodal"], answer: "Amodal" },
+                { id: 8, text: "Qual a Mediana do conjunto (2, 4, 6, 8)?", options: ["4", "5", "6", "5.5"], answer: "5" },
+                { id: 9, text: "No cálculo da Média Ponderada, o denominador da fórmula é a:", options: ["Quantidade de elementos", "Soma dos valores", "Soma dos pesos", "Produto dos pesos"], answer: "Soma dos pesos" },
+                { id: 10, text: "A Moda é a medida que indica:", options: ["O valor mais central", "O valor mais frequente", "A soma dos valores", "O valor mais distante da média"], answer: "O valor mais frequente" }
+            ],
+            3: [], // Aritmética - sem quiz, tem resumo
+            4: [], // Funções e Equações - sem quiz, tem resumo
+            5: [ // Matrizes e Determinantes
+                { id: 1, text: "Uma matriz do tipo A(3 x 4) possui quantas linhas e colunas, respectivamente?", options: ["3 linhas e 3 colunas", "4 linhas e 3 colunas", "3 linhas e 4 colunas", "4 linhas e 4 colunas"], answer: "3 linhas e 4 colunas" },
+                { id: 2, text: "Em uma matriz A, o elemento a(1,3) está localizado na:", options: ["3ª linha e 1ª coluna", "1ª linha e 3ª coluna", "1ª linha e 1ª coluna", "3ª linha e 3ª coluna"], answer: "1ª linha e 3ª coluna" },
+                { id: 3, text: "Se A = [[2, 1], [0, 3]], qual é o valor do seu Determinante?", options: ["3", "6", "5", "4"], answer: "6" },
+                { id: 4, text: "Qual das operações a seguir exige que as matrizes tenham a mesma ordem (m x n)?", options: ["Multiplicação", "Cálculo de Determinante", "Adição (Soma)", "Matriz Transposta"], answer: "Adição (Soma)" },
+                { id: 5, text: "Se uma matriz tem 5 linhas e 5 colunas, ela é classificada como uma:", options: ["Matriz Coluna", "Matriz Linha", "Matriz Nula", "Matriz Quadrada"], answer: "Matriz Quadrada" },
+                { id: 6, text: "O que acontece com as linhas e colunas de uma matriz ao calcular sua Transposta (At)?", options: ["As linhas são somadas", "As linhas viram colunas e vice-versa", "Apenas a diagonal principal muda", "Todos os elementos são multiplicados por -1"], answer: "As linhas viram colunas e vice-versa" },
+                { id: 7, text: "Dadas A = [1 / 2] e B = [3 / 4], qual é o resultado de A + B? (Note: Matrizes Coluna)", options: ["[3 / 8]", "[4 / 6]", "[[1, 3] / [2, 4]]", "A operação é impossível"], answer: "[4 / 6]" },
+                { id: 8, text: "A Regra de Sarrus é utilizada para calcular o Determinante de matrizes de qual ordem?", options: ["2 x 2", "3 x 3", "4 x 4 ou maior", "1 x 1"], answer: "3 x 3" },
+                { id: 9, text: "Para que o produto de matrizes A(m x p) * B(q x n) seja possível, qual condição deve ser satisfeita?", options: ["m = n", "p = q", "m = q", "p = n"], answer: "p = q" },
+                { id: 10, text: "Qual é o valor do Determinante de [[5, 2], [5, 2]]?", options: ["14", "10", "0", "-10"], answer: "0" }
+            ]
+        };
+
+        // ===== FUNÇÕES DE PERSISTÊNCIA =====
         function saveLessonState() {
             localStorage.setItem(`lessonProgress_${MODULE_NAME}`, JSON.stringify(lessonState));
         }
-        
+
         function getCurrentLessonId() {
             const savedId = localStorage.getItem(`currentLessonId_${MODULE_NAME}`);
-            // Se todas as aulas estiverem concluídas, mantém na última
             if (lessonState[TOTAL_LESSONS] === 'completed') return TOTAL_LESSONS;
-            // Caso contrário, carrega o ID salvo ou 1
-            return savedId ? parseInt(savedId) : 1; 
+            return savedId ? parseInt(savedId) : 1;
         }
 
         function getCompletedLessonsCount() {
             return Object.values(lessonState).filter(status => status === 'completed').length;
         }
 
-        // --- FUNÇÃO CHAVE 1: Gerencia a Progressão entre Módulos ---
+        // ===== FUNÇÕES DE EXIBIÇÃO =====
+        function showMainView() {
+            document.querySelectorAll('.topic-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('main-view').style.display = 'block';
+            document.querySelector('.module-header-area').style.display = 'flex';
+            // Esconder cabeçalho de exercício
+            const headers = document.querySelectorAll('.module-header-exercise');
+            headers.forEach(h => h.style.display = 'none');
+            // Mostrar content-layout da main view
+            document.querySelector('.content-layout').style.display = 'grid';
+        }
+
+        function showTopic(topicId) {
+            document.getElementById('main-view').style.display = 'none';
+            document.querySelector('.module-header-area').style.display = 'none';
+            document.querySelector('.content-layout').style.display = 'none';
+            
+            // Esconder todos os tópicos e quizzes
+            document.querySelectorAll('.topic-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('quiz-container').style.display = 'none';
+            
+            // Mostrar tópico específico
+            document.getElementById(`topic-${topicId}`).style.display = 'block';
+            currentTopicId = topicId;
+            
+            // Resetar progresso do estudo
+            const studyVars = {
+                1: { section1: 'section1', section2: 'section2', prefix: '' },
+                2: { section1: 'section1-2', section2: 'section2-2', prefix: '-2' },
+                3: { section1: 'section1-3', section2: 'section2-3', prefix: '-3' },
+                4: { section1: 'section1-4', section2: 'section2-4', prefix: '-4' },
+                5: { section1: 'section1-5', section2: 'section2-5', prefix: '-5' }
+            };
+            
+            const config = studyVars[topicId];
+            if (config) {
+                window.studyProgress = { section1: false, section2: false };
+                window.TOTAL_STUDY_SECTIONS = 2;
+                window.updateStudyProgressFunc = function() {
+                    const done1 = window.studyProgress.section1;
+                    const done2 = window.studyProgress.section2;
+                    
+                    const btnRead1 = document.getElementById(`btn-read-1${config.prefix}`);
+                    const btnRead2 = document.getElementById(`btn-read-2${config.prefix}`);
+                    
+                    if (btnRead1) {
+                        btnRead1.textContent = done1 ? '✓ LIDO' : 'Marcar Tópico 1 como Lido';
+                        btnRead1.disabled = done1;
+                        btnRead1.style.backgroundColor = done1 ? '#90EE90' : 'var(--primary-blue)';
+                        btnRead1.style.color = done1 ? 'var(--text-dark)' : 'var(--text-light)';
+                    }
+                    if (btnRead2) {
+                        btnRead2.textContent = done2 ? '✓ LIDO' : 'Marcar Tópico 2 como Lido';
+                        btnRead2.disabled = done2;
+                        btnRead2.style.backgroundColor = done2 ? '#90EE90' : 'var(--primary-blue)';
+                        btnRead2.style.color = done2 ? 'var(--text-dark)' : 'var(--text-light)';
+                    }
+                    
+                    const completedCount = (done1 ? 1 : 0) + (done2 ? 1 : 0);
+                    const remaining = 2 - completedCount;
+                    const progressStatus = document.getElementById(`progress-status${config.prefix ? '-' + config.prefix.replace('-', '') : ''}`);
+                    const btnStartQuiz = document.getElementById(`btn-start-quiz-${topicId}`);
+                    
+                    if (remaining === 0) {
+                        if (progressStatus) {
+                            progressStatus.textContent = 'Estudo Completo!';
+                            progressStatus.classList.add('done');
+                            progressStatus.classList.remove('incorrect-red');
+                        }
+                        if (btnStartQuiz) {
+                            btnStartQuiz.disabled = false;
+                        }
+                    } else {
+                        if (progressStatus) {
+                            progressStatus.textContent = `Faltam ${remaining} tópico(s)`;
+                            progressStatus.classList.remove('done');
+                            progressStatus.classList.add('incorrect-red');
+                        }
+                        if (btnStartQuiz) {
+                            btnStartQuiz.disabled = true;
+                        }
+                    }
+                };
+                
+                const btnRead1 = document.getElementById(`btn-read-1${config.prefix}`);
+                const btnRead2 = document.getElementById(`btn-read-2${config.prefix}`);
+                if (btnRead1) btnRead1.addEventListener('click', () => { window.studyProgress.section1 = true; window.updateStudyProgressFunc(); });
+                if (btnRead2) btnRead2.addEventListener('click', () => { window.studyProgress.section2 = true; window.updateStudyProgressFunc(); });
+                
+                window.updateStudyProgressFunc();
+            }
+        }
+
+        // ===== FUNÇÕES DO QUIZ =====
+        function startQuiz(topicId) {
+            const topicConfig = {
+                1: { hasQuiz: false, summary: "Parabéns! Aula completa. Resumo: Diretamente proporcional multiplica em cruz, inversamente proporcional inverte uma grandeza. Regra de três composta: compare uma coluna de cada vez." },
+                2: { hasQuiz: true, title: "Quiz de Estatística", backUrl: "topic-2" },
+                3: { hasQuiz: false, summary: "Parabéns! Aula completa. Resumo: MMC = próximo encontro de ciclos, MDC = divisão em partes iguais. Aumentos/descontos sucessivos usam multiplicação de fatores." },
+                4: { hasQuiz: false, summary: "Parabéns! Aula completa. Resumo: Função afim tem forma ax+b. Função quadrática tem forma ax²+bx+c. Equações 1º grau: x = -B/A." },
+                5: { hasQuiz: true, title: "Quiz de Matrizes e Determinantes", backUrl: "topic-5" }
+            };
+            
+            const config = topicConfig[topicId];
+            if (!config) return;
+            
+            if (!config.hasQuiz) {
+                showSummary(topicId, config.summary);
+                return;
+            }
+            
+            // Mostrar quiz
+            document.querySelectorAll('.topic-section').forEach(s => s.style.display = 'none');
+            document.getElementById('main-view').style.display = 'none';
+            document.querySelector('.module-header-area').style.display = 'none';
+            
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.style.display = 'block';
+            
+            document.getElementById('quiz-title').textContent = config.title;
+            document.getElementById('quiz-heading').textContent = config.title;
+            
+            window.currentQuizTopic = topicId;
+            window.quizQuestions = allQuestions[topicId];
+            window.quizScore = 0;
+            
+            renderQuiz();
+        }
+
+        function backToTopic() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById(`topic-${window.currentQuizTopic}`).style.display = 'block';
+        }
+
+        function renderQuiz() {
+            const quizContent = document.getElementById('quiz-content');
+            let quizHTML = '';
+            
+            window.quizQuestions.forEach((q, index) => {
+                quizHTML += `<div class="question-card" data-question-id="${q.id}"><p class="question-text">${index + 1}. ${q.text}</p>`;
+                q.options.forEach((option, i) => {
+                    const radioName = `q${q.id}`;
+                    const optionValue = option.replace(/ /g, '_').replace(/[^\w-]/g, '');
+                    quizHTML += `<label class="option-label" for="${radioName}-${i}"><input type="radio" id="${radioName}-${i}" name="${radioName}" value="${optionValue}" required>${option}</label>`;
+                });
+                quizHTML += '</div>';
+            });
+            
+            quizContent.innerHTML = quizHTML;
+            document.getElementById('question-form').style.display = 'block';
+            document.getElementById('quiz-results').style.display = 'none';
+            
+            const submitBtn = document.getElementById('btn-submit-quiz');
+            submitBtn.onclick = submitQuiz;
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('question-form');
+            const questionCards = form.querySelectorAll('.question-card');
+            let allAnswered = true;
+            
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const radioName = `q${questionId}`;
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                card.querySelectorAll('.option-label').forEach(el => {
+                    el.classList.remove('correct-answer', 'incorrect-selection');
+                    el.querySelector('input').disabled = true;
+                });
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                }
+            });
+            
+            if (!allAnswered) {
+                alert('Por favor, responda a todas as questões antes de finalizar o Quiz!');
+                questionCards.forEach(card => card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = false));
+                return;
+            }
+            
+            questionCards.forEach(card => {
+                const questionId = parseInt(card.getAttribute('data-question-id'));
+                const questionData = window.quizQuestions.find(q => q.id === questionId);
+                const radioName = `q${questionId}`;
+                const selectedOption = form.querySelector(`input[name="${radioName}"]:checked`);
+                
+                const userAnswerValue = selectedOption.value;
+                const userAnswer = userAnswerValue.replace(/_/g, ' ');
+                const isCorrect = (userAnswer === questionData.answer);
+                const selectedLabel = selectedOption.closest('.option-label');
+                
+                if (isCorrect) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                } else {
+                    selectedLabel.classList.add('incorrect-selection');
+                }
+                
+                card.querySelectorAll('.option-label').forEach(label => {
+                    const input = label.querySelector('input');
+                    const value = input.value.replace(/_/g, ' ');
+                    const correctEncoded = questionData.answer.replace(/ /g, '_').replace(/[^\w-]/g, '');
+                    if (value === correctEncoded && (!selectedLabel.classList.contains('incorrect-selection') || selectedLabel !== label)) {
+                        label.classList.add('correct-answer');
+                    }
+                });
+            });
+            
+            document.getElementById('btn-submit-quiz').style.display = 'none';
+            renderQuizResults(score);
+        }
+
+        function renderQuizResults(score) {
+            const totalQuestions = window.quizQuestions.length;
+            const quizForm = document.getElementById('question-form');
+            const quizHTMLFeedback = quizForm.innerHTML;
+            quizForm.style.display = 'none';
+            
+            const topicNames = { 2: "Estatística", 5: "Matrizes e Determinantes" };
+            const topicName = topicNames[window.currentQuizTopic] || "Matemática";
+            
+            const resultHTML = `
+                <div class="results-container">
+                    <h2>🎉 Resultado do Quiz de ${topicName}!</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px;">
+                        <p style="margin-bottom: 10px;">Sua pontuação final:</p>
+                        <p style="font-size: 2em; font-weight: bold; color: ${score >= 7 ? 'var(--secondary-green)' : 'var(--incorrect-red)'}">
+                            ${score} de ${totalQuestions} Questões
+                        </p>
+                        <p style="font-weight: bold; margin-top: 10px;">
+                            ${score >= 7 ? 'Excelente! Você domina bem este tópico.' : 'Continue revisando os conceitos deste tópico.'}
+                        </p>
+                    </div>
+                    <h3 style="margin-top: 30px; color: var(--text-dark);">Revisão do Quiz (Acerto e Erro):</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.9em; color: var(--text-dark);">
+                        <span style="color: var(--correct-green); font-weight: bold;">Verde:</span> Resposta Correta.<br>
+                        <span style="color: var(--incorrect-red); font-weight: bold;">Vermelho Riscado:</span> Sua Resposta Incorreta.
+                    </p>
+                    <div id="quiz-feedback-area">${quizHTMLFeedback}</div>
+                    <a href="javascript:void(0)" onclick="showMainView()" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--primary-blue); color: var(--text-light); font-weight: bold; border-radius: 6px;">
+                        Voltar às Atividades
+                    </a>
+                </div>
+            `;
+            document.querySelector('.content-view').innerHTML = resultHTML;
+        }
+
+        function showSummary(topicId, summaryText) {
+            document.querySelectorAll('.topic-section').forEach(s => s.style.display = 'none');
+            document.getElementById('main-view').style.display = 'none';
+            document.querySelector('.module-header-area').style.display = 'none';
+            
+            const topicEl = document.getElementById(`topic-${topicId}`);
+            topicEl.innerHTML = `
+                <div class="module-header-exercise">
+                    <span>Matemática - ${topicId}: ${topicEl.querySelector('.module-header-exercise span').textContent}</span>
+                    <a href="javascript:void(0)" onclick="showMainView()">Voltar ao Módulo</a>
+                </div>
+                <div class="content-view" style="text-align: center;">
+                    <h2>✅ Resumo Final</h2>
+                    <div class="summary" style="background-color: #f0f9ff; border-radius: 6px; padding: 20px;">
+                        <p>${summaryText}</p>
+                    </div>
+                    <a href="javascript:void(0)" onclick="showMainView()" class="btn-next finish" style="display: block; text-align: center; margin-top: 30px; padding: 15px 30px; text-decoration: none; background-color: var(--secondary-green); color: var(--text-dark); font-weight: bold; border-radius: 6px;">
+                        Voltar às Atividades
+                    </a>
+                </div>
+            `;
+        }
+
+        // ===== FUNÇÕES DE INTERAÇÃO =====
+        function handleLessonClick(lessonId) {
+            if (lessonState[lessonId] === 'locked') {
+                alert('Você precisa concluir o tópico anterior para desbloquear esta aula!');
+                return;
+            }
+            if (lessonState[currentLessonId] === 'current') {
+                lessonState[currentLessonId] = 'completed';
+            }
+            if (lessonState[lessonId] !== 'completed') {
+                lessonState[lessonId] = 'current';
+            }
+            saveLessonState();
+            currentLessonId = lessonId;
+            loadLessonStatus();
+        }
+
+        function handleExerciseClick(event, lessonId) {
+            event.stopPropagation();
+            // Permitir acesso direto ao conteúdo do tópico
+            showTopic(lessonId);
+        }
+
+        function handleCompleteButton() {
+            const nextLessonId = currentLessonId + 1;
+            lessonState[currentLessonId] = 'completed';
+            
+            if (nextLessonId <= TOTAL_LESSONS) {
+                lessonState[nextLessonId] = 'current';
+                saveLessonState();
+                alert(`Parabéns! Aula ${currentLessonId} concluída. A próxima aula (${lessonData[nextLessonId].title}) foi liberada.`);
+                handleLessonClick(nextLessonId);
+            } else {
+                saveLessonState();
+                const btnComplete = document.getElementById('btn-complete');
+                btnComplete.disabled = true;
+                btnComplete.innerText = 'Concluído';
+                loadLessonStatus();
+                alert('Parabéns! Você completou todas as aulas deste Módulo.');
+            }
+        }
+
         function checkModuleCompletion() {
             const completedCount = getCompletedLessonsCount();
             const btnNextModule = document.getElementById('btn-next-module');
-
             if (completedCount === TOTAL_LESSONS) {
-                
-                // 1. Marca o MÓDULO atual como concluído (para persistir entre páginas)
                 localStorage.setItem(`module_${CURRENT_MODULE_NUMBER}_completed`, 'true');
-                
-                if (CURRENT_MODULE_NUMBER < TOTAL_MODULES) {
-                    // Módulo completo: Desbloqueia o botão para o Próximo Módulo
-                    btnNextModule.style.display = 'block';
-                    btnNextModule.innerHTML = `<i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (${CURRENT_MODULE_NUMBER + 1}/${TOTAL_MODULES})`;
-                    btnNextModule.onclick = () => {
-                        // Ação de navegação real para o próximo módulo
-                        alert(`Parabéns! Módulo ${CURRENT_MODULE_NUMBER} concluído. Navegando para o Módulo ${CURRENT_MODULE_NUMBER + 1}.`);
-                        // Em um sistema real: window.location.href = 'modulo2_proximo.html';
-                    };
-                } else {
-                    // Último módulo do curso
-                    btnNextModule.style.display = 'block';
-                    btnNextModule.innerHTML = `<i class="fas fa-medal"></i> Curso Concluído!`;
-                    btnNextModule.disabled = true;
-                    btnNextModule.style.backgroundColor = '#90EE90';
-                    btnNextModule.style.color = '#333';
-                }
+                btnNextModule.style.display = 'block';
+                btnNextModule.innerHTML = `<i class="fas fa-arrow-right"></i> Ir para o Próximo Módulo (${CURRENT_MODULE_NUMBER + 1}/${TOTAL_MODULES})`;
+                btnNextModule.onclick = () => {
+                    alert(`Parabéns! Módulo ${CURRENT_MODULE_NUMBER} concluído. Navegando para o Módulo ${CURRENT_MODULE_NUMBER + 1}.`);
+                };
             } else {
-                // Módulo não concluído: Oculta o botão
                 btnNextModule.style.display = 'none';
-                localStorage.removeItem(`module_${CURRENT_MODULE_NUMBER}_completed`); 
+                localStorage.removeItem(`module_${CURRENT_MODULE_NUMBER}_completed`);
             }
         }
-        
-        // --- FUNÇÃO CHAVE 2: Atualização Visual e Lógica de Aulas ---
 
         function updateCurrentLessonUI(lessonId) {
             const data = lessonData[lessonId];
             document.getElementById('lesson-title').innerText = data.title;
             document.getElementById('lesson-duration').innerText = `Duração: ${data.duration}`;
-            
             document.getElementById('completed-lessons-count').innerText = getCompletedLessonsCount();
             document.getElementById('total-lessons-count').innerText = TOTAL_LESSONS;
-
+            
             const btnComplete = document.getElementById('btn-complete');
             if (lessonState[lessonId] === 'completed') {
                 document.getElementById('btn-restart').innerText = 'Revisar';
@@ -649,17 +1075,10 @@
             currentLessonId = lessonId;
             localStorage.setItem(`currentLessonId_${MODULE_NAME}`, lessonId);
             
-            // Insere o iframe do vídeo correspondente
             document.getElementById('video-player').innerHTML = `
-                <iframe 
-                    src="${data.videoUrl}" 
-                    title="Vídeo Aula: ${data.title}" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                <iframe src="${data.videoUrl}" title="Vídeo Aula: ${data.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             `;
             
-            // Verifica a conclusão do módulo sempre que o estado da aula muda
             checkModuleCompletion();
         }
 
@@ -668,14 +1087,12 @@
                 item.classList.remove('current', 'locked', 'completed');
                 item.style.border = 'none';
             });
-
             for (let id = 1; id <= TOTAL_LESSONS; id++) {
                 const item = document.getElementById(`lesson-item-${id}`);
                 const statusIcon = document.getElementById(`status-${id}`);
                 const status = lessonState[id] || 'locked';
-
-                statusIcon.className = 'lesson-icon'; 
-
+                statusIcon.className = 'lesson-icon';
+                
                 if (status === 'completed') {
                     item.classList.add('completed');
                     item.classList.remove('locked');
@@ -688,131 +1105,41 @@
                     statusIcon.classList.add('fas', 'fa-play-circle', 'lesson-status-current');
                     item.classList.add('current');
                     item.style.border = '2px solid var(--primary-blue)';
-                    
-                    if (currentLessonId !== id) {
-                         currentLessonId = id;
-                    }
                 }
             }
-            
             updateCurrentLessonUI(currentLessonId);
-        }
-        
-        // --- FUNÇÕES DE INTERAÇÃO DO USUÁRIO ---
-
-        function handleLessonClick(lessonId) {
-            const id = parseInt(lessonId);
-            
-            if (lessonState[id] === 'locked') {
-                alert('Você precisa concluir o tópico anterior para desbloquear esta aula!');
-                return; 
-            }
-            
-            // Se a aula anterior era a 'current', ela se torna 'completed' automaticamente ao sair
-            if (lessonState[currentLessonId] === 'current') {
-                lessonState[currentLessonId] = 'completed'; 
-            }
-            
-            // Define a nova aula como "current" (a não ser que já esteja completed)
-            if (lessonState[id] !== 'completed') {
-                lessonState[id] = 'current';
-            }
-            
-            saveLessonState();
-            currentLessonId = id;
-            loadLessonStatus();
-        }
-        
-        // --- FUNÇÃO CHAVE 3: Marcar Concluído e Avançar Aula (Progresso Sequencial) ---
-        function handleCompleteButton() {
-            const nextLessonId = currentLessonId + 1;
-            
-            // 1. Marca a aula atual como 'completed'
-            lessonState[currentLessonId] = 'completed';
-            
-            if (nextLessonId <= TOTAL_LESSONS) {
-                // 2. Desbloqueia e avança para a próxima aula
-                lessonState[nextLessonId] = 'current';
-                saveLessonState();
-                
-                // MENSAGEM DE PROGRESSÃO (Ajustada)
-                alert(`Parabéns! Aula ${currentLessonId} concluída. A próxima aula (${lessonData[nextLessonId].title}) foi liberada.`);
-                
-                // Avança para a próxima lição
-                handleLessonClick(nextLessonId);
-                
-            } else {
-                // 3. Última aula concluída
-                saveLessonState();
-                
-                // Desativa o botão
-                document.getElementById('btn-complete').disabled = true;
-                document.getElementById('btn-complete').innerText = 'Concluído';
-                
-                // Atualiza a UI e dispara a checagem de Módulo (que vai exibir o botão de Próximo Módulo)
-                loadLessonStatus();
-                alert('Parabéns! Você completou todas as aulas deste Módulo. O próximo módulo foi liberado!');
-            }
-        }
-        
-        // Função para lidar com o clique no link de QUIZ/Exercício
-        function handleExerciseClick(event, lessonId) {
-            event.stopPropagation(); // Impede que o clique na ação ative o click na aula inteira
-            const id = parseInt(lessonId);
-            
-            // Verifica se a aula foi concluída antes de liberar o Quiz
-            if (lessonState[id] === 'completed') {
-                alert(`Redirecionando para o QUIZ/Conteúdo da Aula ${id}. (Acessando: questão${id}.html)`);
-                // Permite a navegação: o link HTML segue seu curso
-            } else {
-                event.preventDefault(); // Impede a navegação do link
-                alert('Você só pode fazer o quiz/ver o conteúdo após concluir a videoaula!');
-            }
         }
 
         function goBackToLastTab() {
-             window.location.href = '../menu/menu.html';
+            window.location.href = '../menu/menu.html';
         }
 
-        // --- INICIALIZAÇÃO ---
+        // ===== INICIALIZAÇÃO =====
         document.addEventListener('DOMContentLoaded', () => {
             loadLessonStatus();
             
-            const btnComplete = document.getElementById('btn-complete');
-            if (btnComplete) {
-                btnComplete.addEventListener('click', handleCompleteButton);
-            }
+            document.getElementById('btn-complete').addEventListener('click', handleCompleteButton);
             
-            const btnRestart = document.getElementById('btn-restart');
-            if (btnRestart) {
-                btnRestart.addEventListener('click', () => {
-                    // Força o recarregamento do vídeo atual
-                    const videoPlayer = document.getElementById('video-player');
-                    const data = lessonData[currentLessonId];
-                     videoPlayer.innerHTML = `
-                        <iframe 
-                            src="${data.videoUrl}" 
-                            title="Vídeo Aula: ${data.title}" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    `;
-                    alert('Vídeo da aula reiniciado.');
-                });
-            }
+            document.getElementById('btn-restart').addEventListener('click', () => {
+                const data = lessonData[currentLessonId];
+                document.getElementById('video-player').innerHTML = `
+                    <iframe src="${data.videoUrl}" title="Vídeo Aula: ${data.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                `;
+                alert('Vídeo da aula reiniciado.');
+            });
             
-            // Inicialização do menu lateral
+            // Sidebar toggle
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menu-toggle');
             const overlay = document.getElementById('overlay');
             const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('active'); };
             const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); };
-
             if (menuToggle) menuToggle.addEventListener('click', openSidebar);
             if (overlay) overlay.addEventListener('click', closeSidebar);
             document.querySelectorAll('.sidebar-menu li').forEach(item => item.addEventListener('click', closeSidebar));
+            
+            // Initially show main view
+            showMainView();
         });
     </script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
