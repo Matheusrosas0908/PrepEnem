@@ -1,0 +1,633 @@
+/* =========================================================
+   PrepEnem — Menu (área do aluno)
+   ========================================================= */
+
+/* Fontes do PrepEnem (Sora + Manrope). Se o menu.html já tiver o
+   <link> do Google Fonts, pode apagar esta linha. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
+
+:root {
+    /* Fontes */
+    --fonte-titulo: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonte-texto: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    /* Cores da marca */
+    --azul: #2B50D6;            /* azul principal */
+    --azul-escuro: #1E3A8A;     /* hover / texto sobre amarelo */
+    --azul-claro: #EEF2FF;      /* fundos suaves */
+    --amarelo: #FBCB0A;         /* amarelo principal */
+    --amarelo-escuro: #E3B500;  /* hover */
+    --amarelo-claro: #FFF6CC;
+
+    /* Cores neutras */
+    --texto-forte: #111827;     /* títulos */
+    --texto: #374151;           /* parágrafos */
+    --texto-suave: #6B7280;     /* legendas, textos de apoio */
+    --branco: #FFFFFF;
+    --fundo: #F7F8FC;
+    --borda: #E5E7EB;
+
+    /* Escala tipográfica (base 16px) */
+    --fs-xs: 0.8125rem;   /* 13px */
+    --fs-sm: 0.9375rem;   /* 15px */
+    --fs-base: 1rem;      /* 16px */
+    --fs-lg: 1.125rem;    /* 18px */
+    --fs-xl: 1.25rem;     /* 20px */
+    --fs-2xl: 1.5rem;     /* 24px */
+    --fs-3xl: 2rem;       /* 32px */
+    --fs-4xl: 2.5rem;     /* 40px */
+
+    /* Pesos */
+    --peso-normal: 400;
+    --peso-medio: 500;
+    --peso-semi: 600;
+    --peso-negrito: 700;
+    --peso-extra: 800;
+
+    /* Raios e sombras */
+    --raio-sm: 8px;
+    --raio: 12px;
+    --raio-lg: 16px;
+    --raio-xl: 80px;
+    --sombra-sm: 0 1px 2px rgba(17, 24, 39, 0.06), 0 1px 3px rgba(17, 24, 39, 0.08);
+    --sombra-md: 0 8px 24px -8px rgba(17, 24, 39, 0.15);
+    --sombra-lg: 0 24px 48px -16px rgba(17, 24, 39, 0.28);
+
+    --transicao: 0.2s ease;
+}
+
+/* =========================================
+   Reset e base
+   ========================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--fonte-texto);
+    font-size: var(--fs-base);
+    font-weight: var(--peso-normal);
+    line-height: 1.6;
+    color: var(--texto);
+    background-color: var(--fundo);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Trava a rolagem da página enquanto o menu lateral está aberto (classe colocada pelo menu.js) */
+body.menu-aberto {
+    overflow: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--fonte-titulo);
+    font-weight: var(--peso-negrito);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--texto-forte);
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transicao), background-color var(--transicao);
+}
+
+input,
+button {
+    font-family: inherit;
+}
+
+.container {
+    width: 90%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+/* =========================================
+   1. Cabeçalho
+   ========================================= */
+
+.header {
+    background-color: var(--azul);
+    color: var(--branco);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    box-shadow: var(--sombra-sm);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--raio-sm);
+    background: none;
+    font-size: var(--fs-xl);
+    line-height: 1;
+    color: var(--amarelo);
+    cursor: pointer;
+    transition: background-color var(--transicao);
+}
+
+.menu-icon:hover,
+.menu-icon:focus-visible {
+    background-color: rgba(255, 255, 255, 0.12);
+    outline: none;
+}
+
+/* Logo: mesmo desenho da página inicial e do cadastro */
+.logo-text {
+    font-family: var(--fonte-titulo);
+    font-size: var(--fs-2xl);
+    font-weight: var(--peso-extra);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--amarelo);
+}
+
+.enem-highlight {
+    display: inline-block;
+    margin-left: 2px;
+    padding: 4px 8px;
+    border-radius: var(--raio-sm);
+    background-color: var(--amarelo);
+    color: var(--azul-escuro);
+}
+
+/* =========================================
+   2. Menu lateral e fundo escurecido
+   ========================================= */
+
+.sidebar {
+    height: 100%;
+    width: 272px;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background-color: var(--azul);
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    visibility: hidden; /* impede que o teclado "entre" no menu fechado */
+    transition: transform 0.3s ease, visibility 0.3s ease;
+    box-shadow: var(--sombra-lg);
+    padding: 16px 12px;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.sidebar-header {
+    padding: 12px 12px 20px;
+    margin-bottom: 12px;
+    font-family: var(--fonte-titulo);
+    font-size: var(--fs-xl);
+    font-weight: var(--peso-negrito);
+    color: var(--branco);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-menu li {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--raio-sm);
+    transition: background-color var(--transicao);
+    cursor: pointer;
+    color: var(--branco);
+    font-size: var(--fs-sm);
+}
+
+.sidebar-menu li:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Item ativo: use class="active" no <li> da página atual.
+   #menu-atividades continua funcionando como antes. */
+.sidebar-menu li.active,
+#menu-atividades {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-menu li.active a,
+#menu-atividades a {
+    color: var(--amarelo);
+}
+
+.sidebar-menu li a {
+    text-decoration: none;
+    color: var(--branco);
+    font-weight: var(--peso-semi);
+    flex-grow: 1;
+}
+
+.sidebar-menu li .icon {
+    width: 20px;
+    margin-right: 14px;
+    font-size: var(--fs-lg);
+    text-align: center;
+    opacity: 0.9;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(17, 24, 39, 0.55);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   Títulos de seção (iguais nas duas seções)
+   ========================================= */
+
+.health-tips-section h2,
+.modules-section h2 {
+    font-size: var(--fs-2xl);
+    font-weight: var(--peso-negrito);
+    color: var(--texto-forte);
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* =========================================
+   3. Dicas de saúde
+   ========================================= */
+
+.health-tips-section {
+    padding: 0 0 40px;
+}
+
+.tips-container {
+    display: flex;
+    align-items: flex-start; /* abrir uma dica não estica as outras */
+    gap: 16px;
+    overflow-x: auto;
+    padding: 4px 4px 12px;
+    position: relative;
+}
+
+.tip-card {
+    min-width: 220px;
+    flex: 1;
+    padding: 24px;
+    border-radius: var(--raio-lg);
+    border: 1px solid var(--borda);
+    border-top: 4px solid var(--azul);
+    background-color: var(--branco);
+    box-shadow: var(--sombra-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: transform var(--transicao), box-shadow var(--transicao);
+}
+
+.tip-card:hover,
+.tip-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-md);
+    outline: none;
+}
+
+.tip-card.expanded {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-md);
+}
+
+/* Cor de destaque de cada dica (só a borda de cima e o ícone mudam) */
+#tip-alimentacao { border-top-color: var(--azul); }
+#tip-sono { border-top-color: var(--azul-escuro); }
+#tip-organizacao { border-top-color: var(--amarelo); }
+
+.tip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 16px;
+    border-radius: var(--raio);
+    background-color: var(--azul-claro);
+    font-size: var(--fs-xl);
+    line-height: 1;
+    color: var(--azul);
+}
+
+#tip-sono .tip-icon { color: var(--azul-escuro); }
+#tip-organizacao .tip-icon {
+    background-color: var(--amarelo-claro);
+    color: var(--azul-escuro);
+}
+
+.tip-card h3 {
+    font-size: var(--fs-lg);
+    font-weight: var(--peso-negrito);
+    margin-bottom: 6px;
+}
+
+.tip-card p {
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--texto-suave);
+}
+
+/* Seta lateral: fica escondida (não é usada pelo menu.js) */
+.tip-arrow-right {
+    display: none;
+}
+
+/* Lista de detalhes que abre ao clicar na dica */
+.tip-details-list {
+    list-style: none;
+    width: 100%;
+    padding: 14px 0 0;
+    margin-top: 14px;
+    border-top: 1px solid var(--borda);
+    display: none;
+}
+
+.tip-details-list.visible {
+    display: block;
+}
+
+.tip-details-list li {
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    color: var(--texto);
+}
+
+.tip-details-list li:last-child {
+    margin-bottom: 0;
+}
+
+.tip-details-list li i {
+    margin-right: 10px;
+    margin-top: 4px;
+    font-size: var(--fs-xs);
+    color: var(--azul);
+}
+
+/* =========================================
+   4. Módulos
+   ========================================= */
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.module-card {
+    padding: 24px;
+    border-radius: var(--raio-lg);
+    color: var(--branco);
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--sombra-sm);
+    transition: transform var(--transicao), box-shadow var(--transicao);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.module-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-md);
+}
+
+.module-blue {
+    background-color: var(--azul);
+}
+
+/* O verde saiu da paleta: este módulo usa o azul escuro da marca */
+.module-green {
+    background-color: var(--azul-escuro);
+}
+
+.module-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.module-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-right: 16px;
+    border-radius: var(--raio);
+    background-color: rgba(255, 255, 255, 0.14);
+    font-size: var(--fs-2xl);
+    line-height: 1;
+    color: var(--amarelo);
+}
+
+.module-text h3 {
+    font-size: var(--fs-lg);
+    font-weight: var(--peso-negrito);
+    color: var(--branco);
+    margin-bottom: 4px;
+}
+
+.module-text p {
+    font-size: var(--fs-sm);
+    font-weight: var(--peso-normal);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.access-button {
+    flex-shrink: 0;
+    background-color: var(--amarelo);
+    border: none;
+    color: var(--azul-escuro);
+    padding: 10px 20px;
+    border-radius: var(--raio-sm);
+    font-size: var(--fs-sm);
+    font-weight: var(--peso-negrito);
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background-color var(--transicao);
+}
+
+.module-card:hover .access-button,
+.access-button:hover {
+    background-color: var(--amarelo-escuro);
+}
+
+.module-arrow-right {
+    flex-shrink: 0;
+    font-size: var(--fs-lg);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* =========================================
+   5. Rodapé
+   ========================================= */
+
+.footer {
+    background-color: var(--amarelo);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--texto-forte);
+    margin-top: 40px;
+}
+
+.logo-footer {
+    font-family: var(--fonte-titulo);
+    font-size: var(--fs-2xl);
+    font-weight: var(--peso-extra);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 16px;
+    color: var(--azul-escuro); /* "Prep" — antes era branco e sumia no amarelo */
+}
+
+.enem-highlight-footer {
+    display: inline-block;
+    margin-left: 2px;
+    padding: 4px 8px;
+    border-radius: var(--raio-sm);
+    background-color: var(--azul);
+    color: var(--branco);
+}
+
+.help-section p {
+    font-size: var(--fs-sm);
+    color: var(--texto);
+    margin-bottom: 4px;
+}
+
+#link-central-ajuda {
+    color: var(--azul-escuro);
+    font-weight: var(--peso-negrito);
+    font-size: var(--fs-sm);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+#link-central-ajuda:hover {
+    color: var(--azul);
+}
+
+/* =========================================
+   Responsividade
+   ========================================= */
+
+@media (max-width: 767px) {
+    .container {
+        padding: 28px 0;
+    }
+
+    .health-tips-section h2,
+    .modules-section h2 {
+        font-size: var(--fs-xl);
+    }
+
+    /* No celular o botão "Acessar" desce para baixo do texto */
+    .module-card {
+        flex-wrap: wrap;
+    }
+
+    .module-content {
+        flex-basis: 100%;
+    }
+
+    .access-button {
+        margin-left: 68px;
+    }
+}
+
+@media (min-width: 768px) {
+    .tips-container {
+        overflow-x: visible;
+        justify-content: space-between;
+    }
+
+    .tip-card {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .module-wide {
+        grid-column: span 2;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        /* alinha o rodapé com o conteúdo (antes o cálculo ficava negativo e era ignorado) */
+        padding: 32px max(5%, calc((100% - 1140px) / 2));
+    }
+
+    .logo-footer {
+        margin-bottom: 0;
+    }
+
+    .help-section {
+        text-align: right;
+    }
+}
