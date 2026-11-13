@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PrepEnem — estude para o Enem e a Fuvest com método</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2b6de0; --blue-deep:#1c4fb0; --yellow:#ffc800; --yellow-soft:#ffe07a;
+  --ink:#0f1e4a; --bg:#f8f8f6; --card:#ffffff; --muted:#4b5675; --line:#e4e6ee;
+  --on-yellow:#1a1a1a;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0c1330;--card:#141d44;--ink:#f1f3fb;--muted:#aab3d3;--line:#25305e;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0c1330;--card:#141d44;--ink:#f1f3fb;--muted:#aab3d3;--line:#25305e;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.1;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* header */
+header{background:var(--blue);color:#fff;position:sticky;top:0;z-index:20}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;text-decoration:none}
+.logo span{color:var(--yellow)}
+nav{display:flex;align-items:center;gap:26px;font-weight:500;font-size:.95rem}
+nav a{text-decoration:none;opacity:.92}
+nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-block;background:var(--yellow);color:var(--on-yellow);font-weight:600;text-decoration:none;padding:12px 22px;border-radius:999px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.btn.sm{padding:8px 16px;font-size:.9rem}
+.btn.ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55)}
+
+/* hero */
+.hero{background:var(--blue);color:#fff;padding:64px 0 120px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800}
+.hero p{font-size:1.15rem;max-width:34em;margin:20px 0 30px;color:#e6eeff}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero .note{margin-top:18px;font-size:.9rem;color:#cfdcff}
+
+/* study card */
+.plan{background:var(--card);color:var(--ink);border-radius:22px;padding:24px;box-shadow:0 24px 0 -8px var(--blue-deep),0 30px 50px rgba(8,20,70,.35);transform:rotate(1.5deg)}
+.plan-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.plan-top h3{font-size:1.15rem}
+.streak{background:var(--yellow);color:var(--on-yellow);font-weight:600;font-size:.85rem;padding:4px 12px;border-radius:999px}
+.task{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:.97rem}
+.task i{flex:none;width:22px;height:22px;border-radius:7px;border:2px solid var(--blue);display:grid;place-items:center;font-style:normal;font-size:.8rem;color:#fff}
+.task.done i{background:var(--blue)}
+.task.done b{text-decoration:line-through;opacity:.6}
+.task small{margin-left:auto;color:var(--muted);font-size:.8rem;white-space:nowrap}
+.bar{height:10px;background:var(--line);border-radius:99px;margin-top:14px;overflow:hidden}
+.bar div{width:68%;height:100%;background:linear-gradient(90deg,var(--blue),var(--yellow))}
+.plan p.meta{margin:8px 0 0;font-size:.82rem;color:var(--muted)}
+
+/* yellow band */
+.method{background:var(--yellow);color:var(--on-yellow);padding:0 0 72px;position:relative}
+.method::before{content:"";display:block;height:70px;background:var(--blue);border-radius:0 0 50% 50% / 0 0 100% 100%;margin-bottom:56px}
+.method .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.method h2{font-size:clamp(1.7rem,3.4vw,2.4rem)}
+.method p{margin:0;font-size:1.1rem}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.pills span{background:rgba(255,255,255,.55);padding:6px 14px;border-radius:999px;font-weight:600;font-size:.9rem}
+
+/* features */
+.features{padding:88px 0}
+.features h2{font-size:clamp(1.7rem,3.4vw,2.4rem);text-align:center}
+.features .sub{text-align:center;color:var(--muted);margin:10px auto 44px;max-width:36em}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;grid-column:span 2;transition:border-color .2s}
+.card:hover{border-color:var(--blue)}
+.card.wide{grid-column:span 3}
+.card.hl{background:var(--blue);color:#fff;border-color:var(--blue)}
+.card.hl p{color:#e0e9ff}
+.ico{width:48px;height:48px;border-radius:14px;background:var(--yellow);display:grid;place-items:center;font-size:1.5rem;margin-bottom:16px}
+.card h3{font-size:1.2rem;margin-bottom:8px}
+.card p{margin:0;color:var(--muted);font-size:.97rem}
+
+/* login modal */
+dialog.auth{border:0;padding:0;background:transparent;max-width:none;max-height:none;overflow:visible;margin:auto}
+dialog.auth::backdrop{background:rgba(10,20,60,.7);backdrop-filter:blur(6px)}
+.auth-card{position:relative;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;background:var(--yellow);color:var(--on-yellow);border-radius:26px;padding:40px 32px 28px;box-shadow:0 10px 0 var(--blue-deep),0 30px 60px rgba(0,0,0,.4)}
+dialog[open] .auth-card{animation:pop .22s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.auth-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.1);font-size:1.1rem;cursor:pointer;color:inherit}
+.auth-x:hover{background:rgba(0,0,0,.2)}
+.auth-card h2{font-size:2rem;margin-bottom:6px}
+.auth-card .lead{margin:0 0 22px;font-weight:500}
+.field{display:block;margin-bottom:12px}
+.field>span{display:block;font-weight:600;font-size:.88rem;margin-bottom:5px}
+.in{position:relative}
+.field input{width:100%;font:inherit;padding:13px 14px;border-radius:12px;border:2px solid transparent;background:#fff;color:#1a1a1a}
+.field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(43,109,224,.25)}
+.field input[aria-invalid="true"]{border-color:#c0262d}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;cursor:pointer;font:600 .85rem Figtree,sans-serif;color:var(--blue-deep);padding:8px}
+.err{color:#9b1c22;font-size:.82rem;min-height:1.2em;margin-top:3px;font-weight:600}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.9rem;margin:4px 0 18px}
+.row label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.submit{width:100%;border:0;cursor:pointer;background:var(--blue);color:#fff;font:600 1rem Figtree,sans-serif;padding:15px;border-radius:14px;margin-top:6px;transition:background .15s}
+.submit:hover{background:var(--blue-deep)}
+.links{text-align:center;margin-top:16px;font-size:.93rem}
+.links a,.row a{font-weight:600;color:var(--blue-deep)}
+.msg{background:#fff;border-radius:12px;padding:10px 12px;font-size:.9rem;margin-top:14px}
+.auth-card [hidden]{display:none}
+@media (prefers-reduced-motion:reduce){dialog[open] .auth-card{animation:none}}
+
+/* login modal: versão sem amarelo (sobrescreve o estilo anterior) */
+.auth-card{--link:#1c4fb0;--field:#f3f5fb;--errc:#b42318;width:min(820px,calc(100vw - 32px));background:var(--card);color:var(--ink);padding:0;border-radius:24px;box-shadow:0 30px 70px rgba(8,20,70,.45)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .auth-card{--link:#8db3ff;--field:#0c1330;--errc:#ff8a8f}}
+:root[data-theme="dark"] .auth-card{--link:#8db3ff;--field:#0c1330;--errc:#ff8a8f}
+.auth-card form{margin-left:320px;padding:48px 44px 34px}
+.auth-card h2{font-size:1.9rem}
+.auth-card .lead{color:var(--muted);font-weight:400}
+.auth-card .field input{background:var(--field);color:var(--ink);border-color:var(--line)}
+.auth-card .field input::placeholder{color:var(--muted)}
+.auth-card .field input:focus{border-color:var(--blue)}
+.auth-card .field input[aria-invalid="true"]{border-color:var(--errc)}
+.auth-card .err{color:var(--errc)}
+.auth-card .eye,.auth-card .links a,.auth-card .row a{color:var(--link)}
+.auth-card .row input{accent-color:var(--blue)}
+.auth-card .msg{background:var(--field);border:1px solid var(--line)}
+.auth-card .auth-x{background:var(--field);color:var(--ink)}
+.auth-card .auth-x:hover{background:var(--line)}
+.auth-side{position:absolute;left:0;top:0;bottom:0;width:320px;background:linear-gradient(160deg,var(--blue),var(--blue-deep));color:#fff;padding:44px 32px 32px;display:flex;flex-direction:column;gap:22px}
+.auth-side .logo{font-size:1.5rem}
+.auth-side .logo span{color:#bcd3ff}
+.auth-side h3{font-size:1.5rem}
+.auth-side ul{list-style:none;margin:0;padding:0;display:grid;gap:14px;font-size:.95rem;color:#e0e9ff}
+.auth-side li{display:flex;gap:10px;align-items:flex-start}
+.auth-side li b{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:.75rem}
+.auth-side small{margin-top:auto;color:#cfdcff}
+@media (max-width:760px){.auth-side{display:none}.auth-card form{margin-left:0;padding:48px 24px 28px}}
+
+/* telas de cadastro e recuperação */
+.auth-card{display:grid;grid-template-columns:320px 1fr}
+.auth-side{position:static;width:auto;grid-column:1;grid-row:1}
+.auth-card form{grid-column:2;grid-row:1;margin-left:0}
+@media (max-width:760px){.auth-card{grid-template-columns:1fr}.auth-card form{grid-column:1}}
+.auth-card .field select{width:100%;font:inherit;padding:13px 14px;border-radius:12px;border:2px solid var(--line);background:var(--field);color:var(--ink)}
+.auth-card .field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(43,109,224,.25)}
+.meter{height:6px;border-radius:9px;background:var(--line);margin-top:8px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:#d92d20;transition:width .2s,background .2s}
+.meter[data-level="1"] i{width:33%}
+.meter[data-level="2"] i{width:66%;background:#5b8def}
+.meter[data-level="3"] i{width:100%;background:#16a34a}
+.hint{font-size:.8rem;color:var(--muted);margin-top:5px}
+.terms label{display:flex;gap:8px;align-items:center;font-size:.9rem;cursor:pointer}
+.terms input{accent-color:var(--blue)}
+.done{text-align:center;padding:16px 0 4px}
+.done-ico{width:72px;height:72px;margin:0 auto 16px;border-radius:50%;background:var(--field);border:1px solid var(--line);display:grid;place-items:center;font-size:2rem}
+.done h3{font-size:1.6rem;margin-bottom:10px}
+.done p{color:var(--muted);margin:0 0 22px}
+.done p b{color:var(--ink);word-break:break-all}
+.resend{width:100%;cursor:pointer;background:transparent;color:var(--link);border:2px solid var(--blue);font:600 1rem Figtree,sans-serif;padding:13px;border-radius:14px}
+.resend:hover{background:var(--field)}
+.resend:disabled{opacity:.6;cursor:default}
+
+/* quiz do hero */
+.quiz{background:var(--card);color:var(--ink);border-radius:22px;padding:24px;box-shadow:0 24px 0 -8px var(--blue-deep),0 30px 50px rgba(8,20,70,.35);transform:rotate(1.5deg)}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.85rem;color:var(--muted)}
+.quiz-top b{background:var(--line);color:var(--ink);padding:4px 12px;border-radius:99px;font-weight:600}
+.quiz h3{font-size:1.25rem;line-height:1.3;margin-bottom:16px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;font:inherit;font-size:.97rem;color:var(--ink);background:transparent;border:2px solid var(--line);border-radius:14px;padding:11px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt i{flex:none;width:26px;height:26px;border-radius:8px;background:var(--line);display:grid;place-items:center;font-style:normal;font-weight:600;font-size:.8rem}
+.opt.ok{border-color:#16a34a;background:rgba(22,163,74,.12)}
+.opt.ok i{background:#16a34a;color:#fff}
+.opt.no{border-color:#d92d20;background:rgba(217,45,32,.1)}
+.opt.no i{background:#d92d20;color:#fff}
+.opt:disabled{cursor:default;opacity:1}
+.fb{margin:14px 0 0;font-size:.92rem;color:var(--muted);min-height:2.9em}
+.next{margin-top:10px;border:0;cursor:pointer;background:var(--blue);color:#fff;font:600 .95rem Figtree,sans-serif;padding:11px 20px;border-radius:999px}
+.next:hover{background:var(--blue-deep)}
+@media (max-width:860px){.quiz{transform:none}}
+
+/* final cta */
+.final{background:var(--yellow);color:var(--on-yellow);text-align:center;padding:72px 24px}
+.final h2{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:24px}
+.final .btn{background:var(--blue);color:#fff;font-size:1.1rem;padding:16px 34px}
+footer{background:var(--blue-deep);color:#cfdcff;text-align:center;padding:22px;font-size:.9rem}
+
+@media (max-width:860px){
+  nav a:not(.btn){display:none}
+  .hero .wrap,.method .wrap{grid-template-columns:1fr}
+  .plan{transform:none}
+  .card,.card.wide{grid-column:span 6}
+}
+@media (min-width:861px) and (max-width:1000px){.card{grid-column:span 3}.card.wide{grid-column:span 6}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">Prep<span>Enem</span></a>
+    <nav aria-label="Principal">
+      <a href="#metodo">Método</a>
+      <a href="#recursos">Recursos</a>
+      
+      <a class="btn sm open-login" href="#entrar">Quero estudar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Estude para o Enem e a Fuvest sem se esgotar.</h1>
+        <p>O PrepEnem organiza o conteúdo, monta seu cronograma e ajuda você a fixar o que aprendeu, com pausas e hábitos que mantêm a cabeça em dia.</p>
+        <div class="cta">
+          <a class="btn open-login" href="#entrar">Quero estudar</a>
+          <a class="btn ghost" href="#recursos">Ver recursos</a>
+        </div>
+        <div class="note">Gratuito para começar. Sem cartão.</div>
+      </div>
+      <aside class="quiz" aria-label="Pergunta de exemplo">
+        <div class="quiz-top"><b id="q-sub">Biologia</b><span id="q-count">1 de 3</span></div>
+        <h3 id="q-text"></h3>
+        <div class="opts" id="q-opts"></div>
+        <p class="fb" id="q-fb" role="status" aria-live="polite"></p>
+        <button class="next" id="q-next" type="button" hidden>Próxima pergunta</button>
+      </aside>
+    </div>
+  </section>
+
+  <section class="method" id="metodo">
+    <div class="wrap">
+      <h2>Um método baseado em como o cérebro realmente aprende.</h2>
+      <div>
+        <p>Nossa plataforma usa princípios científicos comprovados de aprendizagem eficaz. Você aprende mais e se mantém descansado e saudável durante toda a preparação.</p>
+        <div class="pills"><span>Active Recall</span><span>Spaced Repetition</span><span>Pausas planejadas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="recursos">
+    <div class="wrap">
+      <h2>O que o PrepEnem oferece</h2>
+      <p class="sub">Tudo o que você precisa para estudar com foco, medir sua evolução e cuidar de si.</p>
+      <div class="grid">
+        <article class="card"><div class="ico">📚</div><h3>Conteúdo estruturado</h3><p>Materiais completos organizados por disciplina do Enem, para você não perder tempo procurando conteúdo.</p></article>
+        <article class="card"><div class="ico">🗓️</div><h3>Planejamento personalizado</h3><p>Monte seu cronograma conforme seu ritmo e suas metas. O estudo se adapta ao seu tempo disponível.</p></article>
+        <article class="card"><div class="ico">🏆</div><h3>Gamificação</h3><p>Pontos, badges e rankings transformam o estudo em jogo e mantêm a motivação em alta.</p></article>
+        <article class="card wide hl"><div class="ico">🧠</div><h3>Técnicas de memorização</h3><p>Baseadas em Active Recall e Spaced Repetition, ajudam você a fixar o conteúdo por muito mais tempo.</p></article>
+        <article class="card wide"><div class="ico">📈</div><h3>Feedback contínuo</h3><p>Acompanhe sua evolução em tempo real, ajuste o ritmo e comemore cada conquista da jornada.</p></article>
+        <article class="card wide"><div class="ico">💛</div><h3>Qualidade de vida</h3><p>Dicas práticas sobre sono, alimentação e saúde mental para equilibrar desempenho e bem-estar.</p></article>
+        <article class="card wide"><div class="ico">⏱️</div><h3>Pausas que funcionam</h3><p>Lembretes de descanso entre as sessões de estudo, para você render mais sem chegar ao limite.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="comecar">
+    <h2>O que está esperando? Venha estudar conosco!</h2>
+    <a class="btn open-login" href="#entrar">Criar minha conta</a>
+  </section>
+</main>
+<footer>© 2026 PrepEnem. Estude com método, descanse com consciência.</footer>
+<dialog class="auth" id="auth" aria-labelledby="auth-title">
+  <div class="auth-card">
+    <aside class="auth-side">
+      <div class="logo">Prep<span>Enem</span></div>
+      <h3>Estude com método, descanse com consciência.</h3>
+      <ul>
+        <li><b>✓</b>Cronograma que se adapta ao seu tempo</li>
+        <li><b>✓</b>Revisões espaçadas para fixar o conteúdo</li>
+        <li><b>✓</b>Pontos e conquistas a cada meta cumprida</li>
+      </ul>
+      <small>Preparação para Enem e Fuvest.</small>
+    </aside>
+    <button class="auth-x" type="button" aria-label="Fechar" data-close>✕</button>
+
+    <form data-view="login" novalidate>
+      <h2 id="auth-title">Seja bem-vindo!</h2>
+      <p class="lead">Faça login para continuar sua jornada de estudos.</p>
+      <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" placeholder="voce@email.com"><div class="err"></div></label>
+      <label class="field"><span>Senha</span><div class="in"><input name="password" type="password" autocomplete="current-password" placeholder="Sua senha"><button class="eye" type="button" aria-label="Mostrar senha">Mostrar</button></div><div class="err"></div></label>
+      <div class="row"><label><input type="checkbox" name="remember"> Lembrar de mim</label><a href="#entrar" data-go="forgot">Esqueceu a senha?</a></div>
+      <button class="submit" type="submit">Entrar e estudar</button>
+      <div class="msg" role="status" hidden></div>
+      <p class="links">Não tem uma conta? <a href="#entrar" data-go="signup">Cadastre-se aqui</a></p>
+    </form>
+
+    <form data-view="signup" novalidate hidden>
+      <h2>Crie sua conta</h2>
+      <p class="lead">Monte seu plano de estudos em poucos minutos.</p>
+      <label class="field"><span>Nome</span><input name="name" type="text" autocomplete="name" placeholder="Seu nome"><div class="err"></div></label>
+      <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" placeholder="voce@email.com"><div class="err"></div></label>
+      <label class="field"><span>Senha</span><div class="in"><input name="password" type="password" autocomplete="new-password" placeholder="Mínimo de 8 caracteres"><button class="eye" type="button" aria-label="Mostrar senha">Mostrar</button></div><div class="meter" data-level="0"><i></i></div><div class="hint">Use 8 ou mais caracteres, com letras e números.</div><div class="err"></div></label>
+      <label class="field"><span>Confirmar senha</span><div class="in"><input name="confirm" type="password" autocomplete="new-password" placeholder="Repita a senha"><button class="eye" type="button" aria-label="Mostrar senha">Mostrar</button></div><div class="err"></div></label>
+      <label class="field"><span>Qual é a sua meta?</span><select name="goal"><option>Enem</option><option>Fuvest</option><option selected>Enem e Fuvest</option></select></label>
+      <div class="field terms"><label><input type="checkbox" name="terms"> Li e aceito os <b>termos de uso</b></label><div class="err"></div></div>
+      <button class="submit" type="submit">Criar conta e estudar</button>
+      <div class="done" hidden><div class="done-ico">🎉</div><h3>Conta criada!</h3><p>Bem-vindo(a), <b class="to"></b>. Agora é só entrar para montar seu primeiro plano de estudos.</p><button type="button" class="resend" data-go="login">Ir para o login</button></div>
+      <div class="msg" role="status" hidden></div>
+      <p class="links">Já tem uma conta? <a href="#entrar" data-go="login">Entrar</a></p>
+    </form>
+
+    <form data-view="forgot" novalidate hidden>
+      <h2>Recupere sua senha</h2>
+      <p class="lead">Informe seu e-mail e enviaremos um link para criar uma nova senha.</p>
+      <label class="field"><span>E-mail</span><input name="email" type="email" autocomplete="email" placeholder="voce@email.com"><div class="err"></div></label>
+      <button class="submit" type="submit">Enviar link</button>
+      <div class="done" hidden><div class="done-ico">✉️</div><h3>Verifique seu e-mail</h3><p>Enviamos um link para <b class="to"></b>. Ele vale por 30 minutos. Não recebeu? Confira o spam ou reenvie.</p><button type="button" class="resend" data-resend>Reenviar link</button></div>
+      <div class="msg" role="status" hidden></div>
+      <p class="links"><a href="#entrar" data-go="login">Voltar para o login</a></p>
+    </form>
+  </div>
+</dialog>
+<script>
+(function(){
+  var dlg=document.getElementById('auth');
+  var forms=dlg.querySelectorAll('form');
+  var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function show(v){
+    forms.forEach(function(f){f.hidden=f.dataset.view!==v;});
+    var f=dlg.querySelector('form:not([hidden])');
+    Array.from(f.children).forEach(function(c){c.hidden=c.matches('.done,.msg');});
+    var i=f.querySelector('input'); if(i) i.focus();
+  }
+  function open(){ if(!dlg.open) dlg.showModal(); show('login'); }
+  document.querySelectorAll('.open-login').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();open();});
+  });
+  dlg.querySelectorAll('[data-go]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.go);});
+  });
+  var pw=dlg.querySelector('form[data-view="signup"] input[name="password"]');
+  var hints=['Use 8 ou mais caracteres, com letras e números.','Senha fraca. Misture letras e números.','Senha média. Falta pouco.','Senha forte.'];
+  pw.addEventListener('input',function(){
+    var s=pw.value,l=0;
+    if(s.length>=8) l=1;
+    if(l&&/[A-Za-z]/.test(s)&&/\d/.test(s)) l=2;
+    if(l===2&&(s.length>=12||/[^A-Za-z0-9]/.test(s))) l=3;
+    var n=s?Math.max(l,1):0, fld=pw.closest('.field');
+    fld.querySelector('.meter').dataset.level=n;
+    fld.querySelector('.hint').textContent=hints[n];
+  });
+  dlg.querySelectorAll('[data-resend]').forEach(function(b){
+    b.addEventListener('click',function(){
+      b.disabled=true; b.textContent='Link reenviado';
+      setTimeout(function(){b.disabled=false; b.textContent='Reenviar link';},30000);
+    });
+  });
+  dlg.querySelector('[data-close]').addEventListener('click',function(){dlg.close();});
+  dlg.addEventListener('click',function(e){if(e.target===dlg) dlg.close();});
+  dlg.querySelectorAll('.eye').forEach(function(b){
+    b.addEventListener('click',function(){
+      var inp=b.parentNode.querySelector('input');
+      var hide=inp.type==='password';
+      inp.type=hide?'text':'password';
+      b.textContent=hide?'Ocultar':'Mostrar';
+      b.setAttribute('aria-label',hide?'Ocultar senha':'Mostrar senha');
+    });
+  });
+  function setErr(input,text){
+    var box=input.closest('.field').querySelector('.err');
+    box.textContent=text||'';
+    if(text) input.setAttribute('aria-invalid','true'); else input.removeAttribute('aria-invalid');
+  }
+  forms.forEach(function(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var v=f.dataset.view, ok=true, first=null;
+      function check(name,test,text){
+        var inp=f.elements[name]; if(!inp) return;
+        var bad=!test(inp.value.trim());
+        setErr(inp,bad?text:'');
+        if(bad){ok=false; if(!first) first=inp;}
+      }
+      check('name',function(s){return s.length>1;},'Informe seu nome.');
+      check('email',function(s){return emailRe.test(s);},'Digite um e-mail válido.');
+      if(v==='login') check('password',function(s){return s.length>0;},'Digite sua senha.');
+      if(v==='signup'){
+        check('password',function(s){return s.length>=8&&/[A-Za-z]/.test(s)&&/\d/.test(s);},'Use 8 ou mais caracteres, com letras e números.');
+        check('confirm',function(s){return s===f.elements.password.value.trim();},'As senhas não coincidem.');
+        var t=f.elements.terms; setErr(t,t.checked?'':'Aceite os termos para continuar.');
+        if(!t.checked){ok=false; if(!first) first=t;}
+      }
+      var msg=f.querySelector('.msg');
+      if(!ok){msg.hidden=true; first.focus(); return;}
+      // TODO: conectar ao seu back-end (login, cadastro e recuperação de senha).
+      
+      if(v!=='login'){
+        Array.from(f.children).forEach(function(c){c.hidden=!c.matches('.done,.links');});
+        f.querySelector('.to').textContent=v==='forgot'?f.elements.email.value.trim():f.elements.name.value.trim().split(' ')[0];
+        return;
+      }
+      window.location.href='frontend/menu/menu.html';
+    });
+    f.addEventListener('input',function(e){ if(e.target.matches('input')) setErr(e.target,''); });
+  });
+})();
+</script>
+<script>
+(function(){
+  var Q=[
+    {s:'Biologia',q:'Qual organela é a principal responsável pela produção de energia na célula?',o:['Ribossomo','Mitocôndria','Complexo de Golgi','Lisossomo'],a:1,e:'A mitocôndria realiza a respiração celular e produz a maior parte do ATP.'},
+    {s:'Matemática',q:'Um produto de R$ 200 recebe um desconto de 15%. Qual é o novo preço?',o:['R$ 185','R$ 150','R$ 170','R$ 175'],a:2,e:'15% de 200 é 30, e 200 − 30 = 170.'},
+    {s:'Física',q:'Qual é a unidade de força no Sistema Internacional?',o:['Joule','Watt','Pascal','Newton'],a:3,e:'O newton mede força. Joule é energia, watt é potência e pascal é pressão.'}
+  ];
+  var n=0,tx=document.getElementById('q-text'),ops=document.getElementById('q-opts'),fb=document.getElementById('q-fb'),nx=document.getElementById('q-next'),sub=document.getElementById('q-sub'),ct=document.getElementById('q-count');
+  function render(){
+    var d=Q[n];
+    sub.textContent=d.s; ct.textContent=(n+1)+' de '+Q.length; tx.textContent=d.q; ops.innerHTML='';
+    d.o.forEach(function(t,i){
+      var b=document.createElement('button'); b.type='button'; b.className='opt';
+      var l=document.createElement('i'); l.textContent='ABCD'.charAt(i);
+      b.appendChild(l); b.appendChild(document.createTextNode(t));
+      b.addEventListener('click',function(){pick(i);});
+      ops.appendChild(b);
+    });
+    fb.textContent='Escolha uma alternativa para ver a resposta.'; nx.hidden=true;
+  }
+  function pick(i){
+    var d=Q[n],bs=ops.children;
+    for(var k=0;k<bs.length;k++){
+      bs[k].disabled=true;
+      if(k===d.a){bs[k].classList.add('ok'); bs[k].firstChild.textContent='✓';}
+    }
+    if(i!==d.a){bs[i].classList.add('no'); bs[i].firstChild.textContent='✕';}
+    fb.textContent=(i===d.a?'Correto! ':'Quase. ')+d.e;
+    nx.hidden=false;
+  }
+  nx.addEventListener('click',function(){n=(n+1)%Q.length; render();});
+  render();
+})();
+</script>
+</body>
+</html>
