@@ -1,0 +1,330 @@
+/* =========================================================
+   PrepEnem — Página de cadastro
+   ========================================================= */
+
+:root {
+    /* Fontes */
+    --fonte-titulo: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonte-texto: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    /* Cores da marca */
+    --azul: #2B50D6;            /* azul principal */
+    --azul-escuro: #1E3A8A;     /* hover / texto sobre amarelo */
+    --azul-claro: #EEF2FF;      /* fundos suaves */
+    --amarelo: #FBCB0A;         /* amarelo principal */
+    --amarelo-escuro: #E3B500;  /* hover */
+    --amarelo-claro: #FFF6CC;
+
+    /* Cores neutras */
+    --texto-forte: #111827;     /* títulos */
+    --texto: #374151;           /* parágrafos */
+    --texto-suave: #6B7280;     /* legendas, textos de apoio */
+    --branco: #FFFFFF;
+    --fundo: #F7F8FC;
+    --borda: #E5E7EB;
+
+    /* Escala tipográfica (base 16px) */
+    --fs-xs: 0.8125rem;   /* 13px */
+    --fs-sm: 0.9375rem;   /* 15px */
+    --fs-base: 1rem;      /* 16px */
+    --fs-lg: 1.125rem;    /* 18px */
+    --fs-xl: 1.25rem;     /* 20px */
+    --fs-2xl: 1.5rem;     /* 24px */
+    --fs-3xl: 2rem;       /* 32px */
+    --fs-4xl: 2.5rem;     /* 40px */
+
+    /* Pesos */
+    --peso-normal: 400;
+    --peso-medio: 500;
+    --peso-semi: 600;
+    --peso-negrito: 700;
+    --peso-extra: 800;
+
+    /* Raios e sombras */
+    --raio-sm: 8px;
+    --raio: 12px;
+    --raio-lg: 16px;
+    --raio-xl: 80px;
+    --sombra-sm: 0 1px 2px rgba(17, 24, 39, 0.06), 0 1px 3px rgba(17, 24, 39, 0.08);
+    --sombra-md: 0 8px 24px -8px rgba(17, 24, 39, 0.15);
+    --sombra-lg: 0 24px 48px -16px rgba(17, 24, 39, 0.28);
+
+    --transicao: 0.2s ease;
+}
+
+/* =========================================
+   Reset e base
+   ========================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fonte-texto);
+    font-size: var(--fs-base);
+    font-weight: var(--peso-normal);
+    line-height: 1.6;
+    color: var(--texto);
+    background-color: var(--fundo);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+    font-family: var(--fonte-titulo);
+    font-weight: var(--peso-negrito);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--texto-forte);
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+button {
+    font-family: inherit;
+}
+
+.cadastro-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* =========================================
+   Cabeçalho (igual ao da página inicial)
+   ========================================= */
+
+#cadastro-header {
+    background-color: var(--azul);
+    padding: 14px 5%;
+    box-shadow: var(--sombra-sm);
+}
+
+#logo-cadastro {
+    font-family: var(--fonte-titulo);
+    font-size: var(--fs-2xl);
+    font-weight: var(--peso-extra);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--amarelo);
+}
+
+#logo-cadastro span {
+    display: inline-block;
+    margin-left: 2px;
+    padding: 4px 8px;
+    border-radius: var(--raio-sm);
+    background-color: var(--amarelo);
+    color: var(--azul-escuro);
+}
+
+/* =========================================
+   Corpo principal
+   ========================================= */
+
+#cadastro-main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 20px;
+}
+
+.cadastro-box {
+    display: flex;
+    width: 100%;
+    max-width: 960px;
+    border-radius: var(--raio-lg);
+    overflow: hidden;
+    background-color: var(--branco);
+    box-shadow: var(--sombra-lg);
+}
+
+/* =========================================
+   Lado esquerdo — benefícios
+   ========================================= */
+
+.benefits-side {
+    flex: 1;
+    padding: 48px 40px;
+    background-color: var(--azul);
+    background-image: linear-gradient(160deg, var(--azul) 0%, var(--azul-escuro) 100%);
+    color: var(--branco);
+}
+
+.benefits-side .welcome-title {
+    font-size: var(--fs-3xl);
+    font-weight: var(--peso-extra);
+    color: var(--branco);
+    margin-bottom: 12px;
+}
+
+.welcome-subtitle {
+    font-size: var(--fs-base);
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 36px;
+}
+
+.benefit-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: var(--fs-base);
+    font-weight: var(--peso-medio);
+    line-height: 1.5;
+    color: var(--branco);
+    margin-bottom: 20px;
+}
+
+.checkmark {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: var(--amarelo);
+    color: var(--azul-escuro);
+    font-size: var(--fs-xs);
+    font-weight: var(--peso-extra);
+    line-height: 1;
+}
+
+/* =========================================
+   Lado direito — formulário
+   ========================================= */
+
+.form-side {
+    flex: 1;
+    padding: 48px 40px;
+    background-color: var(--branco);
+    text-align: left;
+}
+
+.form-title {
+    font-size: var(--fs-2xl);
+    font-weight: var(--peso-negrito);
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-sm);
+    background-color: var(--branco);
+    font-size: var(--fs-base);
+    color: var(--texto-forte);
+    outline: none;
+    transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+
+.form-group input::placeholder {
+    color: var(--texto-suave);
+}
+
+.form-group input:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(43, 80, 214, 0.18);
+}
+
+/* Termos */
+.terms-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 20px 0 24px;
+    font-size: var(--fs-xs);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+.terms-group input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--azul);
+}
+
+/* Botão */
+#btn-cadastrar {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--raio-sm);
+    background-color: var(--azul);
+    color: var(--branco);
+    font-size: var(--fs-base);
+    font-weight: var(--peso-negrito);
+    cursor: pointer;
+    transition: background-color var(--transicao);
+}
+
+#btn-cadastrar:hover {
+    background-color: var(--azul-escuro);
+}
+
+/* =========================================
+   Rodapé
+   ========================================= */
+
+#cadastro-footer {
+    background-color: var(--amarelo);
+    padding: 16px;
+    text-align: center;
+    font-size: var(--fs-xs);
+    font-weight: var(--peso-medio);
+    color: var(--azul-escuro);
+}
+
+/* =========================================
+   Responsividade
+   ========================================= */
+
+@media (max-width: 768px) {
+    #cadastro-main {
+        padding: 32px 16px;
+    }
+
+    .cadastro-box {
+        flex-direction: column;
+    }
+
+    .benefits-side,
+    .form-side {
+        padding: 32px 24px;
+    }
+
+    .benefits-side .welcome-title {
+        font-size: var(--fs-2xl);
+    }
+}

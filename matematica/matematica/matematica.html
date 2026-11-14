@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática: módulo 1 — PrepEnem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ordem importa: Bootstrap primeiro, estilos do PrepEnem por último (para não serem sobrescritos) -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="matematica.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar" aria-label="Menu principal">
+        <div class="sidebar-header">Prep<span class="enem-highlight">Enem</span></div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades"><i class="fas fa-list-check icon" aria-hidden="true"></i><a href="../menu/menu.html">Atividades</a></li>
+            <li id="menu-redacoes"><i class="fas fa-file-lines icon" aria-hidden="true"></i><a href="../redacao/redacao.html">Redações</a></li>
+            <li id="menu-planejamento"><i class="fas fa-calendar-days icon" aria-hidden="true"></i><a href="#">Planejamento</a></li>
+            <li id="menu-perfil"><i class="fas fa-user icon" aria-hidden="true"></i><a href="../perfil/perfil.html">Perfil</a></li>
+            <li id="menu-configuracoes"><i class="fas fa-gear icon" aria-hidden="true"></i><a href="#">Configurações</a></li>
+        </ul>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <button type="button" class="menu-icon" id="menu-toggle" aria-label="Abrir menu"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            <span class="logo-text">Prep<span class="enem-highlight">Enem</span></span>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="header-icon" aria-label="Notificações"><i class="fas fa-bell" aria-hidden="true"></i></button>
+            <button type="button" class="header-icon" aria-label="Histórico"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i></button>
+        </div>
+    </header>
+
+    <div class="module-header-area">
+        <div class="container">
+            <a href="/menu.html" class="voltar-link" id="btn-back-module"><i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar aos módulos</a>
+            <span class="eyebrow"><i class="fas fa-square-root-variable" aria-hidden="true"></i> Módulo 1 de 5 · Sequência obrigatória</span>
+            <h1 id="module-title">Matemática e suas tecnologias</h1>
+            <p id="module-subtitle"><strong><span id="completed-lessons-count">0</span> de <span id="total-lessons-count">5</span></strong> aulas concluídas</p>
+            <div class="barra-progresso" aria-hidden="true"><span id="module-progress-fill"></span></div>
+            <button type="button" id="btn-next-module" class="botao botao-destaque" hidden>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i> Ir para o módulo 2 de 5
+            </button>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="content-layout">
+
+            <section class="main-content">
+                <div class="video-player-box" id="video-player">
+                    <div class="video-placeholder"><i class="fas fa-circle-play" aria-hidden="true"></i><span>Carregando a aula…</span></div>
+                </div>
+
+                <div id="lesson-info">
+                    <div>
+                        <span class="lesson-kicker" id="lesson-kicker">Aula 1 de 5</span>
+                        <h2 id="lesson-title">Carregando aula…</h2>
+                    </div>
+                    <span class="info-detail"><i class="fas fa-clock" aria-hidden="true"></i> <span id="lesson-duration">Duração: -</span></span>
+                </div>
+
+                <div class="lesson-actions">
+                    <button type="button" class="botao botao-secundario" id="btn-restart"><i class="fas fa-rotate-left" aria-hidden="true"></i> Revisar</button>
+                    <button type="button" class="botao botao-primario" id="btn-complete"><i class="fas fa-check" aria-hidden="true"></i> Marcar como concluída</button>
+                </div>
+
+                <div class="module-content-list">
+                    <h2>Conteúdo sequencial</h2>
+                    <ol class="lesson-list">
+                        <li class="lesson-item locked" id="lesson-item-1" data-lesson-id="1">
+                            <button type="button" class="lesson-open">
+                                <span class="lesson-icon lesson-status-locked" id="status-1"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                <span class="lesson-details">
+                                    <span class="lesson-number">Aula 1</span>
+                                    <span class="lesson-name" id="lesson-name-1">Grandezas proporcionais</span>
+                                    <span class="lesson-state" id="state-1">Bloqueada</span>
+                                </span>
+                            </button>
+                            <a href="questão1.html" class="lesson-item-actions bloqueado" aria-label="Conteúdo e exercícios da aula 1">
+                                <i class="fas fa-book-open" aria-hidden="true"></i><span>Conteúdo e quiz</span>
+                            </a>
+                        </li>
+                        <li class="lesson-item locked" id="lesson-item-2" data-lesson-id="2">
+                            <button type="button" class="lesson-open">
+                                <span class="lesson-icon lesson-status-locked" id="status-2"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                <span class="lesson-details">
+                                    <span class="lesson-number">Aula 2</span>
+                                    <span class="lesson-name" id="lesson-name-2">Estatística</span>
+                                    <span class="lesson-state" id="state-2">Bloqueada</span>
+                                </span>
+                            </button>
+                            <a href="questão2.html" class="lesson-item-actions bloqueado" aria-label="Conteúdo e exercícios da aula 2">
+                                <i class="fas fa-book-open" aria-hidden="true"></i><span>Conteúdo e quiz</span>
+                            </a>
+                        </li>
+                        <li class="lesson-item locked" id="lesson-item-3" data-lesson-id="3">
+                            <button type="button" class="lesson-open">
+                                <span class="lesson-icon lesson-status-locked" id="status-3"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                <span class="lesson-details">
+                                    <span class="lesson-number">Aula 3</span>
+                                    <span class="lesson-name" id="lesson-name-3">Aritmética</span>
+                                    <span class="lesson-state" id="state-3">Bloqueada</span>
+                                </span>
+                            </button>
+                            <a href="questão3.html" class="lesson-item-actions bloqueado" aria-label="Conteúdo e exercícios da aula 3">
+                                <i class="fas fa-book-open" aria-hidden="true"></i><span>Conteúdo e quiz</span>
+                            </a>
+                        </li>
+                        <li class="lesson-item locked" id="lesson-item-4" data-lesson-id="4">
+                            <button type="button" class="lesson-open">
+                                <span class="lesson-icon lesson-status-locked" id="status-4"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                <span class="lesson-details">
+                                    <span class="lesson-number">Aula 4</span>
+                                    <span class="lesson-name" id="lesson-name-4">Funções e equações</span>
+                                    <span class="lesson-state" id="state-4">Bloqueada</span>
+                                </span>
+                            </button>
+                            <a href="questão4.html" class="lesson-item-actions bloqueado" aria-label="Conteúdo e exercícios da aula 4">
+                                <i class="fas fa-book-open" aria-hidden="true"></i><span>Conteúdo e quiz</span>
+                            </a>
+                        </li>
+                        <li class="lesson-item locked" id="lesson-item-5" data-lesson-id="5">
+                            <button type="button" class="lesson-open">
+                                <span class="lesson-icon lesson-status-locked" id="status-5"><i class="fas fa-lock" aria-hidden="true"></i></span>
+                                <span class="lesson-details">
+                                    <span class="lesson-number">Aula 5</span>
+                                    <span class="lesson-name" id="lesson-name-5">Matrizes</span>
+                                    <span class="lesson-state" id="state-5">Bloqueada</span>
+                                </span>
+                            </button>
+                            <a href="questão5.html" class="lesson-item-actions bloqueado" aria-label="Conteúdo e exercícios da aula 5">
+                                <i class="fas fa-book-open" aria-hidden="true"></i><span>Conteúdo e quiz</span>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <aside class="side-content">
+                <h2><i class="fas fa-heart" aria-hidden="true"></i> Dicas de saúde</h2>
+
+                <div class="tip-card-side" id="tip-sono-side">
+                    <h3><i class="fas fa-moon" aria-hidden="true"></i> Sono</h3>
+                    <p>Durma de 7 a 8 horas por noite para memorizar melhor.</p>
+                </div>
+
+                <div class="tip-card-side" id="tip-organizacao-side">
+                    <h3><i class="fas fa-calendar-check" aria-hidden="true"></i> Organização</h3>
+                    <p>Crie um cronograma de estudos com pausas regulares.</p>
+                </div>
+
+                <div id="message-card">
+                    <i class="fas fa-location-dot" aria-hidden="true"></i>
+                    <p id="message-text">Transforme seus sonhos em realidade!</p>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">Prep<span class="enem-highlight-footer">Enem</span></div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+    <!-- Menu lateral (mesmo código da página do menu) -->
+    <script src="../menu/menu.js"></script>
+    <script src="matematica.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

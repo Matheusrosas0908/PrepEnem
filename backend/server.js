@@ -30,6 +30,17 @@ app.use('/api/health-tips', healthTipRoutes);
 app.use('/api/ranking', rankingRoutes);
 app.use('/api/achievements', achievementRoutes);
 
+// Menu files are kept at the project root rather than in the frontend directory.
+app.get('/menu.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'menu.html'));
+});
+app.get('/menu.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'menu.css'));
+});
+app.get('/menu.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'menu.js'));
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'PrepEnem API está rodando' });

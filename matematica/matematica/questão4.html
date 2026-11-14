@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática: estatística — PrepEnem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ordem importa: Bootstrap primeiro, estilos do PrepEnem por último (para não serem sobrescritos) -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="matematica.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar" aria-label="Menu principal">
+        <div class="sidebar-header">Prep<span class="enem-highlight">Enem</span></div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades"><i class="fas fa-list-check icon" aria-hidden="true"></i><a href="../menu/menu.html">Atividades</a></li>
+            <li id="menu-redacoes"><i class="fas fa-file-lines icon" aria-hidden="true"></i><a href="../redacao/redacao.html">Redações</a></li>
+            <li id="menu-planejamento"><i class="fas fa-calendar-days icon" aria-hidden="true"></i><a href="#">Planejamento</a></li>
+            <li id="menu-perfil"><i class="fas fa-user icon" aria-hidden="true"></i><a href="../perfil/perfil.html">Perfil</a></li>
+            <li id="menu-configuracoes"><i class="fas fa-gear icon" aria-hidden="true"></i><a href="#">Configurações</a></li>
+        </ul>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <button type="button" class="menu-icon" id="menu-toggle" aria-label="Abrir menu"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            <span class="logo-text">Prep<span class="enem-highlight">Enem</span></span>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <div class="container">
+            <div>
+                <span class="topic-label">Matemática · Tópico 02</span>
+                <span class="topic-name">Estatística: média, mediana e moda</span>
+            </div>
+            <a href="matematica.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao módulo</a>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <article id="content-view" class="content-view">
+            <span class="eyebrow"><i class="fas fa-chart-column" aria-hidden="true"></i> Conteúdo aprofundado · Foco Enem</span>
+            <h1 class="study-title">Estatística: média, mediana e moda</h1>
+            <p class="study-intro">Nesta seção, você vai estudar as medidas de tendência central mais cobradas no Enem: <strong>média, mediana e moda</strong>. A estatística é fundamental para interpretar dados, gráficos e tabelas.</p>
+            <p class="study-hint">Marque os dois tópicos abaixo como lidos para liberar o quiz de 10 questões.</p>
+
+            <div class="study-progress-bar">
+                <span class="progress-label">Progresso do estudo</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+                <div class="barra-progresso" aria-hidden="true"><span id="progress-fill"></span></div>
+            </div>
+
+            <section class="content-section" id="study-section-1">
+                <h2><span class="secao-numero">1</span> Média aritmética e média ponderada</h2>
+                <p>A <strong>média aritmética (MA)</strong> é a soma de todos os valores de um conjunto dividida pelo número de elementos. É a medida mais comum para resumir os dados em um único valor.</p>
+                <p class="formula">MA = <span class="frac"><span>Σ x<sub>i</sub></span><span>n</span></span></p>
+
+                <h3>Média ponderada (MP)</h3>
+                <p>Usada quando alguns valores têm mais importância (<strong>peso</strong>) que outros. Multiplica-se cada valor pelo seu peso, somam-se os resultados e divide-se pela soma dos pesos.</p>
+                <p class="formula">MP = <span class="frac"><span>Σ (x<sub>i</sub> · p<sub>i</sub>)</span><span>Σ p<sub>i</sub></span></span></p>
+
+                <div class="dica">
+                    <p class="dica-titulo"><i class="fas fa-lightbulb" aria-hidden="true"></i> Dica Enem</p>
+                    <p>A <strong>média ponderada</strong> é muito usada no Enem para simular a nota final em situações com pesos diferentes, como na nota do Sisu.</p>
+                </div>
+                <div class="section-footer">
+                    <button type="button" class="botao botao-primario btn-read" id="btn-read-1">Marcar tópico 1 como lido</button>
+                </div>
+            </section>
+
+            <section class="content-section" id="study-section-2">
+                <h2><span class="secao-numero">2</span> Mediana e moda</h2>
+                <p>A <strong>mediana (Md)</strong> e a <strong>moda (Mo)</strong> são essenciais para entender a distribuição e a representatividade dos dados.</p>
+
+                <h3>Mediana (Md)</h3>
+                <p>É o valor <strong>central</strong> de um conjunto de dados, mas <strong>só depois de ordená-lo</strong> (em ordem crescente ou decrescente).</p>
+                <ul>
+                    <li><strong>Número ímpar de elementos:</strong> a mediana é o valor do meio.</li>
+                    <li><strong>Número par de elementos:</strong> a mediana é a média aritmética dos dois valores centrais.</li>
+                </ul>
+
+                <h3>Moda (Mo)</h3>
+                <p>É o valor que aparece com <strong>maior frequência</strong> (o que mais se repete) em um conjunto de dados.</p>
+
+                <div class="dica">
+                    <p class="dica-titulo"><i class="fas fa-circle-exclamation" aria-hidden="true"></i> Importante</p>
+                    <p>A <strong>mediana</strong> costuma ser a melhor medida para representar o centro de dados de renda ou salários, pois não é distorcida por valores muito altos (outliers), ao contrário da média.</p>
+                </div>
+
+                <div class="tabela">
+                    <table>
+                        <thead>
+                            <tr><th>Medida</th><th>Conceito principal</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Média</strong></td><td>Representa o total distribuído igualmente.</td></tr>
+                            <tr><td><strong>Mediana</strong></td><td>Valor que divide a lista <strong>ordenada</strong> em duas metades iguais.</td></tr>
+                            <tr><td><strong>Moda</strong></td><td>Valor que ocorre com a maior frequência.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-footer">
+                    <button type="button" class="botao botao-primario btn-read" id="btn-read-2">Marcar tópico 2 como lido</button>
+                </div>
+            </section>
+
+            <button type="button" class="botao botao-primario botao-bloco" id="btn-start-quiz" disabled>
+                <i class="fas fa-lock" aria-hidden="true"></i> Termine a leitura para liberar o quiz
+            </button>
+        </article>
+
+        <section id="resultado" class="results-container" hidden>
+            <span class="eyebrow"><i class="fas fa-trophy" aria-hidden="true"></i> Resultado do quiz</span>
+            <h2>Quiz de estatística</h2>
+            <div class="score-box">
+                <span class="score-num" id="score-num">0/10</span>
+                <div>
+                    <p class="score-titulo" id="score-titulo"></p>
+                    <p id="score-mensagem"></p>
+                </div>
+            </div>
+            <div class="legenda">
+                <span>Resposta certa</span>
+                <span class="legenda-errada">Sua resposta, quando errada (riscada)</span>
+            </div>
+            <div class="acoes-resultado">
+                <button type="button" class="botao botao-secundario" id="btn-refazer"><i class="fas fa-rotate-right" aria-hidden="true"></i> Refazer o quiz</button>
+                <a href="matematica.html" class="botao botao-primario">Voltar ao módulo</a>
+            </div>
+        </section>
+
+        <form id="question-form" class="quiz-view" hidden novalidate>
+            <span class="eyebrow"><i class="fas fa-pencil" aria-hidden="true"></i> Quiz · 10 questões</span>
+            <h2>Quiz de estatística</h2>
+            <p class="quiz-intro">Responda todas as questões e clique em “Finalizar quiz” para ver a correção.</p>
+            <div id="quiz-questions"></div>
+            <button type="submit" id="btn-submit-quiz" class="botao botao-primario botao-bloco">
+                <i class="fas fa-circle-check" aria-hidden="true"></i> Finalizar quiz e ver resultado
+            </button>
+            <a href="matematica.html" id="quiz-fim" class="botao botao-primario botao-bloco quiz-fim" hidden>Voltar ao módulo</a>
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">Prep<span class="enem-highlight-footer">Enem</span></div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+    <!-- Menu lateral (mesmo código da página do menu) -->
+    <script src="../menu/menu.js"></script>
+
+    <script>
+
+        window.ESTUDO = {
+            notaBoa: 7,
+            mensagens: {
+                boa: "Excelente! Você domina bem o básico.",
+                revisar: "Continue revisando os tópicos de medidas de tendência central."
+            },
+            // 10 questões. A resposta ("answer") precisa ser igual a uma das opções.
+            questoes: [
+                {
+                    text: "Em um conjunto de notas (5, 7, 8, 10), qual é a média aritmética?",
+                    options: ["6", "7,5", "8", "9"],
+                    answer: "7,5"
+                },
+                {
+                    text: "Qual é a mediana do conjunto de dados ordenado (1, 3, 5, 8, 9)?",
+                    options: ["1", "5", "8", "9"],
+                    answer: "5"
+                },
+                {
+                    text: "Em um conjunto (10, 10, 15, 20, 20, 10), qual é a moda?",
+                    options: ["10", "15", "20", "Bimodal (10 e 20)"],
+                    answer: "10"
+                },
+                {
+                    text: "Para calcular a nota de um aluno em que a prova 1 tem peso 2 e a prova 2 tem peso 3, qual medida deve ser usada?",
+                    options: ["Média aritmética", "Mediana", "Moda", "Média ponderada"],
+                    answer: "Média ponderada"
+                },
+                {
+                    text: "Qual medida de tendência central exige que os dados estejam ordenados?",
+                    options: ["Média aritmética", "Mediana", "Moda", "Desvio padrão"],
+                    answer: "Mediana"
+                },
+                {
+                    text: "A medida menos afetada por valores extremos (outliers), e que melhor representa a distribuição de renda, é a:",
+                    options: ["Média aritmética", "Mediana", "Moda", "Média ponderada"],
+                    answer: "Mediana"
+                },
+                {
+                    text: "Em relação à moda, o conjunto de dados (3, 5, 7, 9) é classificado como:",
+                    options: ["Unimodal", "Bimodal", "Amodal", "Multimodal"],
+                    answer: "Amodal"
+                },
+                {
+                    text: "Qual é a mediana do conjunto (2, 4, 6, 8)?",
+                    options: ["4", "5", "6", "5,5"],
+                    answer: "5"
+                },
+                {
+                    text: "No cálculo da média ponderada, o denominador da fórmula é a:",
+                    options: ["Quantidade de elementos", "Soma dos valores", "Soma dos pesos", "Produto dos pesos"],
+                    answer: "Soma dos pesos"
+                },
+                {
+                    text: "A moda é a medida que indica:",
+                    options: ["O valor mais central", "O valor mais frequente", "A soma dos valores", "O valor mais distante da média"],
+                    answer: "O valor mais frequente"
+                }
+            ]
+        };
+    </script>
+    <script src="estudo.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

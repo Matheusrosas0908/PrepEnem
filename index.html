@@ -395,7 +395,7 @@ footer{background:var(--blue-deep);color:#cfdcff;text-align:center;padding:22px;
         f.querySelector('.to').textContent=v==='forgot'?f.elements.email.value.trim():f.elements.name.value.trim().split(' ')[0];
         return;
       }
-      window.location.href='frontend/menu/menu.html';
+      window.location.href='/menu.html';
     });
     f.addEventListener('input',function(e){ if(e.target.matches('input')) setErr(e.target,''); });
   });

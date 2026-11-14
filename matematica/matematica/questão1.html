@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática: grandezas proporcionais — PrepEnem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Ordem importa: Bootstrap primeiro, estilos do PrepEnem por último (para não serem sobrescritos) -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="matematica.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar" aria-label="Menu principal">
+        <div class="sidebar-header">Prep<span class="enem-highlight">Enem</span></div>
+        <ul class="sidebar-menu">
+            <li id="menu-atividades"><i class="fas fa-list-check icon" aria-hidden="true"></i><a href="../menu/menu.html">Atividades</a></li>
+            <li id="menu-redacoes"><i class="fas fa-file-lines icon" aria-hidden="true"></i><a href="../redacao/redacao.html">Redações</a></li>
+            <li id="menu-planejamento"><i class="fas fa-calendar-days icon" aria-hidden="true"></i><a href="#">Planejamento</a></li>
+            <li id="menu-perfil"><i class="fas fa-user icon" aria-hidden="true"></i><a href="../perfil/perfil.html">Perfil</a></li>
+            <li id="menu-configuracoes"><i class="fas fa-gear icon" aria-hidden="true"></i><a href="#">Configurações</a></li>
+        </ul>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <header class="header">
+        <div class="logo">
+            <button type="button" class="menu-icon" id="menu-toggle" aria-label="Abrir menu"><i class="fas fa-bars" aria-hidden="true"></i></button>
+            <span class="logo-text">Prep<span class="enem-highlight">Enem</span></span>
+        </div>
+    </header>
+
+    <div class="module-header-exercise">
+        <div class="container">
+            <div>
+                <span class="topic-label">Matemática · Tópico 01</span>
+                <span class="topic-name">Grandezas proporcionais</span>
+            </div>
+            <a href="matematica.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar ao módulo</a>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <article id="content-view" class="content-view">
+            <span class="eyebrow"><i class="fas fa-book-open" aria-hidden="true"></i> Conteúdo aprofundado · Foco Enem</span>
+            <h1 class="study-title">Grandezas proporcionais</h1>
+            <p class="study-intro">Nesta seção, você vai estudar a fundo a base da matemática aplicada no Enem: as <strong>grandezas proporcionais</strong>. O Enem adora problemas contextualizados que exigem identificar corretamente o tipo de proporção.</p>
+            <p class="study-hint">Marque os dois tópicos abaixo como lidos para liberar o resumo final.</p>
+
+            <div class="study-progress-bar">
+                <span class="progress-label">Progresso do estudo</span>
+                <span id="progress-status" class="progress-status">Faltam 2 tópicos</span>
+                <div class="barra-progresso" aria-hidden="true"><span id="progress-fill"></span></div>
+            </div>
+
+            <section class="content-section" id="study-section-1">
+                <h2><span class="secao-numero">1</span> Diretamente (DP) ou inversamente proporcional (IP)?</h2>
+                <p>Entender a diferença é o primeiro passo para montar a <strong>regra de três</strong> corretamente.</p>
+
+                <h3>Grandezas diretamente proporcionais (DP)</h3>
+                <p>Duas grandezas são <strong>diretamente proporcionais</strong> quando variam no <strong>mesmo sentido</strong>: se uma aumenta, a outra aumenta; se uma diminui, a outra diminui. A razão entre elas se mantém constante.</p>
+                <p class="exemplo"><strong>Exemplo clássico:</strong> mais horas de trabalho, mais salário recebido.</p>
+
+                <h3>Grandezas inversamente proporcionais (IP)</h3>
+                <p>Duas grandezas são <strong>inversamente proporcionais</strong> quando variam em <strong>sentidos opostos</strong>: se uma aumenta, a outra diminui. O produto entre elas se mantém constante.</p>
+                <p class="exemplo"><strong>Exemplo clássico:</strong> mais operários trabalhando, menos tempo para a obra terminar.</p>
+                <div class="section-footer">
+                    <button type="button" class="botao botao-primario btn-read" id="btn-read-1">Marcar tópico 1 como lido</button>
+                </div>
+            </section>
+
+            <section class="content-section" id="study-section-2">
+                <h2><span class="secao-numero">2</span> Aplicação prática: regra de três simples e composta</h2>
+                <p>A <strong>regra de três</strong> é a ferramenta usada para resolver problemas com proporções, com a multiplicação cruzada ou a multiplicação em linha.</p>
+
+                <h3>Regra de três simples (duas grandezas)</h3>
+                <p>Usada quando há apenas duas grandezas envolvidas:</p>
+                <ul>
+                    <li><strong>DP:</strong> multiplicamos em <strong>cruz</strong> (produto cruzado).</li>
+                    <li><strong>IP:</strong> colocamos uma das grandezas na <strong>ordem inversa</strong> e multiplicamos em cruz (ou multiplicamos uma linha pela outra).</li>
+                </ul>
+
+                <h3>Regra de três composta (três ou mais grandezas)</h3>
+                <p>Envolve três ou mais grandezas. O segredo é isolar a grandeza que queremos descobrir e compará-la <strong>individualmente</strong> com cada uma das outras, uma de cada vez, para definir se a relação é DP ou IP.</p>
+
+                <div class="dica">
+                    <p class="dica-titulo"><i class="fas fa-lightbulb" aria-hidden="true"></i> Dica Enem</p>
+                    <p>Depois de montar a tabela, isole a coluna da incógnita (a que você quer descobrir). Compare linha a linha com as outras colunas: se a relação for <strong>IP</strong>, inverta a linha daquela grandeza antes de montar a multiplicação final.</p>
+                </div>
+
+                <div class="tabela">
+                    <table>
+                        <thead>
+                            <tr><th>Tipo de relação</th><th>Montagem matemática</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>DP (mantém a ordem)</strong></td>
+                                <td><span class="frac"><span>A<sub>1</sub></span><span>A<sub>2</sub></span></span> = <span class="frac"><span>B<sub>1</sub></span><span>B<sub>2</sub></span></span> × <span class="frac"><span>C<sub>1</sub></span><span>C<sub>2</sub></span></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IP (inverte a ordem)</strong></td>
+                                <td><span class="frac"><span>A<sub>1</sub></span><span>A<sub>2</sub></span></span> = <span class="frac"><span>B<sub>2</sub></span><span>B<sub>1</sub></span></span> × <span class="frac"><span>C<sub>1</sub></span><span>C<sub>2</sub></span></span><span class="nota">Exemplo: a grandeza B foi invertida.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-footer">
+                    <button type="button" class="botao botao-primario btn-read" id="btn-read-2">Marcar tópico 2 como lido</button>
+                </div>
+            </section>
+
+            <button type="button" class="botao botao-primario botao-bloco" id="btn-start-quiz" disabled>
+                <i class="fas fa-lock" aria-hidden="true"></i> Termine a leitura para liberar o resumo
+            </button>
+        </article>
+
+        <section id="resultado" class="results-container" hidden>
+            <span class="eyebrow"><i class="fas fa-circle-check" aria-hidden="true"></i> Leitura concluída</span>
+            <h2>Resumo final: grandezas proporcionais</h2>
+            <div class="summary">
+                <p>Parabéns por completar a leitura sobre <strong>grandezas proporcionais</strong>! Este é um dos pilares da matemática do Enem.</p>
+                <p><strong>A chave é sempre identificar se a relação é DP (multiplica em cruz) ou IP (inverte uma das grandezas) antes de aplicar a regra de três.</strong></p>
+            </div>
+            <h3>Tópicos revisados e pontos de atenção</h3>
+            <div class="result-item">
+                <p><strong>Conceitos fundamentais:</strong> direta ou inversa. Não confunda grandezas que aumentam ou diminuem juntas (DP) com grandezas que variam em sentidos opostos (IP).</p>
+            </div>
+            <div class="result-item">
+                <p><strong>Regra de três composta:</strong> compare sempre a coluna da incógnita com cada uma das outras grandezas, individualmente. Inverta apenas as linhas com relação <strong>inversamente proporcional</strong>.</p>
+            </div>
+            <div class="acoes-resultado">
+                <a href="matematica.html" class="botao botao-primario">Voltar às atividades</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="logo-footer">Prep<span class="enem-highlight-footer">Enem</span></div>
+        <div class="help-section">
+            <p>Dúvidas? Fale conosco</p>
+            <a href="#" id="link-central-ajuda">Central de ajuda</a>
+        </div>
+    </footer>
+
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+    <!-- Menu lateral (mesmo código da página do menu) -->
+    <script src="../menu/menu.js"></script>
+
+    <script src="estudo.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
