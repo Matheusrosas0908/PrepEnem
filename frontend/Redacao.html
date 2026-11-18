@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PrepEnem — Redação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2b6de0;--blue-deep:#1c4fb0;--navy:#0f1e4a;--yellow:#ffc800;--ink:#0f1e4a;--bg:#f3f6fc;--card:#fff;--muted:#56617f;--line:#e1e6f2;--shadow:0 10px 30px rgba(15,30,74,.08);--ok:#16a34a;--bad:#d92d20;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1029;--card:#131c42;--ink:#f1f3fb;--muted:#a9b3d4;--line:#243060;--shadow:0 10px 30px rgba(0,0,0,.3);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a1029;--card:#131c42;--ink:#f1f3fb;--muted:#a9b3d4;--line:#243060;--shadow:0 10px 30px rgba(0,0,0,.3);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:60}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.15;margin:0}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+svg.lucide{width:1.2em;height:1.2em}
+.side{position:fixed;inset:0 auto 0 0;width:260px;background:var(--navy);color:#cfd8f5;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 24px) 16px 20px;z-index:50;transition:transform .25s,visibility .25s}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;color:#fff;display:flex;gap:5px;padding:0 10px 26px}
+.logo span{background:var(--yellow);color:var(--navy);padding:0 8px;border-radius:8px}
+.nav-item{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;color:#cfd8f5;font-weight:500;margin-bottom:4px}
+.nav-item:hover{background:rgba(255,255,255,.08)}
+.nav-item.active{background:var(--blue);color:#fff;box-shadow:0 8px 18px rgba(43,109,224,.4)}
+.side .sp{flex:1}
+#scrim{position:fixed;inset:0;background:rgba(8,16,50,.55);z-index:45}
+.main{margin-left:260px;padding:0 32px 56px}
+.wrap{max-width:1040px;margin:0 auto}
+.bar{display:flex;align-items:center;gap:12px;padding:22px 0 8px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);cursor:pointer;place-items:center}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 6px}
+.tab{white-space:nowrap;padding:9px 16px;border-radius:999px;font-weight:600;font-size:.92rem;color:var(--muted);border:1px solid var(--line);background:var(--card)}
+.tab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+h1{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:800;margin:22px 0 8px}
+.sub{color:var(--muted);margin:0 0 24px;max-width:46em}
+h2{font-size:1.3rem;margin:34px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.ico{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--a,var(--blue)) 15%,transparent);color:var(--a,var(--blue))}
+.ico svg{width:24px;height:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;font-weight:600;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;box-shadow:0 8px 18px rgba(43,109,224,.3);transition:background .15s,transform .15s}
+.btn:hover{background:var(--blue-deep);transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:none;border:2px solid var(--blue)}
+:root[data-theme="dark"] .btn.ghost{color:#8db3ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.ghost{color:#8db3ff}}
+.btn.ok{background:var(--ok);box-shadow:none}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.big{display:flex;flex-direction:column;gap:12px;padding:28px}
+.big h3{font-size:1.4rem}.big p{margin:0;color:var(--muted)}.big .btn{align-self:flex-start;margin-top:6px}
+.big.hl{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;border:0}
+.big.hl p{color:#d7e3ff}.big.hl .ico{background:rgba(255,255,255,.18);color:#fff}
+.big.hl .btn{background:#fff;color:var(--blue-deep)}
+.stat small{display:block;color:var(--muted);font-size:.85rem}
+.stat b{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;display:block;line-height:1.2}
+.prog{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;border-radius:99px;background:var(--a,var(--blue))}
+.tip{display:flex;gap:12px;align-items:flex-start;font-size:.95rem}
+.tip .ico{width:40px;height:40px;border-radius:12px}
+.mod h3{font-size:1.1rem;margin:10px 0 4px}
+.mod small{color:var(--a);font-weight:600}
+.les{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:.93rem}
+.les:hover{color:var(--blue)}
+.les svg{color:var(--muted);flex:none}.les.done svg{color:var(--ok)}
+.crumb{color:var(--muted);font-size:.9rem;margin-top:20px}
+.crumb a{color:var(--blue);font-weight:600}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ex{border-radius:16px;padding:16px;border:2px solid;font-size:.95rem}
+.ex.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,transparent)}
+.ex.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,transparent)}
+.ex b{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.ex.bad b{color:var(--bad)}.ex.good b{color:var(--ok)}
+.les-sec{margin-top:18px}
+.les-sec>h3{font-size:1.05rem;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.opt{display:block;width:100%;text-align:left;background:transparent;border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-top:8px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,transparent)}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,transparent)}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:24px}
+.theme{display:flex;flex-direction:column;gap:8px}
+.theme h3{font-size:1.05rem}.theme p{margin:0;color:var(--muted);font-size:.92rem;flex:1}
+.chip{display:inline-block;font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:99px;color:var(--a,var(--blue));background:color-mix(in srgb,var(--a,var(--blue)) 14%,transparent);align-self:flex-start}
+.chip.Rascunho{--a:#56617f}.chip.Finalizada{--a:#2b6de0}.chip.Corrigida{--a:#16a34a}
+.row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.row .grow{flex:1;min-width:200px}
+.row h3{font-size:1.05rem}.row small{color:var(--muted)}
+.score{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;min-width:70px;text-align:right}
+.editor{margin-top:16px}
+.editor textarea{width:100%;min-height:52vh;resize:vertical;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:22px;font:1.05rem/1.9 Figtree,sans-serif;box-shadow:var(--shadow)}
+.editor textarea:focus{outline:3px solid color-mix(in srgb,var(--blue) 40%,transparent);border-color:var(--blue)}
+.meta{display:flex;gap:18px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.9rem;margin:12px 0}
+.meta b{color:var(--ink)}.meta .sv{margin-left:auto}
+.cbar{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:.92rem}
+.cbar span:first-child{width:130px;flex:none}.cbar .prog{flex:1;margin:0}.cbar b{width:64px;text-align:right}
+.err{color:var(--bad);font-weight:600;font-size:.9rem}
+@media (max-width:1023px){.side{transform:translateX(-100%);visibility:hidden;box-shadow:8px 0 40px rgba(0,0,0,.3)}.side.open{transform:none;visibility:visible}.main{margin-left:0;padding:0 20px 48px}.burger{display:grid}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){.g2,.g3,.g4,.pair{grid-template-columns:1fr}.cbar span:first-child{width:90px}.row .score{text-align:left}}
+@media (prefers-reduced-motion:reduce){.side,.btn{transition:none}}
+</style>
+</head>
+<body>
+<div id="scrim" hidden></div>
+<aside class="side" id="side" aria-label="Menu principal"></aside>
+<div class="main"><div class="wrap">
+  <div class="bar"><button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false"><i data-lucide="menu"></i></button><nav class="tabs" id="tabs" aria-label="Área de Redação"></nav></div>
+  <main id="view"></main>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.453.0/dist/umd/lucide.min.js"></script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var I=function(n){return '<i data-lucide="'+n+'"></i>';};
+var Tile=function(n,a){return '<span class="ico" style="--a:'+(a||'var(--blue)')+'">'+I(n)+'</span>';};
+
+/* ---------- dados fictícios ---------- */
+var NAV=[['layout-dashboard','Dashboard',0,'menu.html'],['book-open','Matérias'],['calendar-days','Cronograma de Estudos'],['clipboard-check','Simulados'],['pen-line','Redação',1],['bar-chart-3','Meu Desempenho']];
+var TABS=[['inicio','Início','home'],['aprender','Aprender','graduation-cap'],['praticar','Praticar','pen-line'],['redacoes','Minhas redações','files'],['progresso','Meu progresso','trending-up']];
+var MODS=[['Introdução à redação do ENEM','book-open','#2b6de0'],['Aprendendo a fazer uma introdução','play','#4f46e5'],['Construindo o desenvolvimento','layers','#0891b2'],['Aprendendo a fazer uma conclusão','flag','#059669'],['As cinco competências do ENEM','award','#7c3aed'],['Construindo sua primeira redação','pen-tool','#2b6de0']];
+/* [módulo, título, explicação, errado, certo, dica, pergunta, opções, índice correto] */
+var L=[
+[0,'O que é uma redação dissertativo-argumentativa?','É um texto em que você defende uma opinião (a tese) sobre um tema e a sustenta com argumentos. Não é um relato nem uma lista de problemas: é um raciocínio organizado.','O Brasil tem muitos problemas e todos precisam melhorar.','A desigualdade de acesso à internet limita o aprendizado dos jovens, pois...','Pergunte a si mesmo: o que defendo, por que defendo e o que fazer?','Qual é o objetivo desse tipo de texto?',['Contar uma história','Defender um ponto de vista com argumentos','Listar fatos sem opinião'],1],
+[0,'Como funciona a redação do ENEM?','Você recebe um tema com textos de apoio e escreve de 7 a 30 linhas. A nota vai de 0 a 1.000: são cinco competências de 200 pontos cada.','Escrever um único parágrafo enorme.','Quatro parágrafos: introdução, dois de desenvolvimento e conclusão.','Reserve tempo para passar o rascunho a limpo.','Quantos pontos vale a redação?',['500','1.000','200'],1],
+[0,'O que os avaliadores esperam do estudante?','Eles avaliam escrita formal, compreensão do tema, organização dos argumentos, coesão e proposta de intervenção. Fugir totalmente do tema zera a redação.','Falar de um assunto parecido, mas não do tema pedido.','Responder exatamente ao recorte do tema proposto.','Releia o tema e sublinhe as palavras-chave antes de começar.','O que acontece se o texto fugir totalmente do tema?',['Perde só alguns pontos','A redação recebe nota zero','Nada, o tema é livre'],1],
+[1,'Como começar uma redação?','A introdução tem três passos: contextualizar o assunto, apresentar o tema e deixar clara a sua opinião (tese). Dois a quatro períodos bastam.','Desde o começo dos tempos, o ser humano sempre...','No Brasil, o acesso desigual à internet ainda afasta jovens da escola.','Evite frases genéricas e vá direto ao assunto.','A introdução deve:',['Conter a solução completa','Contextualizar e apresentar a tese','Repetir os textos de apoio'],1],
+[1,'Como apresentar o tema?','Apresente o tema com as suas palavras. Use um fato, um dado ou uma citação que se conecte ao assunto, sem copiar os textos de apoio.','Copiar o enunciado e os textos motivadores.','Diante da digitalização, a educação enfrenta o desafio de incluir todos os estudantes.','Parafrasear é dizer a mesma ideia com outras palavras.','Como usar os textos de apoio?',['Copiar trechos','Inspirar-se e reescrever com suas palavras','Ignorá-los totalmente'],1],
+[1,'Como construir uma tese?','A tese é a sua opinião em uma frase, junto dos motivos que você vai desenvolver. Fórmula: problema + causa A + causa B.','Este tema é muito importante.','A evasão escolar persiste devido à desigualdade social e à falta de apoio às famílias.','Cada motivo da tese vira um parágrafo de desenvolvimento.','Uma boa tese apresenta:',['Uma opinião e seus motivos','Apenas uma pergunta','Uma definição de dicionário'],0],
+[2,'Como criar argumentos?','Argumento é um motivo que sustenta a tese. Estrutura simples: afirmação, explicação e exemplo.','A violência é ruim porque é ruim.','A falta de oportunidades empurra jovens para a violência, pois sem escola e emprego o futuro parece fechado.','Pergunte "por quê?" duas vezes à sua própria ideia.','Qual item faz parte de um argumento?',['Explicação do motivo','Apenas adjetivos','Apenas a conclusão'],0],
+[2,'Como defender suas ideias?','Defender é provar: use causa e consequência, dados, comparações ou exemplos reais. Cada ideia precisa ser explicada, não só citada.','Muitos jovens não estudam.','Pesquisas oficiais mostram que o abandono escolar reduz as chances de emprego e renda.','Dados e exemplos fortalecem mais do que opiniões soltas.','Para defender uma ideia, o melhor é:',['Repeti-la várias vezes','Explicar com causa, consequência e exemplo','Usar frases bem longas'],1],
+[2,'Como utilizar repertório sociocultural?','Repertório é o conhecimento que você traz de fora: livros, filmes, história, filosofia, leis e notícias. Ele deve ser pertinente ao tema e explicado.','Como diria Platão, a vida é difícil.','Para o sociólogo Zygmunt Bauman, as relações modernas são "líquidas"; assim, a exclusão digital...','Citar sem ligar ao tema não vale: explique a relação.','Um bom repertório é:',['Qualquer citação decorada','Relacionado ao tema e bem explicado','Sempre uma frase famosa'],1],
+[2,'Como construir parágrafos argumentativos?','Modelo: tópico frasal (a ideia principal), argumentação (explicação e repertório) e fechamento que retoma a ideia.','Um parágrafo com três ideias misturadas.','Um parágrafo = uma ideia principal bem desenvolvida.','Use conectivos como "além disso", "pois" e "portanto".','O tópico frasal serve para:',['Apresentar a ideia principal do parágrafo','Encerrar o texto','Listar fontes'],0],
+[3,'Como finalizar uma redação?','A conclusão retoma a tese e apresenta a proposta de intervenção. Não traga ideias novas sem desenvolvimento.','Enfim, é isso.','Portanto, para reduzir a evasão escolar, é necessário que...','Retome as palavras-chave do tema.','A conclusão deve:',['Retomar a tese e propor uma solução','Abrir um novo assunto','Apenas agradecer ao leitor'],0],
+[3,'O que é proposta de intervenção?','É a solução para o problema. Tem cinco elementos: agente (quem), ação (o quê), meio (como), finalidade (para quê) e detalhamento.','O governo deve resolver isso.','O Ministério da Educação deve ampliar bolsas, por meio de parcerias com prefeituras, a fim de manter jovens na escola.','Confira: quem, o quê, como, para quê e detalhe.','O "agente" da proposta responde a qual pergunta?',['Quem vai agir?','Quando foi criado?','Qual é o título?'],0],
+[3,'Como apresentar uma solução completa?','Una os cinco elementos em um ou dois períodos, ligados por conectivos. Respeite sempre os direitos humanos.','Deve-se fazer campanhas.','A mídia deve promover campanhas educativas nas redes sociais, a fim de conscientizar a população sobre o tema.','Evite soluções vagas, como apenas "conscientizar".','Uma solução completa:',['Tem agente, ação, meio, finalidade e detalhe','Diz apenas "melhorar tudo"','Pode ferir direitos humanos'],0],
+[4,'Competência 1: domínio da escrita formal','Avalia ortografia, acentuação, pontuação, concordância e linguagem formal. Evite gírias e abreviações.','Os jovem tá sem acesso.','Os jovens estão sem acesso.','Releia o texto procurando vírgulas e concordância.','Qual frase segue a norma formal?',['A gente vamos resolver','Nós vamos resolver','Nóis vai resolver'],1],
+[4,'Competência 2: compreensão do tema e repertório','Verifica se você entendeu o tema, seguiu o tipo de texto dissertativo-argumentativo e usou repertório legítimo.','Um texto narrativo sobre a sua vida.','Um texto dissertativo com argumentos e repertório.','Use repertório de áreas variadas.','Para ir bem na C2, é preciso:',['Seguir o tema e usar repertório','Escrever sobre qualquer assunto','Só copiar os textos de apoio'],0],
+[4,'Competência 3: seleção e organização dos argumentos','Avalia se suas ideias têm um projeto de texto: tese clara, argumentos conectados e coerentes.','Ideias soltas e contraditórias.','Tese, dois argumentos ligados e proposta coerente.','Faça um esquema antes de escrever.','Projeto de texto significa:',['Planejar a ordem das ideias','Escrever sem rascunho','Mudar de assunto a cada parágrafo'],0],
+[4,'Competência 4: mecanismos linguísticos de coesão','Avalia o uso de conectivos e referências para ligar frases e parágrafos.','A educação é importante. A educação ajuda. A educação...','A educação é importante e, por isso, transforma vidas. Além disso, ela...','Varie: portanto, contudo, ademais, dessa forma.','Qual conectivo indica oposição?',['Portanto','Contudo','Além disso'],1],
+[4,'Competência 5: proposta de intervenção','Avalia se a proposta tem os cinco elementos, se está ligada ao problema discutido e se respeita os direitos humanos.','Uma proposta sem agente nem meio.','Uma proposta completa, detalhada e respeitosa.','Cada elemento vale pontos: não pule nenhum.','A C5 exige:',['Proposta completa e respeitosa','Apenas críticas ao problema','Texto em versos'],0],
+[5,'Como juntar introdução, desenvolvimento e conclusão','Monte: 1º parágrafo (contexto e tese), 2º e 3º (um argumento em cada) e 4º (retomada e proposta). Depois, revise a coesão entre eles.','Parágrafos sem ligação entre si.','Cada parágrafo começa com um conectivo que o liga ao anterior.','Leia em voz alta para perceber a fluidez.','Quantos parágrafos tem a estrutura sugerida?',['Dois','Quatro','Dez'],1],
+[5,'Análise de exemplos de redações','Exemplo resumido. Tese: a desigualdade digital prejudica a educação. Argumento 1: falta de acesso à internet. Argumento 2: falta de formação dos professores. Proposta: o MEC deve oferecer conectividade e cursos.','Texto sem tese e sem proposta.','Texto com tese clara, argumentos ligados e proposta completa.','Marque cada parte com uma cor ao analisar um texto.','No exemplo, qual é a tese?',['A desigualdade digital prejudica a educação','O MEC deve agir','Professores precisam de cursos'],0],
+[5,'Exercício final: sua primeira redação','Chegou a hora: escolha um tema na área Praticar e escreva uma redação completa usando tudo o que aprendeu.','Escrever sem planejar.','Planejar tese, dois argumentos e proposta antes de escrever.','Use 30 minutos para planejar e escrever e depois revise.','Qual é o primeiro passo antes de escrever?',['Planejar tese e argumentos','Escrever a conclusão','Contar as linhas'],0]
+];
+var cnt={};L.forEach(function(l,i){cnt[l[0]]=(cnt[l[0]]||0)+1;l.m=l[0];l.n=cnt[l[0]];l.id='aula-'+(l.m+1)+'-'+l.n;});
+var CATS={'Educação':['graduation-cap','#2b6de0'],'Tecnologia':['cpu','#4f46e5'],'Saúde':['heart-pulse','#0891b2'],'Meio ambiente':['leaf','#059669'],'Sociedade':['users','#7c3aed'],'Cultura':['palette','#1c4fb0']};
+var T=[['Educação','Desafios da educação digital no Brasil','Como incluir todos os estudantes no ensino conectado.'],['Educação','A evasão escolar entre os jovens brasileiros','Por que tantos jovens deixam a escola antes de concluir.'],['Tecnologia','Impactos da inteligência artificial no mercado de trabalho','Oportunidades e riscos das novas tecnologias.'],['Tecnologia','A proteção de dados pessoais na era digital','Privacidade e responsabilidade na internet.'],['Saúde','Saúde mental dos jovens na era das redes sociais','Pressões e cuidados no mundo conectado.'],['Saúde','O acesso à saúde pública de qualidade no Brasil','Desafios para atender toda a população.'],['Meio ambiente','O desafio do descarte correto do lixo nas cidades','Hábitos, políticas públicas e reciclagem.'],['Meio ambiente','Mudanças climáticas e o papel da sociedade','Como indivíduos e governos podem agir.'],['Sociedade','Desigualdade de oportunidades entre os jovens','Barreiras sociais para estudar e trabalhar.'],['Sociedade','A mobilidade urbana nas grandes cidades','Trânsito, transporte público e qualidade de vida.'],['Cultura','A valorização da cultura popular brasileira','Tradições, identidade e preservação.'],['Cultura','O acesso à leitura no Brasil','Livros, bibliotecas e o hábito de ler.']];
+var SEED=[{id:1,theme:'Desafios da educação digital no Brasil',cat:'Educação',date:'2026-10-12',status:'Corrigida',score:580,text:''},{id:2,theme:'O desafio do descarte correto do lixo nas cidades',cat:'Meio ambiente',date:'2026-10-26',status:'Corrigida',score:640,text:''},{id:3,theme:'Saúde mental dos jovens na era das redes sociais',cat:'Saúde',date:'2026-11-09',status:'Corrigida',score:720,text:''},{id:4,theme:'A mobilidade urbana nas grandes cidades',cat:'Sociedade',date:'2026-11-14',status:'Rascunho',score:null,text:'A mobilidade urbana é um dos maiores desafios das grandes cidades brasileiras.'}];
+var COMP=[['Competência 1',150,'Escrita formal',0],['Competência 2',140,'Tema e repertório',1],['Competência 3',120,'Argumentos',2],['Competência 4',130,'Coesão',3],['Competência 5',100,'Proposta de intervenção',4]];
+
+/* ---------- estado ---------- */
+var S={done:{},essays:SEED,last:'Rascunho salvo: A mobilidade urbana nas grandes cidades',nid:5};
+try{var raw=localStorage.getItem('prepenem-redacao');if(raw){var p=JSON.parse(raw);if(p&&p.essays)S=p;}}catch(e){}
+function save(){try{localStorage.setItem('prepenem-redacao',JSON.stringify(S));}catch(e){}}
+var cur=null;
+var fmt=function(d){var a=d.split('-');return a[2]+'/'+a[1]+'/'+a[0];};
+var today=function(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);};
+var doneIn=function(m){return L.filter(function(l){return l.m===m&&S.done[l.id];}).length;};
+var totalIn=function(m){return cnt[m];};
+var modsDone=function(){return MODS.filter(function(x,i){return doneIn(i)===totalIn(i);}).length;};
+var lessonsDone=function(){return L.filter(function(l){return S.done[l.id];}).length;};
+var corrected=function(){return S.essays.filter(function(e){return e.status==='Corrigida';});};
+
+/* ---------- componentes ---------- */
+function Stat(i,l,v,a,pct){return '<div class="card stat" style="--a:'+a+'">'+Tile(i,a)+'<small style="margin-top:12px">'+l+'</small><b>'+v+'</b>'+(pct!=null?'<div class="prog"><i style="width:'+pct+'%"></i></div>':'')+'</div>';}
+function BigCard(o){return '<div class="card big'+(o.hl?' hl':'')+'">'+Tile(o.i)+'<h3>'+o.t+'</h3><p>'+o.d+'</p><a class="btn" href="#'+o.go+'">'+o.b+' '+I('arrow-right')+'</a></div>';}
+function ModCard(m,i){
+  var d=doneIn(i),t=totalIn(i),a=MODS[m===undefined?i:i][2];
+  return '<div class="card mod" style="--a:'+a+'">'+Tile(MODS[i][1],a)+'<h3 style="margin-top:12px"><small>Módulo 0'+(i+1)+'</small><br>'+MODS[i][0]+'</h3><div class="prog"><i style="width:'+Math.round(d/t*100)+'%"></i></div><small style="color:var(--muted);font-weight:400">'+d+' de '+t+' aulas</small><div style="margin-top:8px">'+
+    L.filter(function(l){return l.m===i;}).map(function(l){return '<a class="les'+(S.done[l.id]?' done':'')+'" href="#'+l.id+'">'+I(S.done[l.id]?'check-circle-2':'circle')+'<span>'+l[1]+'</span></a>';}).join('')+'</div></div>';
+}
+function ThemeCard(t,i){var c=CATS[t[0]];return '<div class="card theme" style="--a:'+c[1]+'">'+Tile(c[0],c[1])+'<span class="chip">'+t[0]+'</span><h3>'+t[1]+'</h3><p>'+t[2]+'</p><button class="btn" data-theme="'+i+'" type="button">Começar redação</button></div>';}
+function EssayRow(e){
+  var open=e.status==='Rascunho';
+  return '<div class="card row"><div class="grow"><span class="chip '+e.status+'">'+e.status+'</span><h3 style="margin-top:6px">'+esc(e.theme)+'</h3><small>Criada em '+fmt(e.date)+'</small></div>'+(e.score!=null?'<div class="score">'+e.score+'<small style="font-size:.8rem;color:var(--muted);font-weight:500">/1000</small></div>':'')+'<button class="btn'+(open?'':' ghost')+'" data-open="'+e.id+'" type="button">'+(open?'Continuar editando':'Visualizar')+'</button></div>';
+}
+function Chart(){
+  var c=corrected();if(c.length<2)return '<p class="sub">Faça mais redações para ver sua evolução.</p>';
+  var w=560,h=170,pl=34,pb=26,n=c.length,pts=c.map(function(e,i){return [pl+i*(w-pl-16)/(n-1),(h-pb)-(e.score/1000)*(h-pb-10)];});
+  return '<svg viewBox="0 0 '+w+' '+h+'" style="width:100%;height:auto" role="img" aria-label="Evolução das notas">'+[0,500,1000].map(function(v){var y=(h-pb)-(v/1000)*(h-pb-10);return '<line x1="'+pl+'" x2="'+w+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="0" y="'+(y+4)+'" font-size="11" fill="var(--muted)">'+v+'</text>';}).join('')+
+  '<polyline fill="none" stroke="var(--blue)" stroke-width="3" stroke-linejoin="round" points="'+pts.map(function(p){return p.join(',');}).join(' ')+'"/>'+
+  pts.map(function(p,i){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="var(--blue)"/><text x="'+p[0]+'" y="'+(p[1]-10)+'" font-size="12" text-anchor="middle" fill="var(--ink)" font-weight="600">'+c[i].score+'</text><text x="'+p[0]+'" y="'+(h-6)+'" font-size="11" text-anchor="middle" fill="var(--muted)">'+fmt(c[i].date).slice(0,5)+'</text>';}).join('')+'</svg>';
+}
+
+/* ---------- páginas ---------- */
+var V={};
+V.inicio=function(){
+  var pct=Math.round(lessonsDone()/L.length*100);
+  return '<h1>Aprenda a escrever sua redação.</h1><p class="sub">Do primeiro parágrafo até a conclusão. Aprenda, pratique e desenvolva suas habilidades para o ENEM.</p>'+
+  '<div class="grid g2">'+BigCard({hl:1,i:'graduation-cap',t:'Aprender a fazer uma redação',d:'Aprenda passo a passo como construir uma redação do zero.',b:'Começar a aprender',go:'aprender'})+BigCard({i:'pen-line',t:'Praticar redação',d:'Escolha um tema, escreva seu texto e coloque seus conhecimentos em prática.',b:'Começar a praticar',go:'praticar'})+'</div>'+
+  '<div class="grid g3" style="margin-top:16px">'+Stat('book-open','Módulos de aprendizagem',modsDone()+' de '+MODS.length+' ('+pct+'% das aulas)','#2b6de0',pct)+Stat('files','Redações realizadas',S.essays.filter(function(e){return e.status!=='Rascunho';}).length,'#4f46e5')+Stat('clock','Última atividade','<span style="font-size:1rem;font-family:Figtree">'+esc(S.last)+'</span>','#0891b2')+'</div>'+
+  '<h2>Dicas de redação</h2><div class="grid g3">'+[['target','Planeje antes de escrever','Defina a tese e dois argumentos em um rascunho rápido.'],['link','Conecte os parágrafos','Use conectivos para a leitura fluir de uma ideia à outra.'],['eye','Releia no final','Procure erros de pontuação, concordância e repetições.']].map(function(t){return '<div class="card tip">'+Tile(t[0])+'<div><b>'+t[1]+'</b><br><span style="color:var(--muted)">'+t[2]+'</span></div></div>';}).join('')+'</div>';
+};
+V.aprender=function(){return '<h1>Aprender a escrever</h1><p class="sub">Seis módulos para ir do zero até a primeira redação completa. Siga a ordem e marque cada aula como concluída.</p><div class="grid g3">'+MODS.map(function(m,i){return ModCard(m,i);}).join('')+'</div>';};
+V.lesson=function(idx){
+  var l=L[idx],prev=L[idx-1],next=L[idx+1],d=S.done[l.id];
+  return '<p class="crumb"><a href="#aprender">Aprender</a> › Módulo 0'+(l.m+1)+' › Aula '+l.n+'</p><h1>'+l[1]+'</h1>'+
+  '<div class="card les-sec" style="margin-top:0"><h3>'+I('book-open')+' Explicação</h3><p style="margin:0">'+l[2]+'</p></div>'+
+  '<div class="les-sec"><h3>'+I('git-compare')+' Exemplos</h3><div class="pair"><div class="ex bad"><b>'+I('x-circle')+' Incorreto</b>'+l[3]+'</div><div class="ex good"><b>'+I('check-circle-2')+' Correto</b>'+l[4]+'</div></div></div>'+
+  '<div class="card les-sec"><h3>'+I('lightbulb')+' Dica importante</h3><p style="margin:0">'+l[5]+'</p></div>'+
+  '<div class="card les-sec" id="quiz"><h3>'+I('pencil')+' Exercício de fixação</h3><b>'+l[6]+'</b>'+l[7].map(function(o,i){return '<button class="opt" type="button" data-q="'+i+'">'+o+'</button>';}).join('')+'<p id="qfb" role="status" style="margin:10px 0 0;color:var(--muted)"></p></div>'+
+  '<div class="nav">'+(prev?'<a class="btn ghost" href="#'+prev.id+'">'+I('arrow-left')+' Anterior</a>':'<a class="btn ghost" href="#aprender">'+I('arrow-left')+' Módulos</a>')+
+  '<button class="btn'+(d?' ok':'')+'" data-done="'+l.id+'" type="button">'+I('check')+' '+(d?'Aula concluída':'Marcar como concluída')+'</button>'+
+  (next?'<a class="btn" href="#'+next.id+'">Próxima '+I('arrow-right')+'</a>':'<a class="btn" href="#praticar">Praticar agora '+I('arrow-right')+'</a>')+'</div>';
+};
+V.praticar=function(){
+  return '<h1>Praticar redação</h1><p class="sub">Escolha um tema e escreva no seu ritmo. Seu texto é salvo automaticamente.</p><div class="grid g3">'+T.map(ThemeCard).join('')+'</div>';
+};
+V.editor=function(){
+  var e=cur,ro=e.status!=='Rascunho';
+  return '<p class="crumb"><a href="#praticar">Praticar</a> › Editor</p><span class="chip" style="--a:'+CATS[e.cat][1]+';margin-top:14px">'+e.cat+'</span><h1 style="margin-top:8px">'+esc(e.theme)+'</h1>'+
+  '<div class="editor"><textarea id="txt" aria-label="Texto da redação" placeholder="Comece sua redação aqui..."'+(ro?' readonly':'')+'>'+esc(e.text)+'</textarea>'+
+  '<div class="meta"><span><b id="wc">0</b> palavras</span><span><b id="lc">0</b> linhas (estimadas)</span><span class="sv" id="sv">'+(ro?'Somente leitura':'Salvamento automático ativo')+'</span></div>'+
+  (ro?'':'<div class="nav" style="margin-top:6px"><span class="err" id="er"></span><span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="sd" type="button">'+I('save')+' Salvar rascunho</button><button class="btn" id="fn" type="button">'+I('send')+' Finalizar redação</button></span></div>')+'</div>';
+};
+V.redacoes=function(){return '<h1>Minhas redações</h1><p class="sub">Todas as redações que você já começou, finalizou ou recebeu a correção.</p><div class="grid">'+S.essays.slice().reverse().map(EssayRow).join('')+'</div>';};
+V.progresso=function(){
+  var c=corrected(),avg=c.length?Math.round(c.reduce(function(s,e){return s+e.score;},0)/c.length):0;
+  var low=COMP.slice().sort(function(a,b){return a[1]-b[1];}).slice(0,2);
+  return '<h1>Meu progresso</h1><p class="sub">Acompanhe sua evolução e veja onde vale dedicar mais atenção.</p>'+
+  '<div class="grid g4">'+Stat('award','Módulos concluídos',modsDone()+' de '+MODS.length,'#2b6de0')+Stat('book-open','Aulas realizadas',lessonsDone()+' de '+L.length,'#4f46e5')+Stat('files','Redações produzidas',S.essays.length,'#0891b2')+Stat('trending-up','Nota média',avg,'#059669')+'</div>'+
+  '<div class="grid g2" style="margin-top:16px"><div class="card"><h3 style="margin-bottom:12px">Evolução das notas</h3>'+Chart()+'</div><div class="card"><h3 style="margin-bottom:6px">Desempenho nas competências</h3>'+COMP.map(function(x){return '<div class="cbar"><span>'+x[0]+'</span><div class="prog"><i style="width:'+x[1]/2+'%"></i></div><b>'+x[1]+'/200</b></div>';}).join('')+'</div></div>'+
+  '<h2>Precisam de mais atenção</h2><div class="grid g2">'+low.map(function(x){var ls=L.filter(function(l){return l.m===4;})[x[3]];return '<div class="card tip">'+Tile('target','#d92d20')+'<div><b>'+x[0]+': '+x[2]+'</b><br><span style="color:var(--muted)">Nota atual '+x[1]+' de 200. Revise a aula correspondente.</span><br><a class="btn ghost" style="margin-top:10px;padding:8px 16px" href="#'+ls.id+'">Revisar aula</a></div></div>';}).join('')+'</div>';
+};
+
+/* ---------- roteador ---------- */
+var VIEWS=['inicio','aprender','praticar','editor','redacoes','progresso'];
+function route(){
+  var h=location.hash.slice(1)||'inicio',view=$('view'),tab=h,html;
+  var idx=L.map(function(l){return l.id;}).indexOf(h);
+  if(idx>-1){html=V.lesson(idx);tab='aprender';}
+  else{if(VIEWS.indexOf(h)<0)h='inicio';tab=h;if(h==='editor'&&!cur){location.hash='praticar';return;}if(h==='editor')tab='praticar';html=V[h]();}
+  view.innerHTML=html;
+  $('tabs').innerHTML=TABS.map(function(t){return '<a class="tab'+(t[0]===tab?' on':'')+'"'+(t[0]===tab?' aria-current="page"':'')+' href="#'+t[0]+'">'+t[1]+'</a>';}).join('');
+  if(window.lucide)lucide.createIcons();
+  if(h==='editor')initEditor();
+  window.scrollTo(0,0);
+}
+function initEditor(){
+  var t=$('txt'),timer;
+  function count(){var s=t.value,w=s.trim()?s.trim().split(/\s+/).length:0,ln=s.split('\n').reduce(function(a,p){return a+(p.trim()?Math.ceil(p.length/85):0);},0);$('wc').textContent=w;$('lc').textContent=ln;return [w,ln];}
+  function stamp(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+  function persist(){cur.text=t.value;S.last='Rascunho salvo: '+cur.theme;save();$('sv').textContent='Rascunho salvo às '+stamp();}
+  count();
+  if(cur.status!=='Rascunho')return;
+  t.addEventListener('input',function(){count();$('sv').textContent='Salvando...';clearTimeout(timer);timer=setTimeout(persist,700);});
+  $('sd').addEventListener('click',function(){clearTimeout(timer);persist();});
+  $('fn').addEventListener('click',function(){
+    var c=count();
+    if(c[0]<30){$('er').textContent='Escreva pelo menos 30 palavras para finalizar.';return;}
+    clearTimeout(timer);cur.text=t.value;cur.status='Finalizada';S.last='Redação finalizada: '+cur.theme;save();location.hash='redacoes';
+  });
+}
+function newEssay(i){var t=T[i];cur={id:S.nid++,theme:t[1],cat:t[0],date:today(),status:'Rascunho',score:null,text:''};S.essays.push(cur);S.last='Redação iniciada: '+t[1];save();location.hash='editor';}
+
+/* ---------- eventos ---------- */
+$('view').addEventListener('click',function(ev){
+  var b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.theme!==undefined){newEssay(+b.dataset.theme);}
+  else if(b.dataset.open){cur=S.essays.filter(function(e){return e.id===+b.dataset.open;})[0];location.hash='editor';}
+  else if(b.dataset.done){var id=b.dataset.done;S.done[id]=!S.done[id];if(S.done[id])S.last='Aula concluída: '+L[L.map(function(l){return l.id;}).indexOf(id)][1];save();route();}
+  else if(b.dataset.q!==undefined){
+    var idx=L.map(function(l){return l.id;}).indexOf(location.hash.slice(1)),l=L[idx],i=+b.dataset.q,bs=document.querySelectorAll('#quiz .opt');
+    bs.forEach(function(x,k){x.disabled=true;if(k===l[8])x.classList.add('ok');});
+    if(i!==l[8])b.classList.add('no');
+    $('qfb').textContent=i===l[8]?'Correto! Muito bem.':'Quase! A resposta certa está destacada em verde.';
+  }
+});
+$('side').innerHTML='<div class="logo">Prep<span>Enem</span></div><nav>'+NAV.map(function(n){return '<a href="'+(n[3]||'#')+'" class="nav-item'+(n[2]?' active':'')+'"'+(n[2]?' aria-current="page"':'')+'>'+I(n[0])+'<span>'+n[1]+'</span></a>';}).join('')+'</nav><div class="sp"></div><a href="#" class="nav-item">'+I('settings')+'<span>Configurações</span></a>';
+var side=$('side'),scrim=$('scrim'),burger=$('burger');
+function setMenu(x){side.classList.toggle('open',x);scrim.hidden=!x;burger.setAttribute('aria-expanded',x?'true':'false');}
+burger.addEventListener('click',function(){setMenu(!side.classList.contains('open'));});
+scrim.addEventListener('click',function(){setMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
+side.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){if(a.getAttribute('href')==='#')e.preventDefault();setMenu(false);});});
+window.addEventListener('hashchange',route);
+route();
+})();
+</script>
+</body>
+</html>

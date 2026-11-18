@@ -27,6 +27,7 @@ PrepEnem/
 │   │   ├── natureza.html            # Página do módulo (5 aulas, desbloqueio progressivo)
 │   │   └── questão1.html - questão5.html  # Páginas de exercícios
 │   ├── matematica/                  # Módulo de Matemática
+│   │   └── matematica.html          # Página unificada: 5 tópicos + quizzes + progressão
 │   ├── portugues/                   # Módulo de Português (Linguagens)
 │   ├── humanas/                     # Módulo de Ciências Humanas (História/Geografia)
 │   ├── lingua_estrangeira/          # Módulo de Língua Estrangeira
