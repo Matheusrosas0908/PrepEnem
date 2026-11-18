@@ -172,7 +172,7 @@ section h2{font-size:1.35rem;margin-bottom:16px}
 <script>
 (function(){
   /* ---------- dados fictícios ---------- */
-  var NAV=[['layout-dashboard','Dashboard',1],['book-open','Matérias'],['calendar-days','Cronograma de Estudos'],['clipboard-check','Simulados'],['pen-line','Redação'],['bar-chart-3','Meu Desempenho']];
+  var NAV=[['layout-dashboard','Dashboard',1],['book-open','Matérias'],['calendar-days','Cronograma de Estudos'],['clipboard-check','Simulados'],['pen-line','Redação',0,'Redacao.html'],['bar-chart-3','Meu Desempenho']];
   var STATS=[
     {icon:'calendar-clock',label:'Dias para o ENEM',value:'87',hint:'Cerca de 12 semanas',hl:1},
     {ring:42,label:'Progresso geral',value:'42%',hint:'Você está evoluindo'},
@@ -188,6 +188,7 @@ section h2{font-size:1.35rem;margin-bottom:16px}
   ];
   // Adicione aqui o caminho das páginas das outras matérias para ativar seus links.
   var SUBJECT_PAGES={'Matemática':'matematica/matematica/matematica.html'};
+  var SUBJECT_PAGES={'Redação':'/frontend/redacao.html'};
   var RECS=[['Matemática','sigma','#4f46e5','Pouco estudada'],['Biologia','dna','#059669','Revisão'],['Redação','pen-line','#0891b2','Meta da semana']];
   var TASKS=['Resolver 10 questões de Biologia','Escrever uma redação','Fazer o simulado de Linguagens','Revisar Química'];
   var WEEK=[['Seg',['Matemática','Redação']],['Ter',['Biologia','Inglês']],['Qua',['História','Química']],['Qui',['Língua Portuguesa','Física']],['Sex',['Geografia','Simulado']],['Sáb',['Revisão semanal']],['Dom',['Descanso']]];
@@ -196,7 +197,7 @@ section h2{font-size:1.35rem;margin-bottom:16px}
   /* ---------- componentes reutilizáveis ---------- */
   function Icon(n){return '<i data-lucide="'+n+'"></i>';}
   function IconTile(n,a){return '<span class="ico" style="--a:'+(a||'var(--blue)')+'">'+Icon(n)+'</span>';}
-  function NavItem(it){return '<a href="#" class="nav-item'+(it[2]?' active':'')+'"'+(it[2]?' aria-current="page"':'')+'>'+Icon(it[0])+'<span>'+it[1]+'</span></a>';}
+  function NavItem(it){return '<a href="'+(it[3]||'#')+'" class="nav-item'+(it[2]?' active':'')+'"'+(it[2]?' aria-current="page"':'')+'>'+Icon(it[0])+'<span>'+it[1]+'</span></a>';}
   function Ring(p){return '<svg class="ring" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="3.6"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--blue)" stroke-width="3.6" stroke-linecap="round" pathLength="100" stroke-dasharray="'+p+' 100" transform="rotate(-90 18 18)"/></svg>';}
   function StatCard(s){
     return '<div class="stat'+(s.hl?' hl':'')+'">'+(s.ring?Ring(s.ring):IconTile(s.icon,s.a))+'<div><small>'+s.label+'</small><b>'+s.value+'</b><span class="hint">'+s.hint+'</span></div></div>';
@@ -242,7 +243,7 @@ section h2{font-size:1.35rem;margin-bottom:16px}
   pop.addEventListener('click',function(e){e.stopPropagation();});
   document.addEventListener('click',function(){setPop(false);setProf(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){setMenu(false);setPop(false);setProf(false);}});
-  side.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();setMenu(false);});});
+  side.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){if(a.getAttribute('href')==='#')e.preventDefault();setMenu(false);});});
 })();
 </script>
 </body>
