@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PrepEnem — Inglês</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2b6de0;--blue-deep:#1c4fb0;--navy:#0f1e4a;--yellow:#ffc800;--ink:#0f1e4a;--bg:#f3f6fc;--card:#fff;--muted:#56617f;--line:#e1e6f2;--shadow:0 10px 30px rgba(15,30,74,.08);--ok:#16a34a;--bad:#d92d20;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1029;--card:#131c42;--ink:#f1f3fb;--muted:#a9b3d4;--line:#243060;--shadow:0 10px 30px rgba(0,0,0,.3);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a1029;--card:#131c42;--ink:#f1f3fb;--muted:#a9b3d4;--line:#243060;--shadow:0 10px 30px rgba(0,0,0,.3);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:60}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.15;margin:0}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+svg.lucide{width:1.2em;height:1.2em}
+.side{position:fixed;inset:0 auto 0 0;width:260px;background:var(--navy);color:#cfd8f5;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 24px) 16px 20px;z-index:50;transition:transform .25s,visibility .25s}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;color:#fff;display:flex;gap:5px;padding:0 10px 26px}
+.logo span{background:var(--yellow);color:var(--navy);padding:0 8px;border-radius:8px}
+.nav-item{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;color:#cfd8f5;font-weight:500;margin-bottom:4px}
+.nav-item:hover{background:rgba(255,255,255,.08)}
+.nav-item.active{background:var(--blue);color:#fff;box-shadow:0 8px 18px rgba(43,109,224,.4)}
+.side .sp{flex:1}
+#scrim{position:fixed;inset:0;background:rgba(8,16,50,.55);z-index:45}
+.main{margin-left:260px;padding:0 32px 56px}
+.wrap{max-width:1040px;margin:0 auto}
+.bar{display:flex;align-items:center;gap:12px;padding:22px 0 0}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);cursor:pointer;place-items:center}
+.crumb{color:var(--muted);font-size:.9rem;margin:0}.crumb a{color:var(--blue);font-weight:600}
+h1{font-size:clamp(1.8rem,3.8vw,2.5rem);font-weight:800;margin:14px 0 8px}
+.sub{color:var(--muted);margin:0 0 22px;max-width:46em}
+h2{font-size:1.3rem;margin:34px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.ico{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--a,var(--blue)) 15%,transparent);color:var(--a,var(--blue))}
+.ico svg{width:24px;height:24px}
+.chip{display:inline-block;font-size:.78rem;font-weight:600;padding:3px 11px;border-radius:99px;color:var(--a,var(--blue));background:color-mix(in srgb,var(--a,var(--blue)) 14%,transparent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;font-weight:600;padding:12px 22px;border-radius:999px;border:0;cursor:pointer;box-shadow:0 8px 18px rgba(43,109,224,.3);transition:background .15s,transform .15s}
+.btn:hover{background:var(--blue-deep);transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:none;border:2px solid var(--blue)}
+:root[data-theme="dark"] .btn.ghost{color:#8db3ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.ghost{color:#8db3ff}}
+.btn.ok{background:var(--ok);box-shadow:none}
+.btn.sm{padding:9px 18px;font-size:.9rem}
+.prog{height:9px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;border-radius:99px;background:var(--a,var(--blue))}
+.head{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:stretch}
+.head .hero{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;border:0}
+.head .hero h1{margin-top:12px}.head .hero .sub{color:#d7e3ff;margin:0}
+.head .hero .chip{--a:#fff;background:rgba(255,255,255,.18);color:#fff}
+.stat small{color:var(--muted);font-size:.85rem}
+.stat b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:2rem;line-height:1.1}
+.cat{display:flex;flex-direction:column;gap:10px}
+.cat h3{font-size:1.1rem}.cat p{margin:0;color:var(--muted);font-size:.93rem;flex:1}
+.cat .btn{align-self:flex-start}
+.mod h3{font-size:1.1rem;margin:10px 0 2px}
+.mod small{color:var(--a);font-weight:600}
+.les{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:.93rem}
+.les:hover{color:var(--blue)}
+.les svg{color:var(--muted);flex:none}.les.done svg{color:var(--ok)}
+.sec{margin-top:18px}
+.sec>h3{font-size:1.05rem;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.rule{display:flex;gap:12px;background:color-mix(in srgb,var(--blue) 9%,transparent);border-left:5px solid var(--blue);border-radius:14px;padding:16px 18px}
+.rule svg{flex:none;color:var(--blue);width:22px;height:22px;margin-top:2px}
+.rule b{display:block;margin-bottom:2px}
+.exs{display:grid;gap:10px}
+.exm{padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.exm b{display:block;font-size:1.05rem}.exm span{color:var(--muted);font-size:.93rem}
+.text{border-left:4px solid var(--blue);background:var(--bg);padding:14px 18px;border-radius:0 14px 14px 0;font-style:italic;margin:12px 0}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:transparent;border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-top:8px;cursor:pointer}
+.opt i{flex:none;width:26px;height:26px;border-radius:8px;background:var(--line);display:grid;place-items:center;font-style:normal;font-weight:600;font-size:.8rem}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,transparent)}.opt.ok i{background:var(--ok);color:#fff}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,transparent)}.opt.no i{background:var(--bad);color:#fff}
+.fb{margin-top:14px;padding:14px 16px;border-radius:14px;font-size:.95rem}
+.fb.good{background:color-mix(in srgb,var(--ok) 10%,transparent)}.fb.bad{background:color-mix(in srgb,var(--bad) 8%,transparent)}
+.fb b{display:block;margin-bottom:2px}.fb.good b{color:var(--ok)}.fb.bad b{color:var(--bad)}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:24px}
+.res{text-align:center;padding:40px 24px}
+.res b{font-family:'Bricolage Grotesque',sans-serif;font-size:3rem;display:block;color:var(--blue)}
+@media (max-width:1023px){.side{transform:translateX(-100%);visibility:hidden;box-shadow:8px 0 40px rgba(0,0,0,.3)}.side.open{transform:none;visibility:visible}.main{margin-left:0;padding:0 20px 48px}.burger{display:grid}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr}}
+@media (max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.side,.btn{transition:none}}
+</style>
+</head>
+<body>
+<div id="scrim" hidden></div>
+<!-- SIDEBAR: montada pelo JavaScript. Procure por "SIDEBAR — COMO TROCAR" para ligar cada item a uma página. -->
+<aside class="side" id="side" aria-label="Menu principal"></aside>
+<div class="main"><div class="wrap">
+  <div class="bar"><button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false"><i data-lucide="menu"></i></button><p class="crumb" id="crumb"></p></div>
+  <main id="view"></main>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.453.0/dist/umd/lucide.min.js"></script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var I=function(n){return '<i data-lucide="'+n+'"></i>';};
+var Tile=function(n,a){return '<span class="ico" style="--a:'+(a||'var(--blue)')+'">'+I(n)+'</span>';};
+
+/* ============================================================
+   SIDEBAR — COMO TROCAR / LIGAR AS OUTRAS PÁGINAS
+   Cada item é: [ícone, texto, ativo, link]
+   - link  (4º valor): endereço da página que abre ao clicar
+           (ex.: 'dashboard.html'). Vazio ('') = não navega.
+   - ativo (3º valor): 1 = item destacado (página atual).
+   - ícone (1º valor): nome de um ícone da biblioteca Lucide.
+   ============================================================ */
+var NAV=[
+  ['layout-dashboard','Dashboard',0,''],          // <- COLOQUE AQUI o link do Dashboard
+  ['book-open','Matérias',1,''],                  // <- PÁGINA ATUAL (Inglês faz parte de Matérias). Link opcional: a lista de Matérias
+  ['calendar-days','Cronograma de Estudos',0,''], // <- COLOQUE AQUI o link do Cronograma de Estudos
+  ['clipboard-check','Simulados',0,''],           // <- COLOQUE AQUI o link dos Simulados
+  ['pen-line','Redação',0,''],                    // <- COLOQUE AQUI o link da página de Redação
+  ['bar-chart-3','Meu Desempenho',0,'']           // <- COLOQUE AQUI o link do Meu Desempenho
+];
+var SETTINGS_LINK=''; // <- COLOQUE AQUI o link da página de Configurações
+
+/* ---------- dados demonstrativos ---------- */
+var MODS=[['Fundamentos do Inglês','#2b6de0'],['Gramática básica','#4f46e5'],['Vocabulário','#0891b2'],['Interpretação de textos','#059669'],['Inglês aplicado ao ENEM','#7c3aed'],['Prática e revisão','#1c4fb0']];
+/* [módulo, título, explicação, regra em destaque, exemplos[[inglês,português]], pergunta, 4 alternativas, índice correto, explicação] */
+var L=[
+[0,'O alfabeto e os sons','O inglês usa as mesmas 26 letras do português, mas a pronúncia muda. Aprender os sons ajuda a ler e a ouvir melhor.','O H costuma ser pronunciado (house) e o J soa como “dj” (job).',[['My name is Ana.','Meu nome é Ana.'],['This is a house.','Esta é uma casa.'],['I have a job.','Eu tenho um trabalho.']],'Qual é a tradução de “house”?',['Casa','Cavalo','Hora','Mão'],0,'House significa casa. Cuidado para não confundir com horse (cavalo).'],
+[0,'Cumprimentos e apresentações','Cumprimentos são as primeiras frases de qualquer conversa. Use-os para se apresentar com educação.','Hello e Hi são informais. Good morning, Good afternoon e Good evening dependem do horário.',[['Good morning! How are you?','Bom dia! Como você está?'],['Nice to meet you.','Prazer em conhecer você.'],['I am fine, thank you.','Estou bem, obrigado.']],'Qual cumprimento usamos de manhã?',['Good night','Good morning','Good evening','Goodbye'],1,'Good morning é o cumprimento da manhã. Good night é usado para se despedir à noite.'],
+[0,'Pronomes pessoais','Pronomes substituem o nome das pessoas: I (eu), you (você), he (ele), she (ela), it (ele/ela para coisas), we (nós) e they (eles/elas).','Em inglês o pronome quase nunca some da frase: dizemos “I am”, e não apenas “am”.',[['She is my sister.','Ela é minha irmã.'],['We are students.','Nós somos estudantes.'],['They live in Brazil.','Eles moram no Brasil.']],'Qual pronome substitui “Maria”?',['He','She','It','They'],1,'Maria é uma mulher, então usamos she.'],
+[1,'Verbo to be','O verbo to be significa ser ou estar. Ele muda conforme o pronome: I am, you are, he/she/it is, we/you/they are.','Negativa: acrescente not (He is not tired). Pergunta: inverta (Is he tired?).',[['I am a student.','Eu sou estudante.'],['She is at school.','Ela está na escola.'],['Are you ready?','Você está pronto?']],'Complete: They ___ friends.',['is','am','are','be'],2,'They combina com are.'],
+[1,'Presente simples','Usamos o presente simples para rotinas e fatos. Com he, she e it, o verbo ganha -s.','Perguntas e negativas usam do/does: She does not work. Do you like music?',[['I study every day.','Eu estudo todo dia.'],['He plays soccer.','Ele joga futebol.'],['Do you like music?','Você gosta de música?']],'Complete: She ___ English every day.',['study','studies','studying','studied'],1,'Com she, o verbo recebe -s: study vira studies.'],
+[1,'Artigos e plural','A/an significam “um/uma” e the significa “o/a”. O plural, em geral, ganha -s.','Use an antes de som de vogal (an apple) e a antes dos demais (a book). Plurais irregulares: child → children, man → men.',[['I have an umbrella.','Eu tenho um guarda-chuva.'],['The books are new.','Os livros são novos.'],['Two children are playing.','Duas crianças estão brincando.']],'Qual é o plural de “child”?',['childs','childes','children','childen'],2,'Child tem plural irregular: children.'],
+[2,'Família e rotina','Palavras do dia a dia aparecem muito nos textos. Aprenda em grupos para fixar melhor.','Cuidado: parents significa pais, e não parentes (relatives).',[['My parents work in a bank.','Meus pais trabalham em um banco.'],['I wake up at six.','Eu acordo às seis.'],['We have lunch together.','Nós almoçamos juntos.']],'O que significa “parents”?',['Parentes','Pais','Primos','Vizinhos'],1,'Parents = pais. Parentes é relatives.'],
+[2,'Cognatos e falsos cognatos','Cognatos são palavras parecidas nas duas línguas (hospital, family). Falsos cognatos parecem iguais, mas têm outro significado.','Library = biblioteca (e não livraria). Pretend = fingir (e não pretender).',[['The library is quiet.','A biblioteca é silenciosa.'],['He pretends to sleep.','Ele finge dormir.'],['This is a hospital.','Isto é um hospital.']],'“Library” significa:',['Livraria','Biblioteca','Livro','Leitura'],1,'Library é biblioteca. Livraria é bookstore.'],
+[2,'Verbos e expressões úteis','Alguns verbos aparecem sempre: go, have, make, get. Expressões prontas também ajudam muito.','Phrasal verbs são verbo + partícula: look for = procurar, give up = desistir.',[['I look for my keys.','Eu procuro minhas chaves.'],['Never give up.','Nunca desista.'],['Let us make a plan.','Vamos fazer um plano.']],'“Look for” significa:',['Olhar para trás','Procurar','Esquecer','Parecer'],1,'Look for = procurar algo ou alguém.'],
+[3,'Estratégias de leitura','Para entender um texto, não é preciso traduzir tudo. Observe o título, as imagens e as palavras que você já conhece.','Skimming: leitura rápida para a ideia geral. Scanning: busca de uma informação específica.',[['Read the title first.','Leia o título primeiro.'],['Look for key words.','Procure palavras-chave.'],['Guess the meaning from context.','Deduza o significado pelo contexto.']],'Skimming serve para:',['Traduzir palavra por palavra','Captar a ideia geral','Decorar o texto','Corrigir a gramática'],1,'Skimming é a leitura rápida para entender o assunto geral.'],
+[3,'Palavras-chave e contexto','Quando surgir uma palavra desconhecida, use o contexto: as frases ao redor dão pistas.','Conectores ajudam: but = mas (contraste), because = porque (causa), so = então (consequência).',[['I was tired, but I studied.','Eu estava cansado, mas estudei.'],['She stayed home because it rained.','Ela ficou em casa porque choveu.'],['It was late, so we left.','Era tarde, então saímos.']],'“But” indica:',['Causa','Contraste','Tempo','Lugar'],1,'But = mas, uma ideia de contraste.'],
+[3,'Charges, tirinhas e imagens','Charges e tirinhas combinam imagem e texto. A imagem muda o sentido: observe expressões, cenário e ironia.','Pergunte: quem fala? Qual é a crítica ou a piada? A imagem confirma ou contradiz o texto?',[['The joke is about technology.','A piada é sobre tecnologia.'],['The character looks worried.','O personagem parece preocupado.'],['The text criticizes pollution.','O texto critica a poluição.']],'Em uma charge, a imagem serve para:',['Apenas enfeitar','Ajudar a construir o sentido','Substituir sempre o texto','Confundir o leitor'],1,'Na charge, a imagem faz parte da mensagem.'],
+[4,'Como são as questões de inglês do ENEM','As questões trazem um texto curto (notícia, anúncio, música, tirinha) e perguntam o sentido geral, o objetivo ou um detalhe. Elas não cobram regras decoradas.','Leia a pergunta antes do texto e procure a resposta usando palavras-chave.',[['What is the main idea?','Qual é a ideia principal?'],['The author wants to...','O autor quer...'],['According to the text...','De acordo com o texto...']],'O que as questões do ENEM mais cobram?',['Regras decoradas','Compreensão do texto','Listas de verbos','Tradução literal'],1,'O foco é interpretar o texto.'],
+[4,'Gêneros textuais e objetivo do autor','Cada texto tem uma finalidade: informar (notícia), convencer (anúncio), divertir (tirinha) ou expressar sentimentos (música).','Identifique o gênero e o público: isso revela o objetivo do texto.',[['This ad wants to sell a product.','Este anúncio quer vender um produto.'],['The article informs readers.','O artigo informa os leitores.'],['The song talks about love.','A música fala sobre amor.']],'Qual é o objetivo principal de um anúncio?',['Informar sem opinar','Convencer o leitor a consumir','Contar uma história','Ensinar gramática'],1,'Anúncios buscam persuadir o leitor.'],
+[5,'Revisão de gramática','Antes de praticar, revise: to be, presente simples, artigos e plural.','Checklist: o verbo concorda com o sujeito? Usei -s com he/she/it? Usei a/an corretamente?',[['He is a doctor.','Ele é médico.'],['She works at night.','Ela trabalha à noite.'],['I need an umbrella.','Eu preciso de um guarda-chuva.']],'Qual frase está correta?',['He work here.','He works here.','He working here.','He are here.'],1,'Com he, o verbo no presente simples leva -s.'],
+[5,'Prática com questões','Resolva questões no estilo ENEM e aprenda com cada explicação. Errar faz parte do aprendizado.','Elimine as alternativas erradas e confirme a resposta no texto.',[['Read, think and choose.','Leia, pense e escolha.'],['Check the text again.','Confira o texto de novo.'],['Learn from mistakes.','Aprenda com os erros.']],'A melhor forma de confirmar a resposta é:',['Chutar','Voltar ao texto','Escolher a maior alternativa','Ignorar o enunciado'],1,'A resposta sempre está apoiada no texto.']
+];
+var cnt={};L.forEach(function(l){cnt[l[0]]=(cnt[l[0]]||0)+1;l.m=l[0];l.n=cnt[l[0]];l.id='aula-'+(l.m+1)+'-'+l.n;});
+/* [texto, pergunta, alternativas, correta, explicação] */
+var Q=[
+['SALE! Buy one pair of sneakers and get the second pair at half price. This weekend only.','O objetivo principal do texto é:',['Informar uma promoção','Ensinar a calçar tênis','Contar uma história','Pedir desculpas'],0,'O anúncio oferece desconto e busca vender o produto.'],
+['Maria wakes up at 6 a.m. She takes the bus to school and studies until noon. In the afternoon, she works at her uncle’s shop.','Segundo o texto, o que Maria faz à tarde?',['Estuda na escola','Trabalha na loja do tio','Pega o ônibus','Dorme até tarde'],1,'O texto diz que à tarde ela trabalha na loja do tio (uncle’s shop).'],
+['Plastic bags take hundreds of years to break down in nature. That is why many cities now ask people to use reusable bags.','No texto, “That is why” introduz:',['Uma consequência','Uma dúvida','Um exemplo pessoal','Uma piada'],0,'That is why = por isso. A expressão indica uma consequência.'],
+['Dear Tom, I am sorry I missed your birthday party. I was sick, but I will call you tomorrow. Best wishes, Paul','Paul escreve para:',['Convidar Tom','Pedir desculpas','Vender algo','Reclamar'],1,'I am sorry = sinto muito. Paul pede desculpas por ter faltado.'],
+['Reading every day helps you learn new words and improves your writing.','Segundo o texto, ler todos os dias:',['Piora a escrita','Ajuda a aprender palavras novas','Não traz benefícios','Substitui a escola'],1,'O texto afirma que a leitura ajuda a aprender novas palavras e melhora a escrita.'],
+['BEWARE OF THE DOG!','Essa placa tem a finalidade de:',['Alertar sobre um perigo','Vender cachorros','Anunciar um passeio','Pedir silêncio'],0,'Beware of = cuidado com. A placa é um aviso.']
+];
+var CATS=[['Gramática','spell-check','Estruturas e regras da língua inglesa.','#4f46e5','aula-2-1'],['Vocabulário','languages','Palavras, expressões e significados.','#0891b2','aula-3-1'],['Interpretação de textos','file-text','Compreensão de textos, charges e tirinhas.','#059669','aula-4-1'],['Questões ENEM','clipboard-check','Exercícios baseados no estilo da prova.','#7c3aed','questoes']];
+
+/* ---------- estado (salvo no navegador) ---------- */
+var S={done:{},ans:{},qi:0,qa:[]};
+try{var raw=localStorage.getItem('prepenem-ingles');if(raw){var p=JSON.parse(raw);if(p&&p.done)S=p;}}catch(e){}
+function save(){try{localStorage.setItem('prepenem-ingles',JSON.stringify(S));}catch(e){}}
+var ids=L.map(function(l){return l.id;});
+var doneIn=function(m){return L.filter(function(l){return l.m===m&&S.done[l.id];}).length;};
+var doneAll=function(){return L.filter(function(l){return S.done[l.id];}).length;};
+
+/* ---------- componentes ---------- */
+function Options(opts,chosen,correct,expl,attr){
+  var h=opts.map(function(o,i){var c='';if(chosen!=null){if(i===correct)c=' ok';else if(i===chosen)c=' no';}return '<button type="button" class="opt'+c+'" '+attr+'="'+i+'"'+(chosen!=null?' disabled':'')+'><i>'+'ABCD'.charAt(i)+'</i><span>'+o+'</span></button>';}).join('');
+  if(chosen!=null){var ok=chosen===correct;h+='<div class="fb '+(ok?'good':'bad')+'" role="status"><b>'+(ok?'Resposta correta!':'Resposta incorreta.')+'</b>'+(ok?'':'A alternativa certa é “'+opts[correct]+'”. ')+expl+'</div>';}
+  return h;
+}
+function ModCard(i){
+  var t=cnt[i],d=doneIn(i),st=d===t?'Concluído':d?'Em andamento':'Não iniciado',a=MODS[i][1];
+  return '<div class="card mod" style="--a:'+a+'"><div style="display:flex;justify-content:space-between;align-items:center">'+Tile('book-open',a)+'<span class="chip">'+st+'</span></div><h3 style="margin-top:12px"><small>Módulo '+(i+1)+'</small><br>'+MODS[i][0]+'</h3><div class="prog"><i style="width:'+Math.round(d/t*100)+'%"></i></div><small style="color:var(--muted);font-weight:400">'+d+' de '+t+' aulas</small><div style="margin-top:8px">'+
+  L.filter(function(l){return l.m===i;}).map(function(l){return '<a class="les'+(S.done[l.id]?' done':'')+'" href="#'+l.id+'">'+I(S.done[l.id]?'check-circle-2':'circle')+'<span>'+l[1]+'</span></a>';}).join('')+'</div></div>';
+}
+function CatCard(c){return '<div class="card cat" style="--a:'+c[3]+'">'+Tile(c[1],c[3])+'<h3>'+c[0]+'</h3><p>'+c[2]+'</p><a class="btn sm" href="#'+c[4]+'">Acessar '+I('arrow-right')+'</a></div>';}
+
+/* ---------- páginas ---------- */
+var V={};
+V.inicio=function(){
+  var n=doneAll(),pct=Math.round(n/L.length*100);
+  return '<div class="head" style="margin-top:14px"><div class="card hero"><span class="chip">Linguagens</span><h1>Inglês</h1><p class="sub">Aprenda inglês e desenvolva suas habilidades para o ENEM.</p></div>'+
+  '<div class="card stat" style="--a:#2b6de0"><small>Progresso geral</small><b>'+pct+'%</b><div class="prog"><i style="width:'+pct+'%"></i></div><small style="display:block;margin-top:12px"><b style="display:inline;font-size:1.1rem">'+n+'</b> de '+L.length+' aulas concluídas</small></div></div>'+
+  '<h2>O que você quer estudar?</h2><div class="grid g4">'+CATS.map(CatCard).join('')+'</div>'+
+  '<h2>Sua trilha de aprendizagem</h2><div class="grid g3">'+MODS.map(function(m,i){return ModCard(i);}).join('')+'</div>';
+};
+V.lesson=function(idx){
+  var l=L[idx],prev=L[idx-1],next=L[idx+1],d=S.done[l.id],ch=S.ans[l.id];
+  return '<span class="chip" style="--a:'+MODS[l.m][1]+';margin-top:14px">Módulo '+(l.m+1)+' · '+MODS[l.m][0]+'</span><h1 style="margin-top:10px">'+l[1]+'</h1>'+
+  '<div class="card"><h3 style="margin-bottom:8px">'+I('book-open')+' Explicação</h3><p style="margin:0">'+l[2]+'</p></div>'+
+  '<div class="sec"><div class="rule">'+I('lightbulb')+'<div><b>Regra importante</b>'+l[3]+'</div></div></div>'+
+  '<div class="sec"><h3>'+I('languages')+' Exemplos</h3><div class="exs">'+l[4].map(function(x){return '<div class="exm"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>';}).join('')+'</div></div>'+
+  '<div class="card sec"><h3>'+I('pencil')+' Exercício</h3><b>'+l[5]+'</b>'+Options(l[6],ch,l[7],l[8],'data-o')+'</div>'+
+  '<div class="nav">'+(prev?'<a class="btn ghost" href="#'+prev.id+'">'+I('arrow-left')+' Anterior</a>':'<a class="btn ghost" href="#inicio">'+I('arrow-left')+' Trilha</a>')+
+  '<button class="btn'+(d?' ok':'')+'" data-done="'+l.id+'" type="button">'+I('check')+' '+(d?'Aula concluída':'Marcar como concluída')+'</button>'+
+  (next?'<a class="btn" href="#'+next.id+'">Próxima '+I('arrow-right')+'</a>':'<a class="btn" href="#questoes">Questões ENEM '+I('arrow-right')+'</a>')+'</div>';
+};
+V.questoes=function(){
+  var i=S.qi,h='<span class="chip" style="--a:#7c3aed;margin-top:14px">Questões ENEM</span><h1 style="margin-top:10px">Questões no estilo ENEM</h1><p class="sub">Leia o texto, escolha a alternativa e veja a explicação.</p>';
+  if(i>=Q.length){
+    var ok=Q.filter(function(q,k){return S.qa[k]===q[3];}).length;
+    return h+'<div class="card res"><b>'+ok+' de '+Q.length+'</b><p style="color:var(--muted)">questões corretas. Revise as aulas e tente de novo para melhorar.</p><div class="nav" style="justify-content:center"><button class="btn" data-reset="1" type="button">'+I('rotate-ccw')+' Refazer</button><a class="btn ghost" href="#inicio">Voltar à trilha</a></div></div>';
+  }
+  var q=Q[i],ch=S.qa[i];
+  return h+'<div class="card"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem"><span>Questão '+(i+1)+' de '+Q.length+'</span></div><div class="prog" style="margin:8px 0 14px"><i style="width:'+Math.round(i/Q.length*100)+'%"></i></div><div class="text">'+q[0]+'</div><b>'+q[1]+'</b>'+Options(q[2],ch,q[3],q[4],'data-qo')+
+  (ch!=null?'<div class="nav" style="justify-content:flex-end"><button class="btn" data-next="1" type="button">'+(i+1<Q.length?'Próxima questão':'Ver resultado')+' '+I('arrow-right')+'</button></div>':'')+'</div>';
+};
+
+/* ---------- roteador ---------- */
+function route(keep){
+  var h=location.hash.slice(1)||'inicio',idx=ids.indexOf(h),html,crumb='<a href="#inicio">Inglês</a>';
+  if(idx>-1){html=V.lesson(idx);crumb+=' › Aula '+L[idx].n;}
+  else if(h==='questoes'){html=V.questoes();crumb+=' › Questões ENEM';}
+  else{html=V.inicio();crumb='Matérias › Linguagens › Inglês';}
+  $('view').innerHTML=html;$('crumb').innerHTML=crumb;
+  if(window.lucide)lucide.createIcons();
+  if(!keep)window.scrollTo(0,0);
+}
+$('view').addEventListener('click',function(ev){
+  var b=ev.target.closest('button');if(!b)return;
+  var h=location.hash.slice(1);
+  if(b.dataset.done){S.done[b.dataset.done]=!S.done[b.dataset.done];save();route(true);}
+  else if(b.dataset.o!==undefined){S.ans[h]=+b.dataset.o;save();route(true);}
+  else if(b.dataset.qo!==undefined){S.qa[S.qi]=+b.dataset.qo;save();route(true);}
+  else if(b.dataset.next){S.qi++;save();route();}
+  else if(b.dataset.reset){S.qi=0;S.qa=[];save();route();}
+});
+
+/* ---------- sidebar ---------- */
+function NavLink(label,icon,active,url){return '<a href="'+(url||'#')+'" class="nav-item'+(active?' active':'')+'"'+(active?' aria-current="page"':'')+'>'+I(icon)+'<span>'+label+'</span></a>';}
+$('side').innerHTML='<div class="logo">Prep<span>Enem</span></div><nav>'+NAV.map(function(n){return NavLink(n[1],n[0],n[2],n[3]);}).join('')+'</nav><div class="sp"></div>'+NavLink('Configurações','settings',0,SETTINGS_LINK);
+var side=$('side'),scrim=$('scrim'),burger=$('burger');
+function setMenu(x){side.classList.toggle('open',x);scrim.hidden=!x;burger.setAttribute('aria-expanded',x?'true':'false');}
+burger.addEventListener('click',function(){setMenu(!side.classList.contains('open'));});
+scrim.addEventListener('click',function(){setMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
+side.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){if(a.getAttribute('href')==='#')e.preventDefault();setMenu(false);});});
+window.addEventListener('hashchange',function(){route();});
+route();
+})();
+</script>
+</body>
+</html>

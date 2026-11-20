@@ -147,7 +147,7 @@ section h2{font-size:1.35rem;margin-bottom:16px}
     <header class="top">
       <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="side"><i data-lucide="menu"></i></button>
       <div>
-        <h1>Olá, estudante! 👋</h1>
+        <h1 id="greet">Olá, estudante! 👋</h1>
         <p>Vamos continuar sua preparação para o ENEM?</p>
       </div>
       <div class="actions">
@@ -187,12 +187,35 @@ section h2{font-size:1.35rem;margin-bottom:16px}
     {name:'Redação',a:'#0891b2',items:[['Redação','pen-line']]}
   ];
   // Adicione aqui o caminho das páginas das outras matérias para ativar seus links.
-  var SUBJECT_PAGES={'Matemática':'matematica/matematica/matematica.html'};
-  var SUBJECT_PAGES={'Redação':'/frontend/redacao.html'};
+  var SUBJECT_PAGES={'Matemática':'#','Redação':'Redacao.html','':'#','Biologia':'#','Física':'#','Química':'#','História':'#','Geografia':'#','Língua Portuguesa':'#','Literatura':'#','Inglês':'ingles.html','Espanhol':'#','Artes':'#','Educação Física':'#','Filosofia':'#','Sociologia':'#'};
   var RECS=[['Matemática','sigma','#4f46e5','Pouco estudada'],['Biologia','dna','#059669','Revisão'],['Redação','pen-line','#0891b2','Meta da semana']];
   var TASKS=['Resolver 10 questões de Biologia','Escrever uma redação','Fazer o simulado de Linguagens','Revisar Química'];
   var WEEK=[['Seg',['Matemática','Redação']],['Ter',['Biologia','Inglês']],['Qua',['História','Química']],['Qui',['Língua Portuguesa','Física']],['Sex',['Geografia','Simulado']],['Sáb',['Revisão semanal']],['Dom',['Descanso']]];
   var NOTES=[['clipboard-check','Novo simulado disponível'],['flame','Você está há 12 dias seguidos estudando'],['calendar-days','Lembrete: revisão de Biologia hoje']];
+
+  /* ---------- usuário logado (salvo no cadastro/login) ---------- */
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function storedUser(){
+    try{
+      var raw=localStorage.getItem('prepenem_user')||sessionStorage.getItem('prepenem_user');
+      return raw?JSON.parse(raw):null;
+    }catch(e){return null;}
+  }
+  var user=storedUser()||{};
+  function userName(){return String(user.nome||user.name||'Estudante').trim()||'Estudante';}
+  function userInitials(){
+    if(user.avatar)return String(user.avatar).substring(0,2).toUpperCase();
+    return userName().split(/\s+/).map(function(n){return n[0];}).join('').substring(0,2).toUpperCase();
+  }
+  function applyUser(u){
+    if(!u)return;
+    user=u;
+    var name=userName(),first=name.split(/\s+/)[0],email=String(user.email||'estudante@email.com');
+    $('greet').textContent='Olá, '+first+'! 👋';
+    $('me').textContent=userInitials();
+    var head=$('profile').querySelector('.pf-head');
+    if(head)head.innerHTML='<div class="avatar">'+esc(userInitials())+'</div><div><b>'+esc(name)+'</b><small>'+esc(email)+'</small></div>';
+  }
 
   /* ---------- componentes reutilizáveis ---------- */
   function Icon(n){return '<i data-lucide="'+n+'"></i>';}
@@ -227,6 +250,18 @@ section h2{font-size:1.35rem;margin-bottom:16px}
   $('profile').innerHTML='<div class="pf-head"><div class="avatar">E</div><div><b>Estudante</b><small>estudante@email.com</small></div></div>'+
     '<div class="pf-stats"><div><b>12</b><small>dias seguidos</small></div><div><b>42%</b><small>progresso</small></div><div><b>1.284</b><small>questões</small></div></div>'+
     '<div class="pf-menu"><a href="#">'+Icon('user')+'Meu perfil</a><a href="#">'+Icon('bar-chart-3')+'Meu desempenho</a><a href="#">'+Icon('settings')+'Configurações</a><a href="#" class="out">'+Icon('log-out')+'Sair</a></div>';
+  applyUser(storedUser());
+  // Confirma os dados no banco; se o token expirou, mantém o que estava salvo.
+  var token=(function(){try{return localStorage.getItem('prepenem_token')||sessionStorage.getItem('prepenem_token');}catch(e){return null;}})();
+  if(token){
+    fetch('http://localhost:3000/api/auth/me',{headers:{Authorization:'Bearer '+token}})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(d){
+        if(!d||!d.success||!d.user)return;
+        applyUser(d.user);
+        try{localStorage.setItem('prepenem_user',JSON.stringify(d.user));}catch(e){}
+      }).catch(function(){});
+  }
   if(window.lucide) lucide.createIcons();
 
   /* ---------- interações ---------- */
@@ -234,7 +269,16 @@ section h2{font-size:1.35rem;margin-bottom:16px}
   function setProf(x){prof.hidden=!x;me.setAttribute('aria-expanded',x?'true':'false');}
   me.addEventListener('click',function(e){e.stopPropagation();setPop(false);setProf(prof.hidden);});
   prof.addEventListener('click',function(e){e.stopPropagation();});
-  prof.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();setProf(false);});});
+  prof.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(e){
+    e.preventDefault();setProf(false);
+    if(a.classList.contains('out')){
+      try{
+        localStorage.removeItem('prepenem_token');localStorage.removeItem('prepenem_user');
+        sessionStorage.removeItem('prepenem_token');sessionStorage.removeItem('prepenem_user');
+      }catch(err){}
+      location.href='index.html';
+    }
+  });});
   function setMenu(x){side.classList.toggle('open',x);scrim.hidden=!x;burger.setAttribute('aria-expanded',x?'true':'false');}
   function setPop(x){pop.hidden=!x;bell.setAttribute('aria-expanded',x?'true':'false');}
   burger.addEventListener('click',function(){setMenu(!side.classList.contains('open'));});

@@ -36,10 +36,6 @@ router.post('/:moduleId', authMiddleware, (req, res) => {
     userProgress[userId][`${moduleId}_currentLesson`] = currentLessonId;
   }
   
-  // Get user's overall stats
-  const users = require('../data/users');
-  const user = users.findById(userId);
-  
   res.json({ success: true, progress: userProgress[userId][moduleId] });
 });
 

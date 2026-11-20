@@ -127,6 +127,7 @@ dialog[open] .auth-card{animation:pop .22s ease-out}
 .auth-card .eye,.auth-card .links a,.auth-card .row a{color:var(--link)}
 .auth-card .row input{accent-color:var(--blue)}
 .auth-card .msg{background:var(--field);border:1px solid var(--line)}
+.auth-card .msg.error{color:#b3261e;border-color:#efb7b7}
 .auth-card .auth-x{background:var(--field);color:var(--ink)}
 .auth-card .auth-x:hover{background:var(--line)}
 .auth-side{position:absolute;left:0;top:0;bottom:0;width:320px;background:linear-gradient(160deg,var(--blue),var(--blue-deep));color:#fff;padding:44px 32px 32px;display:flex;flex-direction:column;gap:22px}
@@ -300,7 +301,7 @@ footer{background:var(--blue-deep);color:#cfdcff;text-align:center;padding:22px;
       <label class="field"><span>Qual é a sua meta?</span><select name="goal"><option>Enem</option><option>Fuvest</option><option selected>Enem e Fuvest</option></select></label>
       <div class="field terms"><label><input type="checkbox" name="terms"> Li e aceito os <b>termos de uso</b></label><div class="err"></div></div>
       <button class="submit" type="submit">Criar conta e estudar</button>
-      <div class="done" hidden><div class="done-ico">🎉</div><h3>Conta criada!</h3><p>Bem-vindo(a), <b class="to"></b>. Agora é só entrar para montar seu primeiro plano de estudos.</p><button type="button" class="resend" data-go="login">Ir para o login</button></div>
+      <div class="done" hidden><div class="done-ico">🎉</div><h3>Conta criada!</h3><p>Sua conta foi salva. Bem-vindo(a), <b class="to"></b>!</p><button type="button" class="resend" id="go-app">Começar a estudar</button><button type="button" class="resend" data-go="login" style="margin-top:8px">Ir para o login</button></div>
       <div class="msg" role="status" hidden></div>
       <p class="links">Já tem uma conta? <a href="#entrar" data-go="login">Entrar</a></p>
     </form>
@@ -334,6 +335,8 @@ footer{background:var(--blue-deep);color:#cfdcff;text-align:center;padding:22px;
   dlg.querySelectorAll('[data-go]').forEach(function(a){
     a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.go);});
   });
+  var goApp=dlg.querySelector('#go-app');
+  if(goApp)goApp.addEventListener('click',function(){location.href='menu.html';});
   var pw=dlg.querySelector('form[data-view="signup"] input[name="password"]');
   var hints=['Use 8 ou mais caracteres, com letras e números.','Senha fraca. Misture letras e números.','Senha média. Falta pouco.','Senha forte.'];
   pw.addEventListener('input',function(){
@@ -388,14 +391,75 @@ footer{background:var(--blue-deep);color:#cfdcff;text-align:center;padding:22px;
       }
       var msg=f.querySelector('.msg');
       if(!ok){msg.hidden=true; first.focus(); return;}
-      // TODO: conectar ao seu back-end (login, cadastro e recuperação de senha).
-      
-      if(v!=='login'){
+
+      var API='http://localhost:3000/api';
+      function showMsg(text,isError){
+        msg.textContent=text;
+        msg.classList.toggle('error',!!isError);
+        msg.hidden=false;
+      }
+      function errorText(data){
+        if(!data) return 'Erro de conexão com o servidor.';
+        if(data.error) return data.error;
+        if(data.errors&&data.errors.length){
+          return data.errors.map(function(e){return e.msg||e.message||'';}).filter(Boolean).join(' ');
+        }
+        return 'Não foi possível completar a solicitação.';
+      }
+      function setLoading(on){
+        var btn=f.querySelector('.submit');
+        if(!btn) return;
+        btn.disabled=on;
+        btn.textContent=on?(v==='login'?'Entrando...':'Criando conta...'):(v==='login'?'Entrar e estudar':'Criar conta e estudar');
+      }
+
+      // Recuperação de senha: ainda não possui endpoint no back end.
+      if(v==='forgot'){
         Array.from(f.children).forEach(function(c){c.hidden=!c.matches('.done,.links');});
-        f.querySelector('.to').textContent=v==='forgot'?f.elements.email.value.trim():f.elements.name.value.trim().split(' ')[0];
+        f.querySelector('.to').textContent=f.elements.email.value.trim();
         return;
       }
-      window.location.href='/frontend/menu.html'; // redireciona para a página principal do app
+
+      var endpoint=v==='login'?'/auth/login':'/auth/register';
+      var payload=v==='login'
+        ? {email:f.elements.email.value.trim(),password:f.elements.password.value.trim(),remember:!!(f.elements.remember&&f.elements.remember.checked)}
+        : {name:f.elements.name.value.trim(),email:f.elements.email.value.trim(),password:f.elements.password.value.trim(),goal:f.elements.goal?f.elements.goal.value:'Enem e Fuvest',terms:!!(f.elements.terms&&f.elements.terms.checked)};
+
+      msg.hidden=true;
+      setLoading(true);
+      fetch(API+endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      }).then(function(r){
+        return r.json().catch(function(){return null;}).then(function(data){return {ok:r.ok,data:data};});
+      }).then(function(res){
+        setLoading(false);
+        if(!res.ok||!res.data||res.data.success!==true){
+          showMsg(errorText(res.data),true);
+          return;
+        }
+        if(v==='login'){
+          var store=payload.remember?localStorage:sessionStorage;
+          store.setItem('prepenem_token',res.data.token);
+          store.setItem('prepenem_user',JSON.stringify(res.data.user||{}));
+          // Caminho relativo: funciona tanto no servidor (http://localhost:3000/)
+          // quanto no Live Server (http://localhost:5500/frontend/index.html).
+          window.location.href='menu.html'; // redireciona para a página principal do app
+          return;
+        }
+        // O cadastro também cria a sessão: o novo usuário entra já identificado.
+        try{
+          localStorage.setItem('prepenem_token',res.data.token);
+          localStorage.setItem('prepenem_user',JSON.stringify(res.data.user||{}));
+        }catch(e){}
+        Array.from(f.children).forEach(function(c){c.hidden=!c.matches('.done,.links');});
+        var nome=res.data.user&&res.data.user.nome?res.data.user.nome:f.elements.name.value.trim();
+        f.querySelector('.to').textContent=nome.split(' ')[0];
+      }).catch(function(){
+        setLoading(false);
+        showMsg('Não foi possível contatar a API. Confira se o back end está rodando na porta 3000 e se a página foi aberta pelo localhost.',true);
+      });
     });
     f.addEventListener('input',function(e){ if(e.target.matches('input')) setErr(e.target,''); });
   });

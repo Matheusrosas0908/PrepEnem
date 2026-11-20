@@ -7,7 +7,7 @@
 class PrepEnemAPI {
   constructor(baseURL = 'http://localhost:3000/api', token = null) {
     this.baseURL = baseURL;
-    this.token = token || localStorage.getItem('prepenem_token');
+    this.token = token || localStorage.getItem('prepenem_token') || sessionStorage.getItem('prepenem_token');
   }
 
   /**
@@ -24,6 +24,7 @@ class PrepEnemAPI {
   clearToken() {
     this.token = null;
     localStorage.removeItem('prepenem_token');
+    sessionStorage.removeItem('prepenem_token');
   }
 
   /**

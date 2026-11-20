@@ -3,9 +3,11 @@ require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'prepEnem_superSecretKey_2024';
 
-// Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+// Generate JWT token (expiresIn pode ser sobrescrito, ex.: '1d' ou '30d')
+const generateToken = (userId, expiresIn) => {
+  return jwt.sign({ userId }, JWT_SECRET, {
+    expiresIn: expiresIn || process.env.JWT_EXPIRES_IN || '7d',
+  });
 };
 
 // Middleware to protect routes

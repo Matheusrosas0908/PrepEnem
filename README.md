@@ -42,7 +42,7 @@ PrepEnem/
 │   ├── .gitignore                   # Ignora node_modules
 │   ├── src/
 │   │   ├── data/
-│   │   │   ├── users.js             # Banco de usuários em memória (senhas com bcrypt)
+│   │   │   ├── users.js             # Usuários no MySQL (senhas com bcrypt)
 │   │   │   ├── modules.js           # Definições de módulos e aulas
 │   │   │   ├── questions.js         # 110 questões extraídas dos arquivos HTML
 │   │   │   └── healthTips.js        # Dicas de saúde e bem-estar
@@ -68,7 +68,8 @@ PrepEnem/
 - **Autenticação JWT** — tokens com expiração de 7 dias
 - **bcryptjs** — hash de senhas
 - **CORS** — habilitado para comunicação com o frontend
-- Bancos de dados em memória (substitua por um banco real em produção)
+- **MySQL 8** — usuários de login/cadastro persistidos no banco `prepenem` (`mysql2/promise`)
+- Progresso das aulas de redação em MySQL (`prepenem.redacao_progress`); questões e demais dados continuam em memória
 - **110 questões** de quiz extraídas dos arrays JavaScript embutidos nos HTMLs e servidas via API
 
 ### Frontend
@@ -99,10 +100,23 @@ PrepEnem/
 | GET    | `/api/achievements`       | Listar conquistas + desafios  | Não  |
 | GET    | `/api/achievements/challenges` | Listar desafios apenas     | Não  |
 | GET    | `/api/achievements/badges`  | Listar emblemas apenas      | Não  |
+| GET    | `/api/redacao/content`      | Conteúdo dos módulos/aulas (sem login) | Não  |
+| GET    | `/api/redacao/modules`      | Módulos/aulas + progresso do aluno | Sim  |
+| GET    | `/api/redacao/progress`     | Resumo do progresso em redação | Sim  |
+| POST   | `/api/redacao/lessons/:lessonId/complete` | Marcar/desmarcar aula | Sim  |
+| POST   | `/api/redacao/modules/:moduleId/complete` | Concluir/desfazer módulo inteiro | Sim  |
 
 ## Como Começar
 
-### Backend
+Na raiz do projeto:
+
+```bash
+npm install     # instala as dependências do back end automaticamente (postinstall)
+npm run db:setup # cria o banco MySQL (ou execute backend/sql/schema.sql no Workbench)
+npm start       # inicia o servidor na porta 3000
+```
+
+Se preferir trabalhar apenas dentro de `backend/`:
 
 ```bash
 cd backend
@@ -114,11 +128,84 @@ npm start            # Inicia o servidor na porta 3000
 ### Frontend
 
 1. Inicie o backend primeiro (veja acima).
-2. Instale a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) do VS Code.
-3. Clique com o botão direito em `frontend/inicio/index.html` e selecione "Open with Live Server".
+2. Acesse `http://localhost:3000` (o próprio servidor entrega o frontend) ou use o Live Server (qualquer porta local, inclusive a padrão 5500).
+3. Se usar o Live Server, clique com o botão direito em `frontend/index.html` e selecione "Open with Live Server".
 4. Cadastre uma nova conta ou faça login com as credenciais de teste:
    - Email: `matheus@prepenem.com`
    - Senha: `123456`
+
+## Login e cadastro (`frontend/index.html`)
+
+Os formulários da página inicial enviam os dados para a API em `http://localhost:3000/api`.
+
+### Cadastro — `POST /api/auth/register`
+
+```json
+{ "name": "Ana Souza", "email": "ana@teste.com", "password": "senha123", "goal": "Fuvest", "terms": true }
+```
+
+- Senha: mínimo de 8 caracteres, com letras e números.
+- E-mail já cadastrado retorna `409`.
+- Sucesso retorna `201` com `user` (sem senha) e `token`.
+- O frontend salva esse token e os dados do usuário e oferece **"Começar a estudar"**, entrando no app já com a conta recém-criada.
+- O `menu.html` exibe o nome/email reais do usuário logado (via `prepenem_user` e `GET /api/auth/me`); o botão **Sair** encerra a sessão e volta para `index.html`.
+
+### Login — `POST /api/auth/login`
+
+```json
+{ "email": "ana@teste.com", "password": "senha123", "remember": true }
+```
+
+- `remember: true` → token por 30 dias, salvo no `localStorage`.
+- `remember: false` → token por 1 dia, salvo no `sessionStorage`.
+- Sucesso retorna `200` com `user` e `token`; credenciais inválidas retornam `401`.
+- Após o login, o navegador é redirecionado para `menu.html` (relativo à página atual).
+
+### Perfil — `GET /api/auth/me`
+
+Enviar o header `Authorization: Bearer <token>`.
+
+> Usuários ficam persistidos no MySQL (`prepenem.users`). Questões e demais dados continuam em memória.
+
+## Redação — módulos de aprendizagem
+
+A tela `frontend/Redacao.html` carrega os 6 módulos e as 21 aulas a partir da API. Todos os módulos ficam liberados; o que muda é o progresso do aluno (`concluida`, `atual` ou `nao-iniciada`), calculado no backend a partir das aulas concluídas.
+
+- `GET /api/redacao/content` → devolve módulos e aulas sem exigir login (a página abre mesmo sem token).
+- `GET /api/redacao/modules` → devolve módulos, aulas e o resumo `progress` do aluno logado.
+- `POST /api/redacao/lessons/aula-1-1/complete` com `{"completed": true}` (ou `false` para desmarcar) → salva no MySQL e devolve o progresso atualizado.
+- `POST /api/redacao/modules/modulo-1/complete` com `{"completed": true}` → conclui o módulo inteiro de uma vez. Quando todas as aulas de um módulo são concluídas, o backend devolve `completed: true` e `completedAt`, e o card do módulo exibe o selo **Concluído**.
+- `GET /api/redacao/progress` → somente o resumo (totais, percentual, próxima aula e última atividade).
+
+Para **salvar** o progresso é necessário estar logado: o frontend envia `Authorization: Bearer <token>`. Sem login, os módulos ainda aparecem, mas "Marcar como concluída" pede login. As redações em si (rascunhos, fotos e notas) continuam salvas no `localStorage` (`prepenem-redacao`).
+
+A tabela `redacao_progress` é criada por `npm run db:setup` (ou executando `backend/sql/schema.sql` novamente no Workbench).
+
+## Banco de dados (MySQL)
+
+### Opção 1 — MySQL Workbench
+1. Abra a conexão **Local instance MySQL80** (`localhost:3306`, usuário `root`).
+2. Menu `File > Open SQL Script...` e selecione `backend/sql/schema.sql`.
+3. Execute (`⚡`). O script cria o banco `prepenem`, a tabela `users`, o usuário `prepenem_app` e 3 usuários de teste (senha `123456`).
+
+### Opção 2 — linha de comando
+
+```bash
+npm run db:setup     # usa DB_ROOT_PASSWORD do backend/.env
+```
+
+### Configuração (`backend/.env`)
+
+```
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=prepenem_app
+DB_PASSWORD=prepenem123
+DB_NAME=prepenem
+DB_ROOT_PASSWORD=<senha do root, usada apenas pelo db:setup>
+```
+
+A aplicação usa o usuário `prepenem_app` (permissões apenas de SELECT/INSERT/UPDATE/DELETE em `prepenem.*`). A senha do `root` não é usada em tempo de execução.
 
 ## Paleta de Cores
 

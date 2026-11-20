@@ -1,62 +1,100 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
 const { findByEmail, create, verifySenha, findById } = require('../data/users');
-const { generateToken } = require('../middleware/auth');
+const { generateToken, authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SENHA_RE = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+function badRequest(res, messages) {
+  const msgs = Array.isArray(messages) ? messages : [messages];
+  return res.status(400).json({
+    success: false,
+    error: msgs.join(' '),
+    errors: msgs.map(msg => ({ msg })),
+  });
+}
+
 // POST /api/auth/register
-router.post('/register', [
-  body('nome').notEmpty().withMessage('Nome é obrigatório'),
-  body('email').isEmail().withMessage('Email inválido'),
-  body('senha').isLength({ min: 6 }).withMessage('Senha deve ter pelo menos 6 caracteres'),
-  body('telefone').notEmpty().withMessage('Telefone é obrigatório'),
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() });
+// Body do index.html: { name, email, password, goal, terms }
+router.post('/register', async (req, res, next) => {
+  const body = req.body || {};
+  const nome = String(body.name || body.nome || '').trim();
+  const email = String(body.email || '').trim().toLowerCase();
+  const senha = body.password || body.senha || '';
+  const errors = [];
+
+  if (nome.length < 2) errors.push('Informe seu nome.');
+  if (!EMAIL_RE.test(email)) errors.push('Digite um e-mail válido.');
+  if (!SENHA_RE.test(String(senha))) errors.push('Use 8 ou mais caracteres, com letras e números.');
+  if (body.terms !== undefined && body.terms !== true) errors.push('Aceite os termos para continuar.');
+
+  if (errors.length) return badRequest(res, errors);
+
+  try {
+    const user = await create({
+      name: nome,
+      email,
+      password: senha,
+      goal: body.goal || 'Enem e Fuvest',
+      telefone: body.telefone,
+    });
+
+    if (!user) {
+      return res.status(409).json({ success: false, error: 'Este e-mail já está cadastrado.' });
+    }
+
+    console.log(`[CADASTRO] Usuário salvo no MySQL -> id=${user.id} email=${user.email}`);
+
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    const token = generateToken(user.id, expiresIn);
+    return res.status(201).json({ success: true, user, token, expiresIn });
+  } catch (err) {
+    return next(err);
   }
-
-  const { nome, email, senha, telefone } = req.body;
-  const user = create(nome, email, senha, telefone);
-
-  if (!user) {
-    return res.status(409).json({ success: false, error: 'Email já cadastrado' });
-  }
-
-  const token = generateToken(user.id);
-  res.status(201).json({ success: true, user, token });
 });
 
 // POST /api/auth/login
-router.post('/login', [
-  body('email').notEmpty().withMessage('Email é obrigatório'),
-  body('senha').notEmpty().withMessage('Senha é obrigatória'),
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() });
+// Body do index.html: { email, password, remember }
+router.post('/login', async (req, res, next) => {
+  const body = req.body || {};
+  const email = String(body.email || '').trim().toLowerCase();
+  const senha = body.password || body.senha || '';
+  const errors = [];
+
+  if (!EMAIL_RE.test(email)) errors.push('Digite um e-mail válido.');
+  if (!senha) errors.push('Digite sua senha.');
+
+  if (errors.length) return badRequest(res, errors);
+
+  try {
+    const user = await findByEmail(email);
+    if (!user || !verifySenha(String(senha), user.senha)) {
+      return res.status(401).json({ success: false, error: 'E-mail ou senha incorretos.' });
+    }
+
+    const expiresIn = body.remember === true ? '30d' : '1d';
+    const token = generateToken(user.id, expiresIn);
+    const { senha: _, ...userWithoutSenha } = user;
+
+    return res.json({ success: true, user: userWithoutSenha, token, expiresIn });
+  } catch (err) {
+    return next(err);
   }
-
-  const { email, senha } = req.body;
-  const user = findByEmail(email);
-
-  if (!user || !verifySenha(senha, user.senha)) {
-    return res.status(401).json({ success: false, error: 'Credenciais inválidas' });
-  }
-
-  const token = generateToken(user.id);
-  const { senha: _, ...userWithoutSenha } = user;
-  res.json({ success: true, user: userWithoutSenha, token });
 });
 
 // GET /api/auth/me
-router.get('/me', require('../middleware/auth').authMiddleware, (req, res) => {
-  const user = findById(req.userId);
-  if (!user) {
-    return res.status(404).json({ success: false, error: 'Usuário não encontrado' });
+router.get('/me', authMiddleware, async (req, res, next) => {
+  try {
+    const user = await findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'Usuário não encontrado' });
+    }
+    return res.json({ success: true, user });
+  } catch (err) {
+    return next(err);
   }
-  res.json({ success: true, user });
 });
 
 module.exports = router;

@@ -1,0 +1,80 @@
+// Module definitions for PrepEnem platform
+const modules = [
+  {
+    id: 'portugues',
+    name: 'Linguagens, Códigos e suas Tecnologias',
+    subtitle: 'Língua Portuguesa',
+    icon: 'fa-book-open',
+    colorClass: 'module-blue',
+    totalLessons: 5,
+    lessons: [
+      { id: 1, title: 'Figuras de Construção de Frase', duration: '10 min', accent: 'blue' },
+      { id: 2, title: 'Figuras de Construção de Frase (2)', duration: '12 min', accent: 'blue' },
+      { id: 3, title: 'Figuras de Pensamento (Metáfora)', duration: '8 min', accent: 'blue' },
+      { id: 4, title: 'Figuras de Palavras e Som', duration: '15 min', accent: 'blue' },
+      { id: 5, title: 'Rima e Métrica', duration: '7 min', accent: 'blue' },
+    ],
+  },
+  {
+    id: 'matematica',
+    name: 'Matemática e suas Tecnologias',
+    subtitle: 'Matemática',
+    icon: 'fa-laptop-code',
+    colorClass: 'module-green',
+    totalLessons: 5,
+    lessons: [
+      { id: 1, title: 'Grandezas Proporcionais', duration: '04:22 min', accent: 'green', videoUrl: 'assets/img/Grandezas Porporcionais.mp4' },
+      { id: 2, title: 'Estatística', duration: '04:03 min', accent: 'green', videoUrl: 'assets/img/estetica.mp4' },
+      { id: 3, title: 'Aritmética', duration: '12 min', accent: 'green' },
+      { id: 4, title: 'Funções e Equações', duration: '15 min', accent: 'green' },
+      { id: 5, title: 'Matrizes', duration: '8 min', accent: 'green' },
+    ],
+  },
+  {
+    id: 'ciencia-natureza',
+    name: 'Ciências da Natureza e suas Tecnologias',
+    subtitle: 'Biologia',
+    icon: 'fa-leaf',
+    colorClass: 'module-green',
+    totalLessons: 5,
+    lessons: [
+      { id: 1, title: 'Moléculas, Células e Tecidos', duration: '50 min', accent: 'nature-green' },
+      { id: 2, title: 'Hereditariedade', duration: '45 min', accent: 'nature-green' },
+      { id: 3, title: 'Radioatividade', duration: '30 min', accent: 'nature-green' },
+      { id: 4, title: 'Ecologia', duration: '60 min', accent: 'nature-green' },
+      { id: 5, title: 'Qualidade de vida', duration: '40 min', accent: 'nature-green' },
+    ],
+  },
+  {
+    id: 'lingua-estrangeira',
+    name: 'Língua Estrangeira',
+    subtitle: 'Inglês e Espanhol',
+    icon: 'fa-language',
+    colorClass: 'module-blue-wide',
+    totalLessons: 5,
+    lessons: [
+      { id: 1, title: 'Vocabulário Básico', duration: '15 min', accent: 'blue' },
+      { id: 2, title: 'Gramática Essencial', duration: '20 min', accent: 'blue' },
+      { id: 3, title: 'Reading Comprehension', duration: '25 min', accent: 'blue' },
+      { id: 4, title: 'Listening Practice', duration: '30 min', accent: 'blue' },
+      { id: 5, title: 'Writing Skills', duration: '35 min', accent: 'blue' },
+    ],
+  },
+  {
+    id: 'humanas',
+    name: 'Ciências Humanas e suas Tecnologias',
+    subtitle: 'História e Geografia',
+    icon: 'fa-globe-americas',
+    colorClass: 'module-blue',
+    totalLessons: 5,
+    lessons: [
+      { id: 1, title: 'História do Brasil', duration: '45 min', accent: 'blue' },
+      { id: 2, title: 'Geografia Humana', duration: '40 min', accent: 'blue' },
+      { id: 3, title: 'História Contemporânea', duration: '50 min', accent: 'blue' },
+      { id: 4, title: 'Geografia Física', duration: '35 min', accent: 'blue' },
+      { id: 5, title: 'Artes', duration: '30 min', accent: 'blue' },
+    ],
+  },
+];
+
+module.exports = modules;
